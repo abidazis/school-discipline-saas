@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -25,10 +26,12 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'school_id' => null,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => User::ROLE_OPERATOR,
             'remember_token' => Str::random(10),
         ];
     }
@@ -40,6 +43,57 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a super admin.
+     */
+    public function superAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_SUPER_ADMIN,
+            'school_id' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a school admin.
+     */
+    public function schoolAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_SCHOOL_ADMIN,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a school operator.
+     */
+    public function operator(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_OPERATOR,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a teacher.
+     */
+    public function teacher(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_TEACHER,
+        ]);
+    }
+
+    /**
+     * Assign the user to a school.
+     */
+    public function forSchool(School $school): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'school_id' => $school->id,
         ]);
     }
 }
