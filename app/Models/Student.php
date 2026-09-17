@@ -6,6 +6,7 @@ use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model
 {
@@ -69,6 +70,30 @@ class Student extends Model
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class);
+    }
+
+    /**
+     * Get the violations for this student.
+     */
+    public function violations(): HasMany
+    {
+        return $this->hasMany(Violation::class);
+    }
+
+    /**
+     * Get the active violations for this student.
+     */
+    public function activeViolations(): HasMany
+    {
+        return $this->violations()->active();
+    }
+
+    /**
+     * Get the total active points for this student.
+     */
+    public function getActivePointsAttribute(): int
+    {
+        return $this->activeViolations()->sum('points');
     }
 
     /**

@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EvidenceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViolationController;
+use App\Http\Controllers\ViolationTypeController;
 use App\Http\Middleware\SuperAdminOnly;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +88,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'update' => 'students.update',
         'destroy' => 'students.destroy',
     ]);
+});
+
+// Violation routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('violation-types', ViolationTypeController::class)->names([
+        'index' => 'violation-types.index',
+        'create' => 'violation-types.create',
+        'store' => 'violation-types.store',
+        'show' => 'violation-types.show',
+        'edit' => 'violation-types.edit',
+        'update' => 'violation-types.update',
+        'destroy' => 'violation-types.destroy',
+    ]);
+
+    Route::resource('violations', ViolationController::class)->names([
+        'index' => 'violations.index',
+        'create' => 'violations.create',
+        'store' => 'violations.store',
+        'show' => 'violations.show',
+        'edit' => 'violations.edit',
+        'update' => 'violations.update',
+    ])->parameters([
+        'violations' => 'violation',
+    ]);
+
+    // Violation actions
+    Route::post('violations/{violation}/verify', [ViolationController::class, 'verify'])->name('violations.verify');
+    Route::post('violations/{violation}/cancel', [ViolationController::class, 'cancel'])->name('violations.cancel');
+    Route::delete('evidences/{evidence}', [ViolationController::class, 'destroyEvidence'])->name('violations.evidences.destroy');
+
+    // Secure evidence file access
+    Route::get('evidences/{evidence}', [EvidenceController::class, 'show'])->name('evidences.show');
 });
 
 // Profile routes
