@@ -167,7 +167,12 @@ class SchoolClassTest extends TestCase
     public function test_can_filter_classes_by_academic_year(): void
     {
         SchoolClass::factory()->for($this->school)->for($this->academicYear)->create(['name' => 'Current Year']);
-        $oldYear = AcademicYear::factory()->for($this->school)->create(['name' => '2020/2021']);
+        $oldYear = AcademicYear::factory()->for($this->school)->create([
+            'name' => '2099/2100',
+            'start_date' => '2099-07-01',
+            'end_date' => '2100-06-30',
+            'is_active' => false,
+        ]);
         SchoolClass::factory()->for($this->school)->for($oldYear)->create(['name' => 'Old Year']);
 
         $response = $this->actingAs($this->superAdmin)->get("/classes?academic_year_id={$this->academicYear->id}");

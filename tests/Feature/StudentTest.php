@@ -101,19 +101,29 @@ class StudentTest extends TestCase
 
     public function test_can_filter_students_by_academic_year(): void
     {
-        $year1 = AcademicYear::factory()->for($this->school)->create(['name' => '2026/2027']);
-        $year2 = AcademicYear::factory()->for($this->school)->create(['name' => '2025/2026']);
+        $year1 = AcademicYear::factory()->for($this->school)->create([
+            'name' => '2099/2100',
+            'start_date' => '2099-07-01',
+            'end_date' => '2100-06-30',
+            'is_active' => true,
+        ]);
+        $year2 = AcademicYear::factory()->for($this->school)->create([
+            'name' => '2098/2099',
+            'start_date' => '2098-07-01',
+            'end_date' => '2099-06-30',
+            'is_active' => false,
+        ]);
 
         $class1 = SchoolClass::factory()->for($this->school)->for($year1)->for($this->department)->create();
         $class2 = SchoolClass::factory()->for($this->school)->for($year2)->for($this->department)->create();
 
-        Student::factory()->for($this->school)->for($year1)->for($class1)->create(['full_name' => 'Student 2026']);
-        Student::factory()->for($this->school)->for($year2)->for($class2)->create(['full_name' => 'Student 2025']);
+        Student::factory()->for($this->school)->for($year1)->for($class1)->create(['full_name' => 'Student Year1']);
+        Student::factory()->for($this->school)->for($year2)->for($class2)->create(['full_name' => 'Student Year2']);
 
         $response = $this->actingAs($this->superAdmin)->get("/students?academic_year_id={$year1->id}");
 
-        $response->assertSee('Student 2026');
-        $response->assertDontSee('Student 2025');
+        $response->assertSee('Student Year1');
+        $response->assertDontSee('Student Year2');
     }
 
     public function test_can_filter_students_by_class(): void

@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EvidenceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PksMemberController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
@@ -120,6 +121,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Secure evidence file access
     Route::get('evidences/{evidence}', [EvidenceController::class, 'show'])->name('evidences.show');
+
+    // PKS Member routes
+    Route::resource('pks-members', PksMemberController::class)->names([
+        'index' => 'pks-members.index',
+        'create' => 'pks-members.create',
+        'store' => 'pks-members.store',
+        'show' => 'pks-members.show',
+        'edit' => 'pks-members.edit',
+        'update' => 'pks-members.update',
+    ]);
 });
 
 // Profile routes

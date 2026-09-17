@@ -133,4 +133,20 @@ class Student extends Model
     {
         return $this->status === self::STATUS_ACTIVE;
     }
+
+    /**
+     * Get the PKS membership for this student.
+     */
+    public function pksMember(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(\App\Models\PksMember::class);
+    }
+
+    /**
+     * Check if student is a PKS member.
+     */
+    public function isPksMember(): bool
+    {
+        return $this->pksMember()->where('status', \App\Models\PksMember::STATUS_ACTIVE)->exists();
+    }
 }
