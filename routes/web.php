@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\SuperAdminOnly;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +41,49 @@ Route::middleware(['auth', 'verified', SuperAdminOnly::class])->group(function (
         'edit' => 'users.edit',
         'update' => 'users.update',
         'destroy' => 'users.destroy',
+    ]);
+});
+
+// Academic Year routes (Super Admin, School Admin)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('academic-years', AcademicYearController::class)->names([
+        'index' => 'academic-years.index',
+        'create' => 'academic-years.create',
+        'store' => 'academic-years.store',
+        'show' => 'academic-years.show',
+        'edit' => 'academic-years.edit',
+        'update' => 'academic-years.update',
+        'destroy' => 'academic-years.destroy',
+    ]);
+
+    Route::resource('departments', DepartmentController::class)->names([
+        'index' => 'departments.index',
+        'create' => 'departments.create',
+        'store' => 'departments.store',
+        'show' => 'departments.show',
+        'edit' => 'departments.edit',
+        'update' => 'departments.update',
+        'destroy' => 'departments.destroy',
+    ]);
+
+    Route::resource('classes', SchoolClassController::class)->names([
+        'index' => 'classes.index',
+        'create' => 'classes.create',
+        'store' => 'classes.store',
+        'show' => 'classes.show',
+        'edit' => 'classes.edit',
+        'update' => 'classes.update',
+        'destroy' => 'classes.destroy',
+    ]);
+
+    Route::resource('students', StudentController::class)->names([
+        'index' => 'students.index',
+        'create' => 'students.create',
+        'store' => 'students.store',
+        'show' => 'students.show',
+        'edit' => 'students.edit',
+        'update' => 'students.update',
+        'destroy' => 'students.destroy',
     ]);
 });
 

@@ -54,32 +54,39 @@
                             </a>
                         </li>
                     </ul>
-                @else
-                    <div class="sidebar-section-title">Management</div>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link disabled">
-                                <i class="bi bi-mortarboard me-2"></i>
-                                Students
-                                <span class="badge bg-secondary ms-auto">Soon</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link disabled">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                Violations
-                                <span class="badge bg-secondary ms-auto">Soon</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link disabled">
-                                <i class="bi bi-file-text me-2"></i>
-                                PKS
-                                <span class="badge bg-secondary ms-auto">Soon</span>
-                            </a>
-                        </li>
-                    </ul>
                 @endif
+
+                <div class="sidebar-section-title">Data Akademik</div>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a href="{{ route('academic-years.index') }}" class="nav-link {{ request()->routeIs('academic-years.*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar3 me-2"></i>
+                            Tahun Ajaran
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('departments.index') }}" class="nav-link {{ request()->routeIs('departments.*') ? 'active' : '' }}">
+                            <i class="bi bi-book me-2"></i>
+                            Program Keahlian
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('classes.index') }}" class="nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">
+                            <i class="bi bi-collection me-2"></i>
+                            Kelas
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-title">Data Siswa</div>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}" class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}">
+                            <i class="bi bi-mortarboard me-2"></i>
+                            Daftar Siswa
+                        </a>
+                    </li>
+                </ul>
 
                 <div class="sidebar-section-title">Settings</div>
                 <ul class="nav flex-column">

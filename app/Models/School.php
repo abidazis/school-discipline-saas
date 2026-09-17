@@ -51,6 +51,38 @@ class School extends Model
     }
 
     /**
+     * Get the academic years for the school.
+     */
+    public function academicYears(): HasMany
+    {
+        return $this->hasMany(AcademicYear::class);
+    }
+
+    /**
+     * Get the departments for the school.
+     */
+    public function departments(): HasMany
+    {
+        return $this->hasMany(Department::class);
+    }
+
+    /**
+     * Get the school classes for the school.
+     */
+    public function schoolClasses(): HasMany
+    {
+        return $this->hasMany(SchoolClass::class);
+    }
+
+    /**
+     * Get the students for the school.
+     */
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    /**
      * Check if user is super admin.
      */
     public function isSuperAdmin(): bool
