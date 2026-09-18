@@ -83,6 +83,38 @@ class School extends Model
     }
 
     /**
+     * Get the PKS members for the school.
+     */
+    public function pksMembers(): HasMany
+    {
+        return $this->hasMany(PksMember::class);
+    }
+
+    /**
+     * Get the PKS shifts for the school.
+     */
+    public function pksShifts(): HasMany
+    {
+        return $this->hasMany(PksShift::class);
+    }
+
+    /**
+     * Get the PKS duty locations for the school.
+     */
+    public function pksDutyLocations(): HasMany
+    {
+        return $this->hasMany(PksDutyLocation::class);
+    }
+
+    /**
+     * Get the PKS duty schedules for the school.
+     */
+    public function pksDutySchedules(): HasMany
+    {
+        return $this->hasMany(PksDutySchedule::class);
+    }
+
+    /**
      * Check if user is super admin.
      */
     public function isSuperAdmin(): bool

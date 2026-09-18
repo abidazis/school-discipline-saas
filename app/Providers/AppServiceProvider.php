@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\PksDutyLocation;
+use App\Models\PksDutySchedule;
+use App\Models\PksShift;
 use App\Models\Violation;
 use App\Models\ViolationEvidence;
 use App\Models\ViolationType;
+use App\Policies\PksDutyLocationPolicy;
+use App\Policies\PksDutySchedulePolicy;
 use App\Policies\PksMemberPolicy;
+use App\Policies\PksShiftPolicy;
 use App\Policies\ViolationEvidencePolicy;
 use App\Policies\ViolationPolicy;
 use App\Policies\ViolationTypePolicy;
@@ -32,5 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Violation::class, ViolationPolicy::class);
         Gate::policy(ViolationEvidence::class, ViolationEvidencePolicy::class);
         Gate::policy(\App\Models\PksMember::class, PksMemberPolicy::class);
+        Gate::policy(PksShift::class, PksShiftPolicy::class);
+        Gate::policy(PksDutyLocation::class, PksDutyLocationPolicy::class);
+        Gate::policy(PksDutySchedule::class, PksDutySchedulePolicy::class);
     }
 }

@@ -4,7 +4,10 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EvidenceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PksDutyLocationController;
+use App\Http\Controllers\PksDutyScheduleController;
 use App\Http\Controllers\PksMemberController;
+use App\Http\Controllers\PksShiftController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
@@ -130,6 +133,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'show' => 'pks-members.show',
         'edit' => 'pks-members.edit',
         'update' => 'pks-members.update',
+    ]);
+
+    // PKS Shift routes
+    Route::resource('pks-shifts', PksShiftController::class)->names([
+        'index' => 'pks-shifts.index',
+        'create' => 'pks-shifts.create',
+        'store' => 'pks-shifts.store',
+        'show' => 'pks-shifts.show',
+        'edit' => 'pks-shifts.edit',
+        'update' => 'pks-shifts.update',
+    ]);
+
+    // PKS Duty Location routes
+    Route::resource('pks-duty-locations', PksDutyLocationController::class)->names([
+        'index' => 'pks-duty-locations.index',
+        'create' => 'pks-duty-locations.create',
+        'store' => 'pks-duty-locations.store',
+        'show' => 'pks-duty-locations.show',
+        'edit' => 'pks-duty-locations.edit',
+        'update' => 'pks-duty-locations.update',
+    ]);
+
+    // PKS Duty Schedule routes
+    Route::resource('pks-duty-schedules', PksDutyScheduleController::class)->names([
+        'index' => 'pks-duty-schedules.index',
+        'create' => 'pks-duty-schedules.create',
+        'store' => 'pks-duty-schedules.store',
+        'show' => 'pks-duty-schedules.show',
+        'edit' => 'pks-duty-schedules.edit',
+        'update' => 'pks-duty-schedules.update',
     ]);
 });
 

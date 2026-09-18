@@ -88,6 +88,34 @@
                     </li>
                 </ul>
 
+                <div class="sidebar-section-title">PKS</div>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a href="{{ route('pks-members.index') }}" class="nav-link {{ request()->routeIs('pks-members.*') ? 'active' : '' }}">
+                            <i class="bi bi-people me-2"></i>
+                            Anggota PKS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-shifts.index') }}" class="nav-link {{ request()->routeIs('pks-shifts.*') ? 'active' : '' }}">
+                            <i class="bi bi-clock me-2"></i>
+                            Shift Piket
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-duty-locations.index') }}" class="nav-link {{ request()->routeIs('pks-duty-locations.*') ? 'active' : '' }}">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            Lokasi Piket
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-duty-schedules.index') }}" class="nav-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-check me-2"></i>
+                            Jadwal Piket
+                        </a>
+                    </li>
+                </ul>
+
                 <div class="sidebar-section-title">Settings</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
