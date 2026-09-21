@@ -6,6 +6,7 @@ use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PksMember extends Model
 {
@@ -100,5 +101,13 @@ class PksMember extends Model
             ->where('school_id', $schoolId)
             ->where('status', self::STATUS_ACTIVE)
             ->exists();
+    }
+
+    /**
+     * Get the duty assignments for this member.
+     */
+    public function dutyAssignments(): HasMany
+    {
+        return $this->hasMany(PksDutyAssignment::class, 'pks_member_id');
     }
 }

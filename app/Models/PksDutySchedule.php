@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PksDutySchedule extends Model
 {
@@ -129,5 +130,21 @@ class PksDutySchedule extends Model
     public function isCancelled(): bool
     {
         return $this->status === self::STATUS_CANCELLED;
+    }
+
+    /**
+     * Get the assignments for this schedule.
+     */
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(PksDutyAssignment::class, 'pks_duty_schedule_id');
+    }
+
+    /**
+     * Get active assignments for this schedule.
+     */
+    public function activeAssignments(): HasMany
+    {
+        return $this->assignments()->where('status', PksDutyAssignment::STATUS_ASSIGNED);
     }
 }

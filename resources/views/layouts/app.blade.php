@@ -114,6 +114,18 @@
                             Jadwal Piket
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-duty-assignments.index') }}" class="nav-link {{ request()->routeIs('pks-duty-assignments.*') ? 'active' : '' }}">
+                            <i class="bi bi-person-check me-2"></i>
+                            Penugasan Piket
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-duty-attendances.index') }}" class="nav-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}">
+                            <i class="bi bi-clipboard-check me-2"></i>
+                            Kehadiran Piket
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="sidebar-section-title">Settings</div>

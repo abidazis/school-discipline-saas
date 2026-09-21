@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EvidenceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PksDutyAssignmentController;
+use App\Http\Controllers\PksDutyAttendanceController;
 use App\Http\Controllers\PksDutyLocationController;
 use App\Http\Controllers\PksDutyScheduleController;
 use App\Http\Controllers\PksMemberController;
@@ -17,14 +20,18 @@ use App\Http\Controllers\ViolationTypeController;
 use App\Http\Middleware\SuperAdminOnly;
 use Illuminate\Support\Facades\Route;
 
+// Root route - redirect to dashboard if authenticated, otherwise to login
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 })->name('home');
 
 // Redirect root to dashboard if authenticated
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Super Admin routes - protected by SuperAdminOnly middleware
 Route::middleware(['auth', 'verified', SuperAdminOnly::class])->group(function () {
@@ -163,6 +170,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'show' => 'pks-duty-schedules.show',
         'edit' => 'pks-duty-schedules.edit',
         'update' => 'pks-duty-schedules.update',
+    ]);
+
+    // PKS Duty Assignment routes (nested under schedules for better UX)
+    Route::resource('pks-duty-assignments', PksDutyAssignmentController::class)->names([
+        'index' => 'pks-duty-assignments.index',
+        'create' => 'pks-duty-assignments.create',
+        'store' => 'pks-duty-assignments.store',
+        'show' => 'pks-duty-assignments.show',
+        'edit' => 'pks-duty-assignments.edit',
+        'update' => 'pks-duty-assignments.update',
+    ]);
+
+    // PKS Duty Attendance routes
+    Route::resource('pks-duty-attendances', PksDutyAttendanceController::class)->names([
+        'index' => 'pks-duty-attendances.index',
+        'create' => 'pks-duty-attendances.create',
+        'store' => 'pks-duty-attendances.store',
+        'show' => 'pks-duty-attendances.show',
+        'edit' => 'pks-duty-attendances.edit',
+        'update' => 'pks-duty-attendances.update',
     ]);
 });
 

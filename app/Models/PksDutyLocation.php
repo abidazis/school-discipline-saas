@@ -82,4 +82,12 @@ class PksDutyLocation extends Model
     {
         return $this->status === self::STATUS_ACTIVE;
     }
+
+    /**
+     * Get the duty assignments for this location.
+     */
+    public function dutyAssignments(): HasMany
+    {
+        return $this->hasMany(PksDutyAssignment::class, 'pks_duty_location_id');
+    }
 }

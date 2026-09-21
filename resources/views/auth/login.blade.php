@@ -58,7 +58,7 @@
 
     <div class="text-center mt-4 pt-4 border-top">
         <p class="text-muted small mb-0">
-            Demo Accounts (password: password)
+            Demo Accounts (password: <code>password</code>)
         </p>
         <div class="mt-2">
             <span class="badge bg-danger me-1">Super Admin</span>
@@ -66,7 +66,15 @@
         </div>
         <div class="mt-1">
             <span class="badge bg-primary me-1">School Admin</span>
-            <code class="small">admin@example.com</code>
+            <code class="small">admin@smk1jkt.sch.id</code>
+        </div>
+        <div class="mt-1">
+            <span class="badge bg-secondary me-1">Operator</span>
+            <code class="small">operator@smk1jkt.sch.id</code>
+        </div>
+        <div class="mt-1">
+            <span class="badge bg-info me-1">Teacher</span>
+            <code class="small">guru.tkj@smk1jkt.sch.id</code>
         </div>
     </div>
 </x-guest-layout>
