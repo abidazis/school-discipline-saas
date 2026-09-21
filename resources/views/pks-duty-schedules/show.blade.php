@@ -301,6 +301,42 @@
                                                     @endif
                                                 @endif
                                             </div>
+
+                                            {{-- Field Activities Preview --}}
+                                            @php
+                                                $assignmentActivities = $assignment->fieldActivities()->completed()->orderBy('started_at', 'desc')->limit(2)->get();
+                                            @endphp
+                                            @if($assignmentActivities->count() > 0)
+                                                <div class="mt-2 pt-2 border-top">
+                                                    <div class="small text-muted mb-2">
+                                                        <i class="bi bi-binoculars me-1"></i>
+                                                        Aktivitas ({{ $assignment->completed_activities_count }})
+                                                    </div>
+                                                    @foreach($assignmentActivities as $activity)
+                                                        <div class="small p-2 bg-light rounded mb-1">
+                                                            <span class="badge bg-info me-1">{{ $activity->activity_type_label }}</span>
+                                                            {{ $activity->started_at }}
+                                                            @if($activity->ended_at)
+                                                                - {{ $activity->ended_at }}
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                    @if($assignment->completed_activities_count > 2)
+                                                        <a href="{{ route('pks-field-activities.index', ['assignment_id' => $assignment->id]) }}" class="small text-primary">
+                                                            Lihat semua ({{ $assignment->completed_activities_count }})
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            @endif
+
+                                            {{-- Catat Aktivitas Button --}}
+                                            @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
+                                                <div class="mt-2">
+                                                    <a href="{{ route('pks-field-activities.create', ['assignment_id' => $assignment->id]) }}" class="btn btn-sm btn-outline-success w-100">
+                                                        <i class="bi bi-binoculars me-1"></i>Catat Aktivitas
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach

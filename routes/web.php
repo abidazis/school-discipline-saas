@@ -9,6 +9,7 @@ use App\Http\Controllers\PksDutyAssignmentController;
 use App\Http\Controllers\PksDutyAttendanceController;
 use App\Http\Controllers\PksDutyLocationController;
 use App\Http\Controllers\PksDutyScheduleController;
+use App\Http\Controllers\PksFieldActivityController;
 use App\Http\Controllers\PksMemberController;
 use App\Http\Controllers\PksShiftController;
 use App\Http\Controllers\SchoolClassController;
@@ -191,6 +192,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'edit' => 'pks-duty-attendances.edit',
         'update' => 'pks-duty-attendances.update',
     ]);
+
+    // PKS Field Activity routes
+    Route::resource('pks-field-activities', PksFieldActivityController::class)->names([
+        'index' => 'pks-field-activities.index',
+        'create' => 'pks-field-activities.create',
+        'store' => 'pks-field-activities.store',
+        'show' => 'pks-field-activities.show',
+        'edit' => 'pks-field-activities.edit',
+        'update' => 'pks-field-activities.update',
+    ]);
+
+    // Cancel field activity route
+    Route::post('pks-field-activities/{pksFieldActivity}/cancel', [PksFieldActivityController::class, 'cancel'])
+        ->name('pks-field-activities.cancel');
 });
 
 // Profile routes

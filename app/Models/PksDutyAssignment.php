@@ -6,6 +6,8 @@ use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PksDutyAssignment extends Model
 {
@@ -133,5 +135,21 @@ class PksDutyAssignment extends Model
     public function attendance()
     {
         return $this->hasOne(PksDutyAttendance::class, 'pks_duty_assignment_id');
+    }
+
+    /**
+     * Get the field activities for this assignment.
+     */
+    public function fieldActivities(): HasMany
+    {
+        return $this->hasMany(PksFieldActivity::class, 'pks_duty_assignment_id');
+    }
+
+    /**
+     * Get the count of completed field activities.
+     */
+    public function getCompletedActivitiesCountAttribute(): int
+    {
+        return $this->fieldActivities()->where('status', PksFieldActivity::STATUS_COMPLETED)->count();
     }
 }

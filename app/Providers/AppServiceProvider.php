@@ -6,6 +6,7 @@ use App\Models\PksDutyAssignment;
 use App\Models\PksDutyAttendance;
 use App\Models\PksDutyLocation;
 use App\Models\PksDutySchedule;
+use App\Models\PksFieldActivity;
 use App\Models\PksShift;
 use App\Models\Violation;
 use App\Models\ViolationEvidence;
@@ -14,6 +15,7 @@ use App\Policies\PksDutyAssignmentPolicy;
 use App\Policies\PksDutyAttendancePolicy;
 use App\Policies\PksDutyLocationPolicy;
 use App\Policies\PksDutySchedulePolicy;
+use App\Policies\PksFieldActivityPolicy;
 use App\Policies\PksMemberPolicy;
 use App\Policies\PksShiftPolicy;
 use App\Policies\ViolationEvidencePolicy;
@@ -47,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(PksDutySchedule::class, PksDutySchedulePolicy::class);
         Gate::policy(PksDutyAssignment::class, PksDutyAssignmentPolicy::class);
         Gate::policy(PksDutyAttendance::class, PksDutyAttendancePolicy::class);
+        Gate::policy(PksFieldActivity::class, PksFieldActivityPolicy::class);
     }
 }

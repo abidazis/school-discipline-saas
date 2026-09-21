@@ -126,6 +126,12 @@
                             Kehadiran Piket
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pks-field-activities.index') }}" class="nav-link {{ request()->routeIs('pks-field-activities.*') ? 'active' : '' }}">
+                            <i class="bi bi-binoculars me-2"></i>
+                            Aktivitas Lapangan
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="sidebar-section-title">Settings</div>
