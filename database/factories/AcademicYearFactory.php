@@ -17,7 +17,9 @@ class AcademicYearFactory extends Factory
      */
     public function definition(): array
     {
-        $year = fake()->unique()->numberBetween(2020, 2030);
+        // Use a year range that won't conflict with existing data
+        static $counter = 0;
+        $year = 2020 + ($counter++ % 5);
 
         return [
             'school_id' => School::factory(),

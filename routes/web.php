@@ -11,6 +11,7 @@ use App\Http\Controllers\PksDutyLocationController;
 use App\Http\Controllers\PksDutyScheduleController;
 use App\Http\Controllers\PksFieldActivityController;
 use App\Http\Controllers\PksMemberController;
+use App\Http\Controllers\PksReportController;
 use App\Http\Controllers\PksShiftController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
@@ -206,6 +207,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Cancel field activity route
     Route::post('pks-field-activities/{pksFieldActivity}/cancel', [PksFieldActivityController::class, 'cancel'])
         ->name('pks-field-activities.cancel');
+
+    // PKS Report routes
+    Route::prefix('reports')->group(function () {
+        Route::get('/daily', [PksReportController::class, 'daily'])->name('reports.daily');
+        Route::get('/daily/pdf', [PksReportController::class, 'dailyPdf'])->name('reports.daily.pdf');
+        Route::get('/monthly', [PksReportController::class, 'monthly'])->name('reports.monthly');
+        Route::get('/monthly/excel', [PksReportController::class, 'monthlyExcel'])->name('reports.monthly.excel');
+    });
 });
 
 // Profile routes

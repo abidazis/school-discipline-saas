@@ -134,6 +134,22 @@
                     </li>
                 </ul>
 
+                <div class="sidebar-section-title">Laporan</div>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a href="{{ route('reports.daily') }}" class="nav-link {{ request()->routeIs('reports.daily*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-day me-2"></i>
+                            Laporan Harian
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reports.monthly') }}" class="nav-link {{ request()->routeIs('reports.monthly*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-month me-2"></i>
+                            Laporan Bulanan
+                        </a>
+                    </li>
+                </ul>
+
                 <div class="sidebar-section-title">Settings</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">

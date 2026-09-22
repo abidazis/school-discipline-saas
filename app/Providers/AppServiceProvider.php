@@ -21,6 +21,7 @@ use App\Policies\PksShiftPolicy;
 use App\Policies\ViolationEvidencePolicy;
 use App\Policies\ViolationPolicy;
 use App\Policies\ViolationTypePolicy;
+use App\Policies\PksReportPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -50,5 +51,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(PksDutyAssignment::class, PksDutyAssignmentPolicy::class);
         Gate::policy(PksDutyAttendance::class, PksDutyAttendancePolicy::class);
         Gate::policy(PksFieldActivity::class, PksFieldActivityPolicy::class);
+
+        // Register report authorization gates
+        Gate::define('viewDailyPksReport', [PksReportPolicy::class, 'viewDaily']);
+        Gate::define('exportDailyPdf', [PksReportPolicy::class, 'exportDailyPdf']);
+        Gate::define('viewMonthlyPksReport', [PksReportPolicy::class, 'viewMonthly']);
+        Gate::define('exportMonthlyExcel', [PksReportPolicy::class, 'exportMonthlyExcel']);
+        Gate::define('accessSchoolForReport', [PksReportPolicy::class, 'accessSchool']);
     }
 }
