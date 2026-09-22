@@ -1,11 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Aktivitas Lapangan</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h4 mb-1">Aktivitas Lapangan</h1>
-            <p class="text-muted small mb-0">Kelola aktivitas lapangan petugas PKS</p>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-map"></i>
+            </div>
+            Aktivitas Lapangan
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
             <a href="{{ route('pks-field-activities.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Catat Aktivitas
@@ -13,7 +16,11 @@
         @endif
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Description -->
+    <p class="text-muted mb-4">Kelola aktivitas lapangan petugas PKS</p>
+
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('pks-field-activities.index') }}" class="row g-3">
                 <div class="col-12 col-md-3">
@@ -49,9 +56,9 @@
                         <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-3 d-flex align-items-end gap-2">
+                <div class="col-6 col-md-3 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-search"></i>
+                        <i class="bi bi-filter me-1"></i>Filter
                     </button>
                     <a href="{{ route('pks-field-activities.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-counterclockwise"></i>
@@ -61,69 +68,80 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
+    <!-- List Card -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Petugas</th>
+                        <th>Lokasi</th>
+                        <th>Jenis</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($activities as $activity)
                         <tr>
-                            <th class="border-0 py-3 px-3">Tanggal</th>
-                            <th class="border-0 py-3">Petugas</th>
-                            <th class="border-0 py-3">Lokasi</th>
-                            <th class="border-0 py-3">Jenis</th>
-                            <th class="border-0 py-3">Waktu</th>
-                            <th class="border-0 py-3">Status</th>
-                            <th class="border-0 py-3 px-3 text-end">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($activities as $activity)
-                            <tr>
-                                <td class="px-3">{{ $activity->activity_date->format('d/m/Y') }}</td>
-                                <td>
-                                    <div class="fw-medium">{{ $activity->assignment?->member?->student?->full_name ?? '-' }}</div>
-                                    <div class="small text-muted">{{ $activity->assignment?->member?->student?->nis ?? '-' }}</div>
-                                </td>
-                                <td>{{ $activity->assignment?->location?->name ?? '-' }}</td>
-                                <td>
-                                    <span class="badge bg-info">{{ $activity->activity_type_label }}</span>
-                                </td>
-                                <td>
-                                    <div>{{ $activity->started_at }}</div>
-                                    @if($activity->ended_at)
-                                        <div class="small text-muted">- {{ $activity->ended_at }}</div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge {{ $activity->status_badge_class }}">
-                                        {{ $activity->status_display }}
-                                    </span>
-                                </td>
-                                <td class="px-3 text-end">
-                                    <a href="{{ route('pks-field-activities.show', $activity) }}" class="btn btn-sm btn-outline-primary">
+                            <td class="text-nowrap">{{ $activity->activity_date->format('d/m/Y') }}</td>
+                            <td>
+                                <div class="fw-medium">{{ $activity->assignment?->member?->student?->full_name ?? '-' }}</div>
+                                <div class="small text-muted">{{ $activity->assignment?->member?->student?->nis ?? '-' }}</div>
+                            </td>
+                            <td>{{ $activity->assignment?->location?->name ?? '-' }}</td>
+                            <td>
+                                <span class="badge bg-info">{{ $activity->activity_type_label }}</span>
+                            </td>
+                            <td>
+                                <div>{{ $activity->started_at }}</div>
+                                @if($activity->ended_at)
+                                    <div class="small text-muted">- {{ $activity->ended_at }}</div>
+                                @endif
+                            </td>
+                            <td>
+                                <span class="badge {{ $activity->status_badge_class }}">
+                                    {{ $activity->status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('pks-field-activities.show', $activity) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
-                                        <a href="{{ route('pks-field-activities.edit', $activity) }}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{{ route('pks-field-activities.edit', $activity) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                     @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
-                                    <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
-                                    Belum ada data aktivitas lapangan
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-map"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada data aktivitas lapangan</div>
+                                    <div class="empty-state-text">Catat aktivitas lapangan untuk mendokumentasikan temuan PKS.</div>
+                                    @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
+                                        <a href="{{ route('pks-field-activities.create') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-lg me-1"></i>Catat Aktivitas
+                                        </a>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
         @if($activities->hasPages())
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 {{ $activities->withQueryString()->links() }}
             </div>
         @endif

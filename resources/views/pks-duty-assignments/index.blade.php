@@ -1,11 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Penugasan Piket</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h4 mb-1">Penugasan Piket</h1>
-            <p class="text-muted small mb-0">Kelola penugasan anggota PKS pada jadwal piket</p>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            Penugasan Piket
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
             <a href="{{ route('pks-duty-assignments.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Tambah Penugasan
@@ -13,7 +16,11 @@
         @endif
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Description -->
+    <p class="text-muted mb-4">Kelola penugasan anggota PKS pada jadwal piket</p>
+
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('pks-duty-assignments.index') }}" class="row g-3">
                 <div class="col-12 col-md-3">
@@ -53,7 +60,7 @@
                 </div>
                 <div class="col-6 col-md-3 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-search"></i>
+                        <i class="bi bi-filter me-1"></i>Filter
                     </button>
                     <a href="{{ route('pks-duty-assignments.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-counterclockwise"></i>
@@ -63,69 +70,73 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
+    <!-- List Card -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Shift</th>
+                        <th>Lokasi</th>
+                        <th>NIS</th>
+                        <th>Nama PKS</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($assignments as $assignment)
                         <tr>
-                            <th class="border-0 py-3 px-3">Tanggal</th>
-                            <th class="border-0 py-3">Shift</th>
-                            <th class="border-0 py-3">Lokasi</th>
-                            <th class="border-0 py-3">NIS</th>
-                            <th class="border-0 py-3">Nama PKS</th>
-                            <th class="border-0 py-3">Position</th>
-                            <th class="border-0 py-3">Status</th>
-                            <th class="border-0 py-3 px-3 text-end">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($assignments as $assignment)
-                            <tr>
-                                <td class="px-3">{{ $assignment->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
-                                <td>
-                                    <span class="badge bg-secondary">{{ $assignment->schedule?->shift?->name ?? '-' }}</span>
-                                </td>
-                                <td>{{ $assignment->location?->name ?? '-' }}</td>
-                                <td>{{ $assignment->member?->student?->nis ?? '-' }}</td>
-                                <td>
-                                    <div class="fw-medium">{{ $assignment->member?->student?->name ?? '-' }}</div>
-                                </td>
-                                <td>{{ $assignment->member?->position ?? '-' }}</td>
-                                <td>
-                                    @if($assignment->status === 'assigned')
-                                        <span class="badge bg-success">{{ $assignment->statusDisplay }}</span>
-                                    @elseif($assignment->status === 'replaced')
-                                        <span class="badge bg-warning text-dark">{{ $assignment->statusDisplay }}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $assignment->statusDisplay }}</span>
-                                    @endif
-                                </td>
-                                <td class="px-3 text-end">
-                                    <a href="{{ route('pks-duty-assignments.show', $assignment) }}" class="btn btn-sm btn-outline-primary">
+                            <td class="text-nowrap">{{ $assignment->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ $assignment->schedule?->shift?->name ?? '-' }}</span>
+                            </td>
+                            <td>{{ $assignment->location?->name ?? '-' }}</td>
+                            <td>{{ $assignment->member?->student?->nis ?? '-' }}</td>
+                            <td class="fw-medium">{{ $assignment->member?->student?->name ?? '-' }}</td>
+                            <td>{{ $assignment->member?->position ?? '-' }}</td>
+                            <td>
+                                @if($assignment->status === 'assigned')
+                                    <span class="badge bg-success">{{ $assignment->statusDisplay }}</span>
+                                @elseif($assignment->status === 'replaced')
+                                    <span class="badge bg-warning">{{ $assignment->statusDisplay }}</span>
+                                @else
+                                    <span class="badge bg-secondary">{{ $assignment->statusDisplay }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('pks-duty-assignments.show', $assignment) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                        <a href="{{ route('pks-duty-assignments.edit', $assignment) }}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{{ route('pks-duty-assignments.edit', $assignment) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                     @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">
-                                    <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
-                                    Belum ada penugasan piket
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-clipboard-x"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada penugasan piket</div>
+                                    <div class="empty-state-text">Tambahkan penugasan untuk menugaskan anggota PKS.</div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
         @if($assignments->hasPages())
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 {{ $assignments->withQueryString()->links() }}
             </div>
         @endif

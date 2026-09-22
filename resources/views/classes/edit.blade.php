@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="title">Edit Kelas</x-slot>
 
+    <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('classes.index') }}">Kelas</a></li>
@@ -9,11 +10,24 @@
         </ol>
     </nav>
 
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-chalkboard"></i>
+            </div>
+            Edit Kelas
+        </h1>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0"><i class="bi bi-collection me-2"></i>Edit Kelas</h5>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="bi bi-chalkboard text-primary"></i>
+                        Form Edit Kelas
+                    </div>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('classes.update', $schoolClass) }}">

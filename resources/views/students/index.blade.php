@@ -1,22 +1,28 @@
 <x-app-layout>
     <x-slot name="title">Daftar Siswa</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h4 mb-0"><i class="bi bi-mortarboard me-2"></i>Daftar Siswa</h1>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            Daftar Siswa
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
             <a href="{{ route('students.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i>Tambah Siswa
+                <i class="bi bi-person-plus me-1"></i>Tambah Siswa
             </a>
         @endif
     </div>
 
-    <!-- Filters -->
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('students.index') }}" class="row g-3">
                 <div class="col-12 col-md-4">
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" name="search"
                                placeholder="Cari NIS, NISN, nama..." value="{{ request('search') }}">
                     </div>
@@ -42,18 +48,22 @@
                     </select>
                 </div>
                 <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-outline-primary me-2">Filter</button>
-                    <a href="{{ route('students.index') }}" class="btn btn-outline-secondary">Reset</a>
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-filter me-1"></i>Filter
+                    </button>
+                    <a href="{{ route('students.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- List -->
-    <div class="card border-0 shadow-sm">
+    <!-- List Card -->
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table">
+                <thead>
                     <tr>
                         <th class="text-nowrap">NIS</th>
                         <th>Nama</th>
@@ -68,14 +78,20 @@
                         <tr>
                             <td class="text-nowrap">{{ $student->nis }}</td>
                             <td>
-                                <a href="{{ route('students.show', $student) }}" class="text-decoration-none">
+                                <a href="{{ route('students.show', $student) }}" class="text-decoration-none fw-medium">
                                     {{ $student->full_name }}
                                 </a>
                                 @if($student->nisn)
                                     <br><small class="text-muted">NISN: {{ $student->nisn }}</small>
                                 @endif
                             </td>
-                            <td>{{ $student->gender === 'male' ? 'L' : 'P' }}</td>
+                            <td>
+                                @if($student->gender === 'male')
+                                    <span class="badge bg-info">L</span>
+                                @else
+                                    <span class="badge bg-warning">P</span>
+                                @endif
+                            </td>
                             <td>
                                 @if($student->schoolClass)
                                     {{ $student->schoolClass->full_name }}
@@ -95,12 +111,12 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('students.show', $student) }}" class="btn btn-outline-primary">
+                                <div class="table-actions">
+                                    <a href="{{ route('students.show', $student) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
-                                        <a href="{{ route('students.edit', $student) }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('students.edit', $student) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                     @endif
@@ -109,12 +125,19 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
-                                <i class="bi bi-mortarboard fs-1 d-block mb-2"></i>
-                                Belum ada siswa.
-                                @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
-                                    <a href="{{ route('students.create') }}" class="text-decoration-none">Tambah Siswa</a>
-                                @endif
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-person-badge"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada siswa</div>
+                                    <div class="empty-state-text">Tambahkan data siswa untuk mulai menggunakan modul ini.</div>
+                                    @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
+                                        <a href="{{ route('students.create') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-person-plus me-1"></i>Tambah Siswa
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -122,7 +145,7 @@
             </table>
         </div>
         @if($students->hasPages())
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 {{ $students->links() }}
             </div>
         @endif

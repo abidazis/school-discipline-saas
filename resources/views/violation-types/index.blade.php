@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Jenis Pelanggaran</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h4 mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Jenis Pelanggaran</h1>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon" style="background: var(--color-danger-light); color: var(--color-danger);">
+                <i class="bi bi-clipboard-check"></i>
+            </div>
+            Jenis Pelanggaran
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
             <a href="{{ route('violation-types.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Tambah Jenis
@@ -10,15 +16,14 @@
         @endif
     </div>
 
-    <!-- Filters -->
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('violation-types.index') }}" class="row g-3">
                 <div class="col-12 col-md-4">
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search"
-                               placeholder="Kode atau nama..." value="{{ request('search') }}">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" name="search" placeholder="Kode atau nama..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
@@ -41,19 +46,23 @@
                         <option value="critical" {{ request('severity') === 'critical' ? 'selected' : '' }}>Sangat Berat</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-2">
-                    <button type="submit" class="btn btn-outline-primary me-2">Filter</button>
-                    <a href="{{ route('violation-types.index') }}" class="btn btn-outline-secondary">Reset</a>
+                <div class="col-12 col-md-4">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-filter me-1"></i>Filter
+                    </button>
+                    <a href="{{ route('violation-types.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- List -->
-    <div class="card border-0 shadow-sm">
+    <!-- List Card -->
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table">
+                <thead>
                     <tr>
                         <th>Kode</th>
                         <th>Nama</th>
@@ -72,7 +81,17 @@
                             </td>
                             <td>{{ $type->name }}</td>
                             <td><span class="badge bg-secondary">{{ $type->category }}</span></td>
-                            <td><span class="badge bg-{{ $type->severity === 'low' ? 'success' : ($type->severity === 'medium' ? 'warning' : ($type->severity === 'high' ? 'danger' : 'dark')) }}">{{ ucfirst($type->severity) }}</span></td>
+                            <td>
+                                @if($type->severity === 'low')
+                                    <span class="badge bg-success">Ringan</span>
+                                @elseif($type->severity === 'medium')
+                                    <span class="badge bg-warning">Sedang</span>
+                                @elseif($type->severity === 'high')
+                                    <span class="badge bg-danger">Berat</span>
+                                @else
+                                    <span class="badge bg-dark">Sangat Berat</span>
+                                @endif
+                            </td>
                             <td><span class="badge bg-primary">{{ $type->points }} pt</span></td>
                             <td>
                                 @if($type->is_active)
@@ -82,22 +101,33 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('violation-types.show', $type) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                                <div class="table-actions">
+                                    <a href="{{ route('violation-types.show', $type) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                        <a href="{{ route('violation-types.edit', $type) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                                        <a href="{{ route('violation-types.edit', $type) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
                                     @endif
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">
-                                <i class="bi bi-exclamation-triangle fs-1 d-block mb-2"></i>
-                                Belum ada jenis pelanggaran.
-                                @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                    <a href="{{ route('violation-types.create') }}" class="text-decoration-none">Tambah Jenis</a>
-                                @endif
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-clipboard-check"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada jenis pelanggaran</div>
+                                    <div class="empty-state-text">Tambahkan jenis pelanggaran untuk mulai mencatat.</div>
+                                    @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
+                                        <a href="{{ route('violation-types.create') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-lg me-1"></i>Tambah Jenis
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -105,7 +135,9 @@
             </table>
         </div>
         @if($violationTypes->hasPages())
-            <div class="card-footer bg-white">{{ $violationTypes->links() }}</div>
+            <div class="card-footer">
+                {{ $violationTypes->links() }}
+            </div>
         @endif
     </div>
 </x-app-layout>

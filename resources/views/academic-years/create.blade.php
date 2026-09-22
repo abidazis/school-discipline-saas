@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="title">Tambah Tahun Ajaran</x-slot>
 
+    <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('academic-years.index') }}">Tahun Ajaran</a></li>
@@ -8,11 +9,24 @@
         </ol>
     </nav>
 
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-calendar-range"></i>
+            </div>
+            Tambah Tahun Ajaran
+        </h1>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0"><i class="bi bi-calendar3 me-2"></i>Tambah Tahun Ajaran</h5>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="bi bi-calendar-range text-primary"></i>
+                        Form Tahun Ajaran
+                    </div>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('academic-years.store') }}">
@@ -26,7 +40,7 @@
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Format: TAHUN/TAHUN+1 (contoh: 2026/2027)</small>
+                            <small class="form-text">Format: TAHUN/TAHUN+1 (contoh: 2026/2027)</small>
                         </div>
 
                         <div class="row">
@@ -58,7 +72,7 @@
                                     Jadikan tahun ajaran aktif
                                 </label>
                             </div>
-                            <small class="text-muted">Hanya satu tahun ajaran yang dapat aktif pada satu waktu.</small>
+                            <small class="form-text text-muted">Hanya satu tahun ajaran yang dapat aktif pada satu waktu.</small>
                         </div>
 
                         <div class="d-flex gap-2">

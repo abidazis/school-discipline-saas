@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Shift Piket</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h4 mb-0"><i class="bi bi-clock me-2"></i>Shift Piket</h1>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon" style="background: var(--color-info-light); color: var(--color-info);">
+                <i class="bi bi-clock"></i>
+            </div>
+            Shift Piket
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
             <a href="{{ route('pks-shifts.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Tambah Shift
@@ -10,18 +16,17 @@
         @endif
     </div>
 
-    <!-- Filters -->
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" class="row g-3">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-5">
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search"
-                               placeholder="Nama shift..." value="{{ request('search') }}">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" name="search" placeholder="Nama shift..." value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-12 col-md-2">
+                <div class="col-12 col-md-4">
                     <select class="form-select" name="status">
                         <option value="">Semua Status</option>
                         <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
@@ -29,18 +34,22 @@
                     </select>
                 </div>
                 <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-outline-primary me-2">Filter</button>
-                    <a href="{{ route('pks-shifts.index') }}" class="btn btn-outline-secondary">Reset</a>
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-filter me-1"></i>Filter
+                    </button>
+                    <a href="{{ route('pks-shifts.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- List -->
-    <div class="card border-0 shadow-sm">
+    <!-- List Card -->
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table">
+                <thead>
                     <tr>
                         <th>Nama Shift</th>
                         <th>Jam Mulai</th>
@@ -58,8 +67,8 @@
                                     {{ $shift->name }}
                                 </a>
                             </td>
-                            <td>{{ $shift->start_time->format('H:i') }}</td>
-                            <td>{{ $shift->end_time->format('H:i') }}</td>
+                            <td class="text-nowrap">{{ $shift->start_time->format('H:i') }}</td>
+                            <td class="text-nowrap">{{ $shift->end_time->format('H:i') }}</td>
                             <td>
                                 @if($shift->status === 'active')
                                     <span class="badge bg-success">Aktif</span>
@@ -69,22 +78,33 @@
                             </td>
                             <td><span class="badge bg-secondary">{{ $shift->duty_schedules_count }}</span></td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('pks-shifts.show', $shift) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                                <div class="table-actions">
+                                    <a href="{{ route('pks-shifts.show', $shift) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                        <a href="{{ route('pks-shifts.edit', $shift) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                                        <a href="{{ route('pks-shifts.edit', $shift) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
                                     @endif
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
-                                <i class="bi bi-clock fs-1 d-block mb-2"></i>
-                                Belum ada shift piket.
-                                @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                    <a href="{{ route('pks-shifts.create') }}" class="text-decoration-none">Tambah Shift</a>
-                                @endif
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada shift piket</div>
+                                    <div class="empty-state-text">Tambahkan shift piket untuk mengatur jadwal PKS.</div>
+                                    @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
+                                        <a href="{{ route('pks-shifts.create') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-lg me-1"></i>Tambah Shift
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -92,7 +112,9 @@
             </table>
         </div>
         @if($shifts->hasPages())
-            <div class="card-footer bg-white">{{ $shifts->links() }}</div>
+            <div class="card-footer">
+                {{ $shifts->links() }}
+            </div>
         @endif
     </div>
 </x-app-layout>

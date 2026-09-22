@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Jadwal Piket</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h4 mb-0"><i class="bi bi-calendar-check me-2"></i>Jadwal Piket</h1>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-calendar-week"></i>
+            </div>
+            Jadwal Piket
+        </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
             <a href="{{ route('pks-duty-schedules.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Tambah Jadwal
@@ -10,15 +16,14 @@
         @endif
     </div>
 
-    <!-- Filters -->
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" class="row g-3">
                 <div class="col-12 col-md-3">
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search"
-                               placeholder="Cari lokasi..." value="{{ request('search') }}">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" name="search" placeholder="Cari lokasi..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
@@ -39,19 +44,23 @@
                         <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-2">
-                    <button type="submit" class="btn btn-outline-primary me-2">Filter</button>
-                    <a href="{{ route('pks-duty-schedules.index') }}" class="btn btn-outline-secondary">Reset</a>
+                <div class="col-12 col-md-3">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-filter me-1"></i>Filter
+                    </button>
+                    <a href="{{ route('pks-duty-schedules.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- List -->
-    <div class="card border-0 shadow-sm">
+    <!-- List Card -->
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table">
+                <thead>
                     <tr>
                         <th>Tanggal</th>
                         <th>Shift</th>
@@ -64,7 +73,7 @@
                 <tbody>
                     @forelse($schedules as $schedule)
                         <tr>
-                            <td class="small text-nowrap">
+                            <td class="text-nowrap">
                                 <a href="{{ route('pks-duty-schedules.show', $schedule) }}" class="text-decoration-none fw-medium">
                                     {{ $schedule->schedule_date->format('d/m/Y') }}
                                 </a>
@@ -82,22 +91,33 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('pks-duty-schedules.show', $schedule) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                                <div class="table-actions">
+                                    <a href="{{ route('pks-duty-schedules.show', $schedule) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                        <a href="{{ route('pks-duty-schedules.edit', $schedule) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                                        <a href="{{ route('pks-duty-schedules.edit', $schedule) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
                                     @endif
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
-                                <i class="bi bi-calendar-x fs-1 d-block mb-2"></i>
-                                Belum ada jadwal piket.
-                                @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
-                                    <a href="{{ route('pks-duty-schedules.create') }}" class="text-decoration-none">Tambah Jadwal</a>
-                                @endif
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-calendar-x"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada jadwal piket</div>
+                                    <div class="empty-state-text">Tambahkan jadwal piket untuk mengatur tugas PKS.</div>
+                                    @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
+                                        <a href="{{ route('pks-duty-schedules.create') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-lg me-1"></i>Tambah Jadwal
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -105,7 +125,9 @@
             </table>
         </div>
         @if($schedules->hasPages())
-            <div class="card-footer bg-white">{{ $schedules->links() }}</div>
+            <div class="card-footer">
+                {{ $schedules->links() }}
+            </div>
         @endif
     </div>
 </x-app-layout>

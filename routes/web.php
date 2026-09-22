@@ -90,6 +90,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'edit' => 'classes.edit',
         'update' => 'classes.update',
         'destroy' => 'classes.destroy',
+    ])->parameters([
+        'classes' => 'schoolClass',
     ]);
 
     Route::resource('students', StudentController::class)->names([

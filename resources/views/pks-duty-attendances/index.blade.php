@@ -1,14 +1,21 @@
 <x-app-layout>
     <x-slot name="title">Kehadiran Piket</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h4 mb-1">Kehadiran Piket</h1>
-            <p class="text-muted small mb-0">Kelola kehadiran petugas PKS pada jadwal piket</p>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon" style="background: var(--color-success-light); color: var(--color-success);">
+                <i class="bi bi-person-check"></i>
+            </div>
+            Kehadiran Piket
+        </h1>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Description -->
+    <p class="text-muted mb-4">Kelola kehadiran petugas PKS pada jadwal piket</p>
+
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('pks-duty-attendances.index') }}" class="row g-3">
                 <div class="col-12 col-md-3">
@@ -36,9 +43,9 @@
                         <option value="excused" {{ request('status') == 'excused' ? 'selected' : '' }}>Izin</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-5 d-flex align-items-end gap-2">
+                <div class="col-12 col-md-3 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-search"></i>
+                        <i class="bi bi-filter me-1"></i>Filter
                     </button>
                     <a href="{{ route('pks-duty-attendances.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-counterclockwise"></i>
@@ -48,67 +55,71 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
+    <!-- List Card -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Shift</th>
+                        <th>Lokasi</th>
+                        <th>NIS</th>
+                        <th>Nama PKS</th>
+                        <th>Status</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($attendances as $attendance)
                         <tr>
-                            <th class="border-0 py-3 px-3">Tanggal</th>
-                            <th class="border-0 py-3">Shift</th>
-                            <th class="border-0 py-3">Lokasi</th>
-                            <th class="border-0 py-3">NIS</th>
-                            <th class="border-0 py-3">Nama PKS</th>
-                            <th class="border-0 py-3">Status</th>
-                            <th class="border-0 py-3">Check In</th>
-                            <th class="border-0 py-3">Check Out</th>
-                            <th class="border-0 py-3 px-3 text-end">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($attendances as $attendance)
-                            <tr>
-                                <td class="px-3">{{ $attendance->assignment?->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
-                                <td>
-                                    <span class="badge bg-secondary">{{ $attendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
-                                </td>
-                                <td>{{ $attendance->assignment?->location?->name ?? '-' }}</td>
-                                <td>{{ $attendance->assignment?->member?->student?->nis ?? '-' }}</td>
-                                <td>
-                                    <div class="fw-medium">{{ $attendance->assignment?->member?->student?->full_name ?? '-' }}</div>
-                                </td>
-                                <td>
-                                    <span class="badge {{ $attendance->status_badge_class }}">
-                                        {{ $attendance->status_display }}
-                                    </span>
-                                </td>
-                                <td>{{ $attendance->check_in_at?->format('H:i') ?? '-' }}</td>
-                                <td>{{ $attendance->check_out_at?->format('H:i') ?? '-' }}</td>
-                                <td class="px-3 text-end">
-                                    <a href="{{ route('pks-duty-attendances.show', $attendance) }}" class="btn btn-sm btn-outline-primary">
+                            <td class="text-nowrap">{{ $attendance->assignment?->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ $attendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
+                            </td>
+                            <td>{{ $attendance->assignment?->location?->name ?? '-' }}</td>
+                            <td>{{ $attendance->assignment?->member?->student?->nis ?? '-' }}</td>
+                            <td class="fw-medium">{{ $attendance->assignment?->member?->student?->full_name ?? '-' }}</td>
+                            <td>
+                                <span class="badge {{ $attendance->status_badge_class }}">
+                                    {{ $attendance->status_display }}
+                                </span>
+                            </td>
+                            <td>{{ $attendance->check_in_at?->format('H:i') ?? '-' }}</td>
+                            <td>{{ $attendance->check_out_at?->format('H:i') ?? '-' }}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('pks-duty-attendances.show', $attendance) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator())
-                                        <a href="{{ route('pks-duty-attendances.edit', $attendance) }}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{{ route('pks-duty-attendances.edit', $attendance) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                     @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="9" class="text-center py-4 text-muted">
-                                    <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
-                                    Belum ada data kehadiran
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="bi bi-clipboard-x"></i>
+                                    </div>
+                                    <div class="empty-state-title">Belum ada data kehadiran</div>
+                                    <div class="empty-state-text">Data kehadiran akan muncul setelah ada penugasan piket.</div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
         @if($attendances->hasPages())
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 {{ $attendances->withQueryString()->links() }}
             </div>
         @endif

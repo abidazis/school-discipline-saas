@@ -1,19 +1,26 @@
 <x-app-layout>
     <x-slot name="title">Laporan Bulanan PKS</x-slot>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h4 mb-1">Laporan Bulanan PKS</h1>
-            <p class="text-muted small mb-0">Ringkasan aktivitas bulanan petugas PKS</p>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <div class="page-title-icon" style="background: var(--color-info-light); color: var(--color-info);">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+            Laporan Bulanan PKS
+        </h1>
         <div class="d-flex gap-2">
             <a href="{{ route('reports.monthly.excel', request()->query()) }}" class="btn btn-outline-success">
-                <i class="bi bi-file-excel me-1"></i>Download Excel
+                <i class="bi bi-file-earmark-excel me-1"></i>Download Excel
             </a>
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <!-- Description -->
+    <p class="text-muted mb-4">Ringkasan aktivitas bulanan petugas PKS</p>
+
+    <!-- Filters Card -->
+    <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('reports.monthly') }}" class="row g-3">
                 <div class="col-6 col-md-3">
@@ -75,50 +82,68 @@
     {{-- Summary Cards --}}
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-primary">{{ $report['summary']['total_schedules'] }}</div>
-                    <div class="small text-muted">Total Jadwal</div>
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="bi bi-calendar-week"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['total_schedules'] }}</div>
+                    <div class="stat-label">Total Jadwal</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-primary">{{ $report['summary']['total_assignments'] }}</div>
-                    <div class="small text-muted">Total Penugasan</div>
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="bi bi-clipboard-check"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['total_assignments'] }}</div>
+                    <div class="stat-label">Total Penugasan</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-success">{{ $report['summary']['present_count'] }}</div>
-                    <div class="small text-muted">Hadir</div>
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['present_count'] }}</div>
+                    <div class="stat-label">Hadir</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-warning">{{ $report['summary']['late_count'] }}</div>
-                    <div class="small text-muted">Terlambat</div>
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="bi bi-alarm"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['late_count'] }}</div>
+                    <div class="stat-label">Terlambat</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-danger">{{ $report['summary']['absent_count'] }}</div>
-                    <div class="small text-muted">Tidak Hadir</div>
+            <div class="stat-card">
+                <div class="stat-icon danger">
+                    <i class="bi bi-x-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['absent_count'] }}</div>
+                    <div class="stat-label">Tidak Hadir</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-info">{{ $report['summary']['excused_count'] }}</div>
-                    <div class="small text-muted">Izin</div>
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['excused_count'] }}</div>
+                    <div class="stat-label">Izin</div>
                 </div>
             </div>
         </div>
@@ -126,26 +151,35 @@
 
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-success">{{ $report['summary']['total_activities'] }}</div>
-                    <div class="small text-muted">Total Aktivitas</div>
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="bi bi-list-check"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['total_activities'] }}</div>
+                    <div class="stat-label">Total Aktivitas</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-danger">{{ $report['summary']['total_violations'] }}</div>
-                    <div class="small text-muted">Total Pelanggaran</div>
+            <div class="stat-card">
+                <div class="stat-icon danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['total_violations'] }}</div>
+                    <div class="stat-label">Total Pelanggaran</div>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="h3 mb-1 text-secondary">{{ $report['summary']['total_points'] }}</div>
-                    <div class="small text-muted">Total Poin Pelanggaran</div>
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="bi bi-star"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ $report['summary']['total_points'] }}</div>
+                    <div class="stat-label">Total Poin Pelanggaran</div>
                 </div>
             </div>
         </div>
@@ -158,65 +192,62 @@
         </div>
     @else
         {{-- Daily Breakdown --}}
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-bottom">
-                <h5 class="mb-0">Rincian Harian</h5>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th class="border-0 py-3 px-3">Tanggal</th>
-                                <th class="border-0 py-3 text-center">Jadwal</th>
-                                <th class="border-0 py-3 text-center">Petugas</th>
-                                <th class="border-0 py-3 text-center">Hadir</th>
-                                <th class="border-0 py-3 text-center">Terlambat</th>
-                                <th class="border-0 py-3 text-center">Tidak Hadir</th>
-                                <th class="border-0 py-3 text-center">Izin</th>
-                                <th class="border-0 py-3 text-center">Aktivitas</th>
-                                <th class="border-0 py-3 text-center">Pelanggaran</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($report['schedules']->sortBy('schedule_date') as $schedule)
-                                @php
-                                    $scheduleAssignments = $schedule->assignments;
-                                    $scheduleAttendances = $scheduleAssignments->pluck('attendance')->filter();
-                                @endphp
-                                <tr>
-                                    <td class="px-3 py-2">
-                                        {{ $schedule->schedule_date->format('d/m/Y') }}
-                                    </td>
-                                    <td class="text-center py-2">
-                                        <span class="badge bg-primary">{{ $schedule->shift?->name ?? '-' }}</span>
-                                    </td>
-                                    <td class="text-center py-2">
-                                        {{ $scheduleAssignments->count() }}
-                                    </td>
-                                    <td class="text-center py-2">
-                                        <span class="text-success">{{ $scheduleAttendances->where('status', 'present')->count() }}</span>
-                                    </td>
-                                    <td class="text-center py-2">
-                                        <span class="text-warning">{{ $scheduleAttendances->where('status', 'late')->count() }}</span>
-                                    </td>
-                                    <td class="text-center py-2">
-                                        <span class="text-danger">{{ $scheduleAttendances->where('status', 'absent')->count() }}</span>
-                                    </td>
-                                    <td class="text-center py-2">
-                                        <span class="text-info">{{ $scheduleAttendances->where('status', 'excused')->count() }}</span>
-                                    </td>
-                                    <td class="text-center py-2">
-                                        {{ $scheduleAssignments->pluck('fieldActivities')->flatten()->where('status', 'completed')->count() }}
-                                    </td>
-                                    <td class="text-center py-2">
-                                        -
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="bi bi-calendar-week text-primary"></i>
+                    Rincian Harian
                 </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="py-3 px-3">Tanggal</th>
+                            <th class="py-3 text-center">Jadwal</th>
+                            <th class="py-3 text-center">Petugas</th>
+                            <th class="py-3 text-center">Hadir</th>
+                            <th class="py-3 text-center">Terlambat</th>
+                            <th class="py-3 text-center">Tidak Hadir</th>
+                            <th class="py-3 text-center">Izin</th>
+                            <th class="py-3 text-center">Aktivitas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($report['schedules']->sortBy('schedule_date') as $schedule)
+                            @php
+                                $scheduleAssignments = $schedule->assignments;
+                                $scheduleAttendances = $scheduleAssignments->pluck('attendance')->filter();
+                            @endphp
+                            <tr>
+                                <td class="px-3 py-2 text-nowrap">
+                                    {{ $schedule->schedule_date->format('d/m/Y') }}
+                                </td>
+                                <td class="text-center py-2">
+                                    <span class="badge bg-primary">{{ $schedule->shift?->name ?? '-' }}</span>
+                                </td>
+                                <td class="text-center py-2">
+                                    {{ $scheduleAssignments->count() }}
+                                </td>
+                                <td class="text-center py-2">
+                                    <span class="text-success">{{ $scheduleAttendances->where('status', 'present')->count() }}</span>
+                                </td>
+                                <td class="text-center py-2">
+                                    <span class="text-warning">{{ $scheduleAttendances->where('status', 'late')->count() }}</span>
+                                </td>
+                                <td class="text-center py-2">
+                                    <span class="text-danger">{{ $scheduleAttendances->where('status', 'absent')->count() }}</span>
+                                </td>
+                                <td class="text-center py-2">
+                                    <span class="text-info">{{ $scheduleAttendances->where('status', 'excused')->count() }}</span>
+                                </td>
+                                <td class="text-center py-2">
+                                    {{ $scheduleAssignments->pluck('fieldActivities')->flatten()->where('status', 'completed')->count() }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     @endif

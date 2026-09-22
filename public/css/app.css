@@ -2,11 +2,8 @@
    School Discipline SaaS - Design System
    ============================================ */
 
-/* Bootstrap */
+/* Bootstrap - Load First */
 @import 'bootstrap/dist/css/bootstrap.min.css';
-
-/* Bootstrap Icons */
-@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 /* ============================================
    1. ROOT VARIABLES
