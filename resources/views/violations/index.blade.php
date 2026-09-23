@@ -10,51 +10,53 @@
             Pelanggaran Siswa
         </h1>
         <a href="{{ route('violations.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i>Catat Pelanggaran
+            <i class="bi bi-plus-lg"></i>Catat Pelanggaran
         </a>
     </div>
 
     <!-- Filters Card -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" class="row g-3">
-                <div class="col-12 col-md-3">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search" placeholder="Nama/NIS siswa..." value="{{ request('search') }}">
+            <form method="GET" class="filter-form">
+                <div class="filter-row">
+                    <div class="filter-group filter-group-search">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="search" placeholder="Nama/NIS siswa..." value="{{ request('search') }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-2">
-                    <select class="form-select" name="academic_year_id">
-                        <option value="">Semua Tahun</option>
-                        @foreach($academicYears as $year)
-                            <option value="{{ $year->id }}" {{ request('academic_year_id') == $year->id ? 'selected' : '' }}>{{ $year->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-12 col-md-2">
-                    <select class="form-select" name="violation_type_id">
-                        <option value="">Semua Jenis</option>
-                        @foreach($violationTypes as $type)
-                            <option value="{{ $type->id }}" {{ request('violation_type_id') == $type->id ? 'selected' : '' }}>{{ $type->code }} - {{ Str::limit($type->name, 20) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-12 col-md-2">
-                    <select class="form-select" name="status">
-                        <option value="">Semua Status</option>
-                        <option value="recorded" {{ request('status') === 'recorded' ? 'selected' : '' }}>Tercatat</option>
-                        <option value="verified" {{ request('status') === 'verified' ? 'selected' : '' }}>Diverifikasi</option>
-                        <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-filter me-1"></i>Filter
-                    </button>
-                    <a href="{{ route('violations.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </a>
+                    <div class="filter-group">
+                        <select class="form-select" name="academic_year_id">
+                            <option value="">Semua Tahun</option>
+                            @foreach($academicYears as $year)
+                                <option value="{{ $year->id }}" {{ request('academic_year_id') == $year->id ? 'selected' : '' }}>{{ $year->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-select" name="violation_type_id">
+                            <option value="">Semua Jenis</option>
+                            @foreach($violationTypes as $type)
+                                <option value="{{ $type->id }}" {{ request('violation_type_id') == $type->id ? 'selected' : '' }}>{{ $type->code }} - {{ Str::limit($type->name, 20) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-select" name="status">
+                            <option value="">Semua Status</option>
+                            <option value="recorded" {{ request('status') === 'recorded' ? 'selected' : '' }}>Tercatat</option>
+                            <option value="verified" {{ request('status') === 'verified' ? 'selected' : '' }}>Diverifikasi</option>
+                            <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-group-actions">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-filter"></i>Filter
+                        </button>
+                        <a href="{{ route('violations.index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -84,20 +86,20 @@
                                 <br><small class="text-muted">{{ $v->student->nis }}</small>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">{{ $v->violationType->code }}</span> {{ $v->violationType->name }}
+                                <span class="badge badge-secondary">{{ $v->violationType->code }}</span> {{ $v->violationType->name }}
                                 @if($v->location)
                                     <br><small class="text-muted"><i class="bi bi-geo-alt me-1"></i>{{ $v->location }}</small>
                                 @endif
                             </td>
-                            <td><span class="badge bg-primary">{{ $v->points }} pt</span></td>
+                            <td><span class="badge badge-primary">{{ $v->points }} pt</span></td>
                             <td class="small">{{ $v->officer->name }}</td>
                             <td>
                                 @if($v->status === 'recorded')
-                                    <span class="badge bg-warning">Tercatat</span>
+                                    <span class="badge badge-warning">Tercatat</span>
                                 @elseif($v->status === 'verified')
-                                    <span class="badge bg-success">Diverifikasi</span>
+                                    <span class="badge badge-success">Diverifikasi</span>
                                 @else
-                                    <span class="badge bg-secondary">Dibatalkan</span>
+                                    <span class="badge badge-secondary">Dibatalkan</span>
                                 @endif
                             </td>
                             <td>
@@ -126,7 +128,9 @@
         </div>
         @if($violations->hasPages())
             <div class="card-footer">
-                {{ $violations->links() }}
+                <div class="pagination-wrapper">
+                    {{ $violations->links() }}
+                </div>
             </div>
         @endif
     </div>

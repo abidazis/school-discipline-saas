@@ -4,41 +4,43 @@
     <!-- Page Header -->
     <div class="page-header">
         <h1 class="page-title">
-            <div class="page-title-icon" style="background: var(--color-primary-light); color: var(--color-primary);">
+            <div class="page-title-icon" style="background: #e0e7ff; color: #4f46e5;">
                 <i class="bi bi-building"></i>
             </div>
             Sekolah
         </h1>
         <a href="{{ route('schools.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i>Tambah Sekolah
+            <i class="bi bi-plus-lg"></i>Tambah Sekolah
         </a>
     </div>
 
     <!-- Filters Card -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('schools.index') }}" class="row g-3">
-                <div class="col-12 col-md-5">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search"
-                               placeholder="Cari sekolah..." value="{{ request('search') }}">
+            <form method="GET" action="{{ route('schools.index') }}" class="filter-form">
+                <div class="filter-row">
+                    <div class="filter-group filter-group-search">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="search"
+                                   placeholder="Cari sekolah..." value="{{ request('search') }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <select class="form-select" name="status">
-                        <option value="">Semua Status</option>
-                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
-                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-filter me-1"></i>Filter
-                    </button>
-                    <a href="{{ route('schools.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </a>
+                    <div class="filter-group">
+                        <select class="form-select" name="status">
+                            <option value="">Semua Status</option>
+                            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
+                            <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-group-actions">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-filter"></i>Filter
+                        </button>
+                        <a href="{{ route('schools.index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -78,13 +80,13 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">{{ $school->users()->count() }}</span>
+                                <span class="badge badge-secondary">{{ $school->users()->count() }}</span>
                             </td>
                             <td>
                                 @if($school->is_active)
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @else
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
                             <td>
@@ -119,7 +121,9 @@
         </div>
         @if($schools->hasPages())
             <div class="card-footer">
-                {{ $schools->links() }}
+                <div class="pagination-wrapper">
+                    {{ $schools->links() }}
+                </div>
             </div>
         @endif
     </div>
