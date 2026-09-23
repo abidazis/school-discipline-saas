@@ -397,6 +397,11 @@
 
         .header-btn i { font-size: 20px; }
 
+        /* Mobile menu button - hidden on desktop */
+        .header-btn-menu {
+            display: none;
+        }
+
         .notif-dot {
             position: absolute;
             top: 8px;
@@ -1275,6 +1280,15 @@
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
+
+            .table-responsive {
+                font-size: 13px;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 10px 12px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1286,6 +1300,46 @@
 
             .quick-actions {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                margin-bottom: 16px;
+                border: 1px solid var(--gray-200);
+                border-radius: 8px;
+                padding: 12px;
+                background: #fff;
+            }
+
+            .table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 0;
+                border: none !important;
+            }
+
+            .table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--gray-500);
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+
+            .table-actions {
+                justify-content: flex-end;
+                margin-top: 8px;
+                padding-top: 8px;
+                border-top: 1px solid var(--gray-100);
             }
         }
 
@@ -1308,6 +1362,16 @@
                 align-items: flex-start;
             }
 
+            .page-title {
+                font-size: 18px;
+            }
+
+            .page-title-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
             .quick-actions {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1320,6 +1384,33 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-group,
+            .filter-group-search,
+            .filter-group-actions {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .card-header,
+            .card-body,
+            .card-footer {
+                padding: 12px 16px;
+            }
+        }
+
+        /* Mobile Table Labels */
+        @media (max-width: 768px) {
+            .table tbody td:nth-child(1)::before { content: 'NIS: '; }
+            .table tbody td:nth-child(2)::before { content: 'Nama: '; }
+            .table tbody td:nth-child(3)::before { content: 'JK: '; }
+            .table tbody td:nth-child(4)::before { content: 'Kelas: '; }
+            .table tbody td:nth-child(5)::before { content: 'Status: '; }
+            .table tbody td:nth-child(6)::before { content: 'Aksi: '; }
         }
     </style>
 </head>
@@ -1483,7 +1574,7 @@
         <div class="main">
             <header class="header">
                 <div class="header-left">
-                    <button class="header-btn header-btn-menu" @click="sidebarOpen = !sidebarOpen" style="display: none;">
+                    <button class="header-btn header-btn-menu" @click="sidebarOpen = !sidebarOpen">
                         <i class="bi bi-list"></i>
                     </button>
                     <h1 class="header-title">{{ $title ?? 'Dashboard' }}</h1>

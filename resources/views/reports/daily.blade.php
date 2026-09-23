@@ -161,14 +161,14 @@
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
                                     <h6 class="mb-1">{{ $schedule->schedule_date->format('d F Y') }}</h6>
-                                    <span class="badge bg-primary me-1">{{ $schedule->shift?->name ?? '-' }}</span>
-                                    <span class="badge bg-secondary">{{ $schedule->time_range ?? '-' }}</span>
+                                    <span class="badge badge-primary me-1">{{ $schedule->shift?->name ?? '-' }}</span>
+                                    <span class="badge badge-secondary">{{ $schedule->time_range ?? '-' }}</span>
                                     @if($schedule->status === 'scheduled')
-                                        <span class="badge bg-info">Terjadwal</span>
+                                        <span class="badge badge-info">Terjadwal</span>
                                     @elseif($schedule->status === 'completed')
-                                        <span class="badge bg-success">Selesai</span>
+                                        <span class="badge badge-success">Selesai</span>
                                     @else
-                                        <span class="badge bg-secondary">Dibatalkan</span>
+                                        <span class="badge badge-secondary">Dibatalkan</span>
                                     @endif
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                                 <div class="mb-2">
                                     <span class="small text-muted">Lokasi:</span>
                                     @foreach($schedule->locations as $location)
-                                        <span class="badge bg-light text-dark me-1">{{ $location->name }}</span>
+                                        <span class="badge badge-light">Tidak Ada</span>
                                     @endforeach
                                 </div>
                             @endif
@@ -211,7 +211,7 @@
                                                                 {{ $assignment->attendance->status_display }}
                                                             </span>
                                                         @else
-                                                            <span class="badge bg-secondary">Belum Diisi</span>
+                                                            <span class="badge badge-secondary">Belum Diisi</span>
                                                         @endif
                                                     </td>
                                                     <td class="py-2">
@@ -267,7 +267,7 @@
                                     </td>
                                     <td class="py-2">{{ $activity->assignment?->location?->name ?? '-' }}</td>
                                     <td class="py-2">
-                                        <span class="badge bg-info">{{ $activity->activity_type_label }}</span>
+                                        <span class="badge badge-info">{{ $activity->activity_type_label }}</span>
                                     </td>
                                     <td class="py-2">
                                         {{ Str::limit($activity->finding, 50) ?? '-' }}
@@ -317,7 +317,7 @@
                                     <td class="py-2">{{ $violation->violationType?->name ?? '-' }}</td>
                                     <td class="py-2">{{ $violation->points ?? 0 }}</td>
                                     <td class="py-2">
-                                        <span class="badge bg-{{ $violation->status === 'verified' ? 'success' : 'secondary' }}">
+                                        <span class="badge {{ $violation->status === 'verified' ? 'badge badge-success' : 'badge badge-secondary' }}">
                                             {{ $violation->status_display }}
                                         </span>
                                     </td>

@@ -68,9 +68,9 @@
                             <td>{{ Str::limit($location->description, 50) ?? '-' }}</td>
                             <td>
                                 @if($location->is_active)
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @else
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
                             <td>

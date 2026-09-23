@@ -80,24 +80,24 @@
                                 <a href="{{ route('violation-types.show', $type) }}" class="text-decoration-none fw-medium">{{ $type->code }}</a>
                             </td>
                             <td>{{ $type->name }}</td>
-                            <td><span class="badge bg-secondary">{{ $type->category }}</span></td>
+                            <td><span class="badge badge-secondary">{{ $type->category }}</span></td>
                             <td>
                                 @if($type->severity === 'low')
-                                    <span class="badge bg-success">Ringan</span>
+                                    <span class="badge badge-success">Ringan</span>
                                 @elseif($type->severity === 'medium')
-                                    <span class="badge bg-warning">Sedang</span>
+                                    <span class="badge badge-warning">Sedang</span>
                                 @elseif($type->severity === 'high')
-                                    <span class="badge bg-danger">Berat</span>
+                                    <span class="badge badge-danger">Berat</span>
                                 @else
-                                    <span class="badge bg-dark">Sangat Berat</span>
+                                    <span class="badge badge-dark">Sangat Berat</span>
                                 @endif
                             </td>
-                            <td><span class="badge bg-primary">{{ $type->points }} pt</span></td>
+                            <td><span class="badge badge-primary">{{ $type->points }} pt</span></td>
                             <td>
                                 @if($type->is_active)
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @else
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
                             <td>

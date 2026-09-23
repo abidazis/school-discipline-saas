@@ -19,13 +19,13 @@
                     <span class="text-muted">| NISN: {{ $student->nisn }}</span>
                 @endif
                 @if($student->status === 'active')
-                    <span class="badge bg-success">Aktif</span>
+                    <span class="badge badge-success">Aktif</span>
                 @elseif($student->status === 'graduated')
-                    <span class="badge bg-primary">Lulus</span>
+                    <span class="badge badge-primary">Lulus</span>
                 @elseif($student->status === 'transferred')
-                    <span class="badge bg-warning">Pindah</span>
+                    <span class="badge badge-warning">Pindah</span>
                 @else
-                    <span class="badge bg-secondary">Tidak Aktif</span>
+                    <span class="badge badge-secondary">Tidak Aktif</span>
                 @endif
             </div>
         </div>
@@ -57,8 +57,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Identitas Siswa</h5>
                 </div>
                 <div class="card-body">
@@ -92,8 +92,8 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Akademik</h5>
                 </div>
                 <div class="card-body">
@@ -139,13 +139,13 @@
                         <dt class="col-5 text-muted">Status</dt>
                         <dd class="col-7">
                             @if($student->status === 'active')
-                                <span class="badge bg-success">Aktif</span>
+                                <span class="badge badge-success">Aktif</span>
                             @elseif($student->status === 'graduated')
-                                <span class="badge bg-primary">Lulus</span>
+                                <span class="badge badge-primary">Lulus</span>
                             @elseif($student->status === 'transferred')
-                                <span class="badge bg-warning">Pindah</span>
+                                <span class="badge badge-warning">Pindah</span>
                             @else
-                                <span class="badge bg-secondary">Tidak Aktif</span>
+                                <span class="badge badge-secondary">Tidak Aktif</span>
                             @endif
                         </dd>
                     </dl>

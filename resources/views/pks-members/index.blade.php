@@ -99,13 +99,13 @@
                             <td>{{ $member->position }}</td>
                             <td>
                                 @if($member->status === 'active')
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @elseif($member->status === 'inactive')
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @elseif($member->status === 'graduated')
-                                    <span class="badge bg-primary">Lulus</span>
+                                    <span class="badge badge-primary">Lulus</span>
                                 @else
-                                    <span class="badge bg-warning">Mengundurkan Diri</span>
+                                    <span class="badge badge-warning">Mengundurkan Diri</span>
                                 @endif
                             </td>
                             <td class="text-nowrap">{{ $member->joined_at->format('d/m/Y') }}</td>

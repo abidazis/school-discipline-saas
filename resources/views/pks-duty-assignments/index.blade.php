@@ -91,7 +91,7 @@
                         <tr>
                             <td class="text-nowrap">{{ $assignment->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
                             <td>
-                                <span class="badge bg-secondary">{{ $assignment->schedule?->shift?->name ?? '-' }}</span>
+                                <span class="badge badge-secondary">{{ $assignment->schedule?->shift?->name ?? '-' }}</span>
                             </td>
                             <td>{{ $assignment->location?->name ?? '-' }}</td>
                             <td>{{ $assignment->member?->student?->nis ?? '-' }}</td>
@@ -99,11 +99,11 @@
                             <td>{{ $assignment->member?->position ?? '-' }}</td>
                             <td>
                                 @if($assignment->status === 'assigned')
-                                    <span class="badge bg-success">{{ $assignment->statusDisplay }}</span>
+                                    <span class="badge badge-success">{{ $assignment->statusDisplay }}</span>
                                 @elseif($assignment->status === 'replaced')
-                                    <span class="badge bg-warning">{{ $assignment->statusDisplay }}</span>
+                                    <span class="badge badge-warning">{{ $assignment->statusDisplay }}</span>
                                 @else
-                                    <span class="badge bg-secondary">{{ $assignment->statusDisplay }}</span>
+                                    <span class="badge badge-secondary">{{ $assignment->statusDisplay }}</span>
                                 @endif
                             </td>
                             <td>

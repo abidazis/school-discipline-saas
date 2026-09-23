@@ -49,13 +49,13 @@
                         <div class="text-center mt-4">
                             <p class="text-white small mb-2 opacity-75">Akun Demo (password: <code class="text-white">password</code>)</p>
                             <div class="d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-danger bg-opacity-75">Super Admin</span>
+                                <span class="badge badge-danger">Super Admin</span>
                                 <code class="small text-white-50">super@example.com</code>
-                                <span class="badge bg-primary bg-opacity-75">Admin</span>
+                                <span class="badge badge-primary">Admin</span>
                                 <code class="small text-white-50">admin@smk1jkt.sch.id</code>
-                                <span class="badge bg-secondary bg-opacity-75">Operator</span>
+                                <span class="badge badge-secondary">Operator</span>
                                 <code class="small text-white-50">operator@smk1jkt.sch.id</code>
-                                <span class="badge bg-info bg-opacity-75">Guru</span>
+                                <span class="badge badge-info">Guru</span>
                                 <code class="small text-white-50">guru.tkj@smk1jkt.sch.id</code>
                             </div>
                         </div>

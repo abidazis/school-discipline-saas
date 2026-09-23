@@ -80,14 +80,14 @@
                             </td>
                             <td>{{ $schedule->shift->name ?? '-' }}</td>
                             <td class="small">{{ $schedule->time_range ?? '-' }}</td>
-                            <td><span class="badge bg-secondary">{{ $schedule->locations->count() }}</span></td>
+                            <td><span class="badge badge-secondary">{{ $schedule->locations->count() }}</span></td>
                             <td>
                                 @if($schedule->status === 'scheduled')
-                                    <span class="badge bg-primary">Terjadwal</span>
+                                    <span class="badge badge-primary">Terjadwal</span>
                                 @elseif($schedule->status === 'completed')
-                                    <span class="badge bg-success">Selesai</span>
+                                    <span class="badge badge-success">Selesai</span>
                                 @else
-                                    <span class="badge bg-secondary">Dibatalkan</span>
+                                    <span class="badge badge-secondary">Dibatalkan</span>
                                 @endif
                             </td>
                             <td>

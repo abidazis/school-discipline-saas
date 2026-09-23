@@ -93,7 +93,7 @@
                             </td>
                             <td>{{ $activity->assignment?->location?->name ?? '-' }}</td>
                             <td>
-                                <span class="badge bg-info">{{ $activity->activity_type_label }}</span>
+                                <span class="badge badge-info">{{ $activity->activity_type_label }}</span>
                             </td>
                             <td>
                                 <div>{{ $activity->started_at }}</div>

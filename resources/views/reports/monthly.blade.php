@@ -224,7 +224,7 @@
                                     {{ $schedule->schedule_date->format('d/m/Y') }}
                                 </td>
                                 <td class="text-center py-2">
-                                    <span class="badge bg-primary">{{ $schedule->shift?->name ?? '-' }}</span>
+                                    <span class="badge badge-primary">{{ $schedule->shift?->name ?? '-' }}</span>
                                 </td>
                                 <td class="text-center py-2">
                                     {{ $scheduleAssignments->count() }}

@@ -11,7 +11,7 @@
         </h1>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
             <a href="{{ route('departments.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i>Tambah Program Keahlian
+                <i class="bi bi-plus-lg"></i>Tambah Program Keahlian
             </a>
         @endif
     </div>
@@ -19,28 +19,30 @@
     <!-- Filters Card -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('departments.index') }}" class="row g-3">
-                <div class="col-12 col-md-5">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" name="search"
-                               placeholder="Cari program keahlian..." value="{{ request('search') }}">
+            <form method="GET" action="{{ route('departments.index') }}" class="filter-form">
+                <div class="filter-row">
+                    <div class="filter-group filter-group-search">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="search"
+                                   placeholder="Cari program keahlian..." value="{{ request('search') }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <select class="form-select" name="status">
-                        <option value="">Semua Status</option>
-                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
-                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-filter me-1"></i>Filter
-                    </button>
-                    <a href="{{ route('departments.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </a>
+                    <div class="filter-group">
+                        <select class="form-select" name="status">
+                            <option value="">Semua Status</option>
+                            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
+                            <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-group-actions">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-filter"></i>Filter
+                        </button>
+                        <a href="{{ route('departments.index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -71,19 +73,19 @@
                             <td>{{ $dept->name }}</td>
                             <td>
                                 @if($dept->school)
-                                    <span class="text-truncate d-inline-block" style="max-width: 150px;">{{ $dept->school->name }}</span>
+                                    {{ $dept->school->name }}
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
                             <td>
                                 @if($dept->is_active)
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @else
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
-                            <td><span class="badge bg-secondary">{{ $dept->schoolClasses()->count() }}</span></td>
+                            <td><span class="badge badge-secondary">{{ $dept->schoolClasses()->count() }}</span></td>
                             <td>
                                 <div class="table-actions">
                                     <a href="{{ route('departments.show', $dept) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
@@ -120,7 +122,9 @@
         </div>
         @if($departments->hasPages())
             <div class="card-footer">
-                {{ $departments->links() }}
+                <div class="pagination-wrapper">
+                    {{ $departments->links() }}
+                </div>
             </div>
         @endif
     </div>

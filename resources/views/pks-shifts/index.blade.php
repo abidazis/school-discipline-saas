@@ -71,12 +71,12 @@
                             <td class="text-nowrap">{{ $shift->end_time->format('H:i') }}</td>
                             <td>
                                 @if($shift->status === 'active')
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge badge-success">Aktif</span>
                                 @else
-                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
-                            <td><span class="badge bg-secondary">{{ $shift->duty_schedules_count }}</span></td>
+                            <td><span class="badge badge-secondary">{{ $shift->duty_schedules_count }}</span></td>
                             <td>
                                 <div class="table-actions">
                                     <a href="{{ route('pks-shifts.show', $shift) }}" class="btn btn-sm btn-outline-primary" title="Lihat">

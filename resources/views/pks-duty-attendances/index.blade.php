@@ -77,7 +77,7 @@
                         <tr>
                             <td class="text-nowrap">{{ $attendance->assignment?->schedule?->schedule_date?->format('d/m/Y') ?? '-' }}</td>
                             <td>
-                                <span class="badge bg-secondary">{{ $attendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
+                                <span class="badge badge-secondary">{{ $attendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
                             </td>
                             <td>{{ $attendance->assignment?->location?->name ?? '-' }}</td>
                             <td>{{ $attendance->assignment?->member?->student?->nis ?? '-' }}</td>
