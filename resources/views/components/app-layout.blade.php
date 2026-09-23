@@ -1095,6 +1095,49 @@
         }
 
         /* ============================================
+           FILTER FORM
+           ============================================ */
+        .filter-form {
+            width: 100%;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-group-search {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        .filter-group-actions {
+            flex: 0 0 auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-group,
+            .filter-group-search,
+            .filter-group-actions {
+                width: 100%;
+                min-width: 100%;
+            }
+        }
+
+        /* ============================================
            PAGE HEADER
            ============================================ */
         .page-header {
