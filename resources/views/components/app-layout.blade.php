@@ -1523,12 +1523,11 @@
     </style>
 </head>
 <body>
-    <div class="layout" x-data="sidebarLayout()">
-        <!-- Sidebar Overlay for Mobile -->
-        <div class="sidebar-overlay" @click="sidebarOpen = false" x-show="sidebarOpen" x-transition></div>
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar" :class="{ 'show': sidebarOpen }">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
                 <div class="sidebar-brand-icon"><i class="bi bi-shield-check"></i></div>
                 <div class="sidebar-brand-text">
@@ -1540,7 +1539,7 @@
             <nav class="sidebar-nav">
                 <!-- Dashboard -->
                 <div class="sidebar-section">
-                    <a href="{{ route('dashboard') }}" class="menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" @click="sidebarOpen = false">
+                    <a href="{{ route('dashboard') }}" class="menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" onclick="closeSidebarOnMobile()">
                         <i class="bi bi-grid"></i>
                         <span>Dashboard</span>
                     </a>
@@ -1549,17 +1548,17 @@
                 <!-- Super Admin -->
                 @if(auth()->user()->isSuperAdmin())
                 <div class="sidebar-section">
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="section-toggle" :class="{ 'open': open }">
+                    <div class="section-wrapper">
+                        <button onclick="toggleSection(this)" class="section-toggle open">
                             <span class="section-toggle-left">
                                 <i class="bi bi-shield-lock"></i>
                                 <span>Super Admin</span>
                             </span>
                             <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
-                        <ul class="submenu" :class="{ 'open': open }">
-                            <li><a href="{{ route('schools.index') }}" class="submenu-link {{ request()->routeIs('schools.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-building"></i><span>Sekolah</span></a></li>
-                            <li><a href="{{ route('users.index') }}" class="submenu-link {{ request()->routeIs('users.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-people"></i><span>Pengguna</span></a></li>
+                        <ul class="submenu open">
+                            <li><a href="{{ route('schools.index') }}" class="submenu-link {{ request()->routeIs('schools.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-building"></i><span>Sekolah</span></a></li>
+                            <li><a href="{{ route('users.index') }}" class="submenu-link {{ request()->routeIs('users.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-people"></i><span>Pengguna</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -1567,25 +1566,25 @@
 
                 <!-- Akademik -->
                 <div class="sidebar-section">
-                    <div x-data="{ open: true }">
-                        <button @click="open = !open" class="section-toggle" :class="{ 'open': open }">
+                    <div class="section-wrapper">
+                        <button onclick="toggleSection(this)" class="section-toggle open">
                             <span class="section-toggle-left">
                                 <i class="bi bi-book"></i>
                                 <span>Akademik</span>
                             </span>
                             <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
-                        <ul class="submenu" :class="{ 'open': open }">
-                            <li><a href="{{ route('academic-years.index') }}" class="submenu-link {{ request()->routeIs('academic-years.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-calendar-range"></i><span>Tahun Ajaran</span></a></li>
-                            <li><a href="{{ route('departments.index') }}" class="submenu-link {{ request()->routeIs('departments.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-diagram-3"></i><span>Program Keahlian</span></a></li>
-                            <li><a href="{{ route('classes.index') }}" class="submenu-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-mortarboard"></i><span>Kelas</span></a></li>
+                        <ul class="submenu open">
+                            <li><a href="{{ route('academic-years.index') }}" class="submenu-link {{ request()->routeIs('academic-years.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-calendar-range"></i><span>Tahun Ajaran</span></a></li>
+                            <li><a href="{{ route('departments.index') }}" class="submenu-link {{ request()->routeIs('departments.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-diagram-3"></i><span>Program Keahlian</span></a></li>
+                            <li><a href="{{ route('classes.index') }}" class="submenu-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-mortarboard"></i><span>Kelas</span></a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Siswa -->
                 <div class="sidebar-section">
-                    <a href="{{ route('students.index') }}" class="menu-link {{ request()->routeIs('students.*') ? 'active' : '' }}" @click="sidebarOpen = false">
+                    <a href="{{ route('students.index') }}" class="menu-link {{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()">
                         <i class="bi bi-person-badge"></i>
                         <span>Daftar Siswa</span>
                     </a>
@@ -1593,63 +1592,63 @@
 
                 <!-- Kedisiplinan -->
                 <div class="sidebar-section">
-                    <div x-data="{ open: true }">
-                        <button @click="open = !open" class="section-toggle" :class="{ 'open': open }">
+                    <div class="section-wrapper">
+                        <button onclick="toggleSection(this)" class="section-toggle open">
                             <span class="section-toggle-left">
                                 <i class="bi bi-shield-exclamation"></i>
                                 <span>Kedisiplinan</span>
                             </span>
                             <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
-                        <ul class="submenu" :class="{ 'open': open }">
-                            <li><a href="{{ route('violation-types.index') }}" class="submenu-link {{ request()->routeIs('violation-types.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-list-check"></i><span>Jenis Pelanggaran</span></a></li>
-                            <li><a href="{{ route('violations.index') }}" class="submenu-link {{ request()->routeIs('violations.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-exclamation-triangle"></i><span>Pelanggaran</span></a></li>
+                        <ul class="submenu open">
+                            <li><a href="{{ route('violation-types.index') }}" class="submenu-link {{ request()->routeIs('violation-types.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-list-check"></i><span>Jenis Pelanggaran</span></a></li>
+                            <li><a href="{{ route('violations.index') }}" class="submenu-link {{ request()->routeIs('violations.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-exclamation-triangle"></i><span>Pelanggaran</span></a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- PKS -->
                 <div class="sidebar-section">
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="section-toggle" :class="{ 'open': open }">
+                    <div class="section-wrapper">
+                        <button onclick="toggleSection(this)" class="section-toggle">
                             <span class="section-toggle-left">
                                 <i class="bi bi-shield-check"></i>
                                 <span>PKS</span>
                             </span>
                             <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
-                        <ul class="submenu" :class="{ 'open': open }">
-                            <li><a href="{{ route('pks-members.index') }}" class="submenu-link {{ request()->routeIs('pks-members.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-people"></i><span>Anggota PKS</span></a></li>
-                            <li><a href="{{ route('pks-shifts.index') }}" class="submenu-link {{ request()->routeIs('pks-shifts.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-clock"></i><span>Shift Piket</span></a></li>
-                            <li><a href="{{ route('pks-duty-locations.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-locations.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-geo-alt"></i><span>Lokasi Piket</span></a></li>
-                            <li><a href="{{ route('pks-duty-schedules.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-calendar-week"></i><span>Jadwal Piket</span></a></li>
-                            <li><a href="{{ route('pks-duty-assignments.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-assignments.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-clipboard-check"></i><span>Penugasan</span></a></li>
-                            <li><a href="{{ route('pks-duty-attendances.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-person-check"></i><span>Kehadiran</span></a></li>
-                            <li><a href="{{ route('pks-field-activities.index') }}" class="submenu-link {{ request()->routeIs('pks-field-activities.*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-map"></i><span>Aktivitas Lapangan</span></a></li>
+                        <ul class="submenu">
+                            <li><a href="{{ route('pks-members.index') }}" class="submenu-link {{ request()->routeIs('pks-members.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-people"></i><span>Anggota PKS</span></a></li>
+                            <li><a href="{{ route('pks-shifts.index') }}" class="submenu-link {{ request()->routeIs('pks-shifts.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-clock"></i><span>Shift Piket</span></a></li>
+                            <li><a href="{{ route('pks-duty-locations.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-locations.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-geo-alt"></i><span>Lokasi Piket</span></a></li>
+                            <li><a href="{{ route('pks-duty-schedules.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-calendar-week"></i><span>Jadwal Piket</span></a></li>
+                            <li><a href="{{ route('pks-duty-assignments.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-assignments.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-clipboard-check"></i><span>Penugasan</span></a></li>
+                            <li><a href="{{ route('pks-duty-attendances.index') }}" class="submenu-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-person-check"></i><span>Kehadiran</span></a></li>
+                            <li><a href="{{ route('pks-field-activities.index') }}" class="submenu-link {{ request()->routeIs('pks-field-activities.*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-map"></i><span>Aktivitas Lapangan</span></a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Laporan -->
                 <div class="sidebar-section">
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="section-toggle" :class="{ 'open': open }">
+                    <div class="section-wrapper">
+                        <button onclick="toggleSection(this)" class="section-toggle">
                             <span class="section-toggle-left">
                                 <i class="bi bi-file-earmark-bar-graph"></i>
                                 <span>Laporan</span>
                             </span>
                             <svg class="section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
-                        <ul class="submenu" :class="{ 'open': open }">
-                            <li><a href="{{ route('reports.daily') }}" class="submenu-link {{ request()->routeIs('reports.daily*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-calendar-day"></i><span>Laporan Harian</span></a></li>
-                            <li><a href="{{ route('reports.monthly') }}" class="submenu-link {{ request()->routeIs('reports.monthly*') ? 'active' : '' }}" @click="sidebarOpen = false"><i class="bi bi-calendar-event"></i><span>Laporan Bulanan</span></a></li>
+                        <ul class="submenu">
+                            <li><a href="{{ route('reports.daily') }}" class="submenu-link {{ request()->routeIs('reports.daily*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-calendar-day"></i><span>Laporan Harian</span></a></li>
+                            <li><a href="{{ route('reports.monthly') }}" class="submenu-link {{ request()->routeIs('reports.monthly*') ? 'active' : '' }}" onclick="closeSidebarOnMobile()"><i class="bi bi-calendar-event"></i><span>Laporan Bulanan</span></a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Pengaturan -->
                 <div class="sidebar-section">
-                    <a href="{{ route('profile.edit') }}" class="menu-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" @click="sidebarOpen = false">
+                    <a href="{{ route('profile.edit') }}" class="menu-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" onclick="closeSidebarOnMobile()">
                         <i class="bi bi-sliders"></i>
                         <span>Pengaturan</span>
                     </a>
@@ -1682,20 +1681,20 @@
         <div class="main">
             <header class="header">
                 <div class="header-left">
-                    <button class="header-btn header-btn-menu" @click="sidebarOpen = !sidebarOpen">
+                    <button class="header-btn header-btn-menu" onclick="toggleSidebar()">
                         <i class="bi bi-list"></i>
                     </button>
                     <h1 class="header-title">{{ $title ?? 'Dashboard' }}</h1>
                 </div>
                 <div class="header-right">
                     <button class="header-btn"><i class="bi bi-bell"></i><span class="notif-dot"></span></button>
-                    <div class="dropdown" x-data="{ open: false }">
-                        <button @click="open = !open" class="dropdown-btn" :class="{ 'active': open }">
+                    <div class="dropdown" id="userDropdown">
+                        <button onclick="toggleDropdown()" class="dropdown-btn">
                             <div class="user-avatar">{{ substr(auth()->user()->name, 0, 1) }}</div>
                             <span>{{ auth()->user()->name }}</span>
                             <i class="bi bi-chevron-down" style="font-size: 12px; color: var(--gray-400);"></i>
                         </button>
-                        <div x-show="open" @click="open = false" class="dropdown-menu">
+                        <div id="dropdownMenu" class="dropdown-menu">
                             <div class="dropdown-header">
                                 <div class="dropdown-header-name">{{ auth()->user()->name }}</div>
                                 <div class="dropdown-header-email">{{ auth()->user()->email }}</div>
@@ -1714,24 +1713,61 @@
         </div>
     </div>
 
-    <script>
-        function sidebarLayout() {
-            return {
-                sidebarOpen: window.innerWidth > 1024,
-                init() {
-                    this.checkScreenSize();
-                    window.addEventListener('resize', () => this.checkScreenSize());
-                },
-                checkScreenSize() {
-                    if (window.innerWidth <= 1024) {
-                        this.sidebarOpen = false;
-                    } else {
-                        this.sidebarOpen = true;
-                    }
-                }
+        <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+
+        // Close sidebar on mobile when clicking a link
+        function closeSidebarOnMobile() {
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
             }
         }
+
+        // Toggle section expand/collapse
+        function toggleSection(btn) {
+            const wrapper = btn.closest('.section-wrapper');
+            const submenu = wrapper.querySelector('.submenu');
+            const chevron = btn.querySelector('.section-chevron');
+
+            if (submenu.classList.contains('open')) {
+                submenu.classList.remove('open');
+                btn.classList.remove('open');
+                chevron.style.transform = '';
+            } else {
+                submenu.classList.add('open');
+                btn.classList.add('open');
+                chevron.style.transform = 'rotate(90deg)';
+            }
+        }
+
+        // Dropdown Toggle
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userDropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Initialize sidebar visibility based on screen size
+        window.addEventListener('load', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 1024) {
+                sidebar.classList.add('show');
+            }
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
