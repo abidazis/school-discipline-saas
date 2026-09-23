@@ -589,6 +589,21 @@
            ============================================ */
         [x-cloak] { display: none !important; }
 
+        /* Dropdown active state */
+        .dropdown-btn.active {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+        }
+
+        /* Dropdown menu show */
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown-menu[x-show="true"] {
+            display: block;
+        }
+
         /* ============================================
            PAGE COMPONENTS - Dashboard & Cards
            ============================================ */
@@ -1492,12 +1507,12 @@
     </style>
 </head>
 <body>
-    <div class="layout" x-data="sidebarLayout()">
+    <div class="layout" x-data="sidebarLayout()" x-cloak>
         <!-- Sidebar Overlay for Mobile -->
-        <div class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false"></div>
+        <div x-show="sidebarOpen" x-transition:enter="transition-opacity" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false"></div>
 
         <!-- SIDEBAR -->
-        <aside class="sidebar" :class="{ 'show': sidebarOpen }">
+        <aside class="sidebar" :class="{ 'show': sidebarOpen }" x-show="sidebarOpen || window.innerWidth > 1024">
             <div class="sidebar-brand">
                 <div class="sidebar-brand-icon"><i class="bi bi-shield-check"></i></div>
                 <div class="sidebar-brand-text">
@@ -1659,12 +1674,12 @@
                 <div class="header-right">
                     <button class="header-btn"><i class="bi bi-bell"></i><span class="notif-dot"></span></button>
                     <div class="dropdown" x-data="{ open: false }">
-                        <button @click="open = !open" @click.away="open = false" class="dropdown-btn">
+                        <button @click="open = !open" class="dropdown-btn" :class="{ 'active': open }">
                             <div class="user-avatar">{{ substr(auth()->user()->name, 0, 1) }}</div>
                             <span>{{ auth()->user()->name }}</span>
                             <i class="bi bi-chevron-down" style="font-size: 12px; color: var(--gray-400);"></i>
                         </button>
-                        <div class="dropdown-menu" :class="{ 'show': open }">
+                        <div x-show="open" @click="open = false" class="dropdown-menu">
                             <div class="dropdown-header">
                                 <div class="dropdown-header-name">{{ auth()->user()->name }}</div>
                                 <div class="dropdown-header-email">{{ auth()->user()->email }}</div>
@@ -1686,11 +1701,9 @@
     <script>
         function sidebarLayout() {
             return {
-                sidebarOpen: false,
+                sidebarOpen: window.innerWidth > 1024,
                 init() {
-                    // Check screen size on load
                     this.checkScreenSize();
-                    // Listen for resize
                     window.addEventListener('resize', () => this.checkScreenSize());
                 },
                 checkScreenSize() {
@@ -1703,6 +1716,6 @@
             }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
