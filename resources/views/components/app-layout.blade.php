@@ -587,7 +587,6 @@
         /* ============================================
            ALPINE.JS HELPERS
            ============================================ */
-        [x-cloak] { display: none !important; }
 
         /* Dropdown active state */
         .dropdown-btn.active {
@@ -1507,12 +1506,12 @@
     </style>
 </head>
 <body>
-    <div class="layout" x-data="sidebarLayout()" x-cloak>
+    <div class="layout" x-data="sidebarLayout()">
         <!-- Sidebar Overlay for Mobile -->
-        <div x-show="sidebarOpen" x-transition:enter="transition-opacity" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false"></div>
+        <div class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false" x-show="sidebarOpen"></div>
 
         <!-- SIDEBAR -->
-        <aside class="sidebar" :class="{ 'show': sidebarOpen }" x-show="sidebarOpen || window.innerWidth > 1024">
+        <aside class="sidebar" :class="{ 'show': sidebarOpen }">
             <div class="sidebar-brand">
                 <div class="sidebar-brand-icon"><i class="bi bi-shield-check"></i></div>
                 <div class="sidebar-brand-text">
@@ -1716,6 +1715,6 @@
             }
         }
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
