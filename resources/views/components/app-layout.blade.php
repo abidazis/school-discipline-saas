@@ -59,9 +59,15 @@
         /* ============================================
            LAYOUT STRUCTURE
            ============================================ */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
         .layout {
             display: flex;
             min-height: 100vh;
+            position: relative;
         }
 
         /* ============================================
@@ -69,7 +75,6 @@
            ============================================ */
         .sidebar {
             width: var(--sidebar-width);
-            min-width: var(--sidebar-width);
             background: var(--gray-800);
             display: flex;
             flex-direction: column;
@@ -79,6 +84,15 @@
             bottom: 0;
             z-index: 1000;
             transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .sidebar:not(.show) {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
         }
 
         /* Sidebar Brand */
@@ -334,12 +348,14 @@
         /* ============================================
            MAIN CONTENT
            ============================================ */
+        /* Main Content Wrapper */
         .main {
             flex: 1;
             margin-left: var(--sidebar-width);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
         }
 
         /* Header */
@@ -559,6 +575,7 @@
 
             .main {
                 margin-left: 0;
+                width: 100%;
             }
 
             .header-btn-menu {
@@ -1508,7 +1525,7 @@
 <body>
     <div class="layout" x-data="sidebarLayout()">
         <!-- Sidebar Overlay for Mobile -->
-        <div class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false" x-show="sidebarOpen"></div>
+        <div class="sidebar-overlay" @click="sidebarOpen = false" x-show="sidebarOpen" x-transition></div>
 
         <!-- SIDEBAR -->
         <aside class="sidebar" :class="{ 'show': sidebarOpen }">
