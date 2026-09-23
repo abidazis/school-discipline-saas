@@ -1403,14 +1403,48 @@
             }
         }
 
-        /* Mobile Table Labels */
+        /* Mobile Table View */
         @media (max-width: 768px) {
-            .table tbody td:nth-child(1)::before { content: 'NIS: '; }
-            .table tbody td:nth-child(2)::before { content: 'Nama: '; }
-            .table tbody td:nth-child(3)::before { content: 'JK: '; }
-            .table tbody td:nth-child(4)::before { content: 'Kelas: '; }
-            .table tbody td:nth-child(5)::before { content: 'Status: '; }
-            .table tbody td:nth-child(6)::before { content: 'Aksi: '; }
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                margin-bottom: 16px;
+                border: 1px solid var(--gray-200);
+                border-radius: 8px;
+                padding: 16px;
+                background: #fff;
+            }
+
+            .table tbody td {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                padding: 8px 0 !important;
+                border: none !important;
+            }
+
+            .table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--gray-500);
+                font-size: 12px;
+                text-transform: uppercase;
+                min-width: 100px;
+            }
+
+            .table tbody td:last-child {
+                margin-top: 12px;
+                padding-top: 12px !important;
+                border-top: 1px solid var(--gray-100) !important;
+                justify-content: flex-end !important;
+            }
+
+            .table tbody td:last-child::before {
+                display: none;
+            }
         }
     </style>
 </head>

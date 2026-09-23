@@ -54,39 +54,39 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Sekolah</th>
-                        <th>Status</th>
-                        <th>Kelas</th>
-                        <th>Aksi</th>
+                        <th data-label="Kode">Kode</th>
+                        <th data-label="Nama">Nama</th>
+                        <th data-label="Sekolah">Sekolah</th>
+                        <th data-label="Status">Status</th>
+                        <th data-label="Kelas">Kelas</th>
+                        <th data-label="Aksi">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($departments as $dept)
                         <tr>
-                            <td>
+                            <td data-label="Kode">
                                 <a href="{{ route('departments.show', $dept) }}" class="text-decoration-none fw-medium">
                                     {{ $dept->code }}
                                 </a>
                             </td>
-                            <td>{{ $dept->name }}</td>
-                            <td>
+                            <td data-label="Nama">{{ $dept->name }}</td>
+                            <td data-label="Sekolah">
                                 @if($dept->school)
                                     {{ $dept->school->name }}
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="Status">
                                 @if($dept->is_active)
                                     <span class="badge badge-success">Aktif</span>
                                 @else
                                     <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
-                            <td><span class="badge badge-secondary">{{ $dept->schoolClasses()->count() }}</span></td>
-                            <td>
+                            <td data-label="Kelas"><span class="badge badge-secondary">{{ $dept->schoolClasses()->count() }}</span></td>
+                            <td data-label="Aksi">
                                 <div class="table-actions">
                                     <a href="{{ route('departments.show', $dept) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>

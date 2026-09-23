@@ -11,14 +11,14 @@
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
             <h1 class="h4 mb-1">{{ $pksDutySchedule->schedule_date->format('d F Y') }}</h1>
-            <span class="badge bg-primary me-1">{{ $pksDutySchedule->shift?->name ?? '-' }}</span>
-            <span class="badge bg-secondary me-1">{{ $pksDutySchedule->time_range ?? '-' }}</span>
+            <span class="badge badge-primary me-1">{{ $pksDutySchedule->shift?->name ?? '-' }}</span>
+            <span class="badge badge-secondary me-1">{{ $pksDutySchedule->time_range ?? '-' }}</span>
             @if($pksDutySchedule->status === 'scheduled')
-                <span class="badge bg-info">Terjadwal</span>
+                <span class="badge badge-info">Terjadwal</span>
             @elseif($pksDutySchedule->status === 'completed')
-                <span class="badge bg-success">Selesai</span>
+                <span class="badge badge-success">Selesai</span>
             @else
-                <span class="badge bg-secondary">Dibatalkan</span>
+                <span class="badge badge-secondary">Dibatalkan</span>
             @endif
         </div>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -30,8 +30,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0">Detail Jadwal</h5></div>
+            <div class="card h-100">
+                <div class="card-header"><h5 class="mb-0">Detail Jadwal</h5></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-5 text-muted small">Tanggal</dt>
@@ -52,8 +52,8 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm mt-4">
-        <div class="card-header bg-white border-bottom">
+    <div class="card mt-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Lokasi Piket</h5>
                 @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -71,7 +71,7 @@
                     @foreach($pksDutySchedule->locations as $index => $location)
                         <li class="py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
                             <span class="me-2 text-muted">{{ $loop->iteration }}.</span>
-                            <span class="badge bg-secondary me-2">{{ $location->code }}</span>
+                            <span class="badge badge-secondary me-2">{{ $location->code }}</span>
                             {{ $location->name }}
                         </li>
                     @endforeach
@@ -105,8 +105,8 @@
         $notRecordedCount = $activeAssignments->filter(fn($a) => !$a->attendance)->count();
     @endphp
 
-    <div class="card border-0 shadow-sm mt-4">
-        <div class="card-header bg-white border-bottom">
+    <div class="card mt-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Petugas yang Ditugaskan</h5>
                 @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -128,7 +128,7 @@
                         <h6 class="text-primary mb-3">
                             <i class="bi bi-geo-alt me-1"></i>
                             {{ $location->name }}
-                            <span class="badge bg-secondary ms-1">{{ $location->code }}</span>
+                            <span class="badge badge-secondary ms-1">{{ $location->code }}</span>
                         </h6>
                         @if($locationAssignments->count() > 0)
                             <div class="row g-2">
@@ -186,8 +186,8 @@
     </div>
 
     {{-- KEHADIRAN PETUGAS Section --}}
-    <div class="card border-0 shadow-sm mt-4">
-        <div class="card-header bg-white border-bottom">
+    <div class="card mt-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h5 class="mb-0">Kehadiran Petugas</h5>
             </div>
@@ -195,7 +195,7 @@
 
         {{-- Attendance Summary --}}
         @if($totalAssignments > 0)
-            <div class="card-body border-bottom bg-light">
+            <div class="card-body border-bottom">
                 <div class="row g-3 text-center">
                     <div class="col-6 col-md-auto">
                         <div class="small text-muted">Total Petugas</div>
@@ -255,7 +255,7 @@
                                                             {{ $assignment->attendance->status_display }}
                                                         </span>
                                                     @else
-                                                        <span class="badge bg-secondary">Belum Diisi</span>
+                                                        <span class="badge badge-secondary">Belum Diisi</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -314,7 +314,7 @@
                                                     </div>
                                                     @foreach($assignmentActivities as $activity)
                                                         <div class="small p-2 bg-light rounded mb-1">
-                                                            <span class="badge bg-info me-1">{{ $activity->activity_type_label }}</span>
+                                                            <span class="badge badge-info me-1">{{ $activity->activity_type_label }}</span>
                                                             {{ $activity->started_at }}
                                                             @if($activity->ended_at)
                                                                 - {{ $activity->ended_at }}
@@ -362,14 +362,14 @@
     @endphp
 
     @if($allAssignments->count() > 0)
-        <div class="card border-0 shadow-sm mt-4">
-            <div class="card-header bg-white border-bottom">
+        <div class="card mt-4">
+            <div class="card-header">
                 <h5 class="mb-0">Riwayat Penugasan Sebelumnya</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
-                        <thead class="bg-light">
+                        <thead class="table-light">
                             <tr>
                                 <th class="border-0 py-3 px-3">Nama</th>
                                 <th class="border-0 py-3">Lokasi</th>
@@ -387,9 +387,9 @@
                                     <td>{{ $assignment->location?->name ?? '-' }}</td>
                                     <td>
                                         @if($assignment->status === 'replaced')
-                                            <span class="badge bg-warning text-dark">{{ $assignment->statusDisplay }}</span>
+                                            <span class="badge badge-warning text-dark">{{ $assignment->statusDisplay }}</span>
                                         @else
-                                            <span class="badge bg-secondary">{{ $assignment->statusDisplay }}</span>
+                                            <span class="badge badge-secondary">{{ $assignment->statusDisplay }}</span>
                                         @endif
                                     </td>
                                     <td class="px-3 text-end">

@@ -21,8 +21,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Kehadiran</h5>
                 </div>
                 <div class="card-body">
@@ -31,11 +31,11 @@
                         <dd class="col-7">
                             {{ $pksDutyAttendance->assignment?->schedule?->schedule_date?->format('d F Y') ?? '-' }}
                             <br>
-                            <span class="badge bg-secondary">{{ $pksDutyAttendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
+                            <span class="badge badge-secondary">{{ $pksDutyAttendance->assignment?->schedule?->shift?->name ?? '-' }}</span>
                         </dd>
                         <dt class="col-5 text-muted small">Lokasi Piket</dt>
                         <dd class="col-7">
-                            <span class="badge bg-secondary me-1">{{ $pksDutyAttendance->assignment?->location?->code ?? '-' }}</span>
+                            <span class="badge badge-secondary me-1">{{ $pksDutyAttendance->assignment?->location?->code ?? '-' }}</span>
                             {{ $pksDutyAttendance->assignment?->location?->name ?? '-' }}
                         </dd>
                         <dt class="col-5 text-muted small">Status</dt>
@@ -62,8 +62,8 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Data Petugas</h5>
                 </div>
                 <div class="card-body">
@@ -78,7 +78,7 @@
                         <dd class="col-7">{{ $pksDutyAttendance->assignment?->member?->position ?? '-' }}</dd>
                         <dt class="col-5 text-muted small">Status Anggota</dt>
                         <dd class="col-7">
-                            <span class="badge bg-success">{{ $pksDutyAttendance->assignment?->member?->statusDisplay ?? '-' }}</span>
+                            <span class="badge badge-success">{{ $pksDutyAttendance->assignment?->member?->statusDisplay ?? '-' }}</span>
                         </dd>
                     </dl>
                 </div>

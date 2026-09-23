@@ -10,8 +10,8 @@
 
     <div class="row justify-content-center">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Catat Pelanggaran Baru</h5></div>
+            <div class="card">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Catat Pelanggaran Baru</h5></div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('violations.store') }}" enctype="multipart/form-data">
                         @csrf
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-12 col-md-4 mb-3">
                                 <label class="form-label">Point Pelanggaran</label>
-                                <div class="form-control-plaintext"><span id="pointsDisplay" class="badge bg-primary fs-6">-</span></div>
+                                <div class="form-control-plaintext"><span id="pointsDisplay" class="badge badge-primary fs-6">-</span></div>
                                 <input type="hidden" id="points" name="points">
                             </div>
                         </div>

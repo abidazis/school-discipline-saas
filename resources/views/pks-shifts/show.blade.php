@@ -12,9 +12,9 @@
         <div>
             <h1 class="h4 mb-1">{{ $pksShift->name }}</h1>
             @if($pksShift->status === 'active')
-                <span class="badge bg-success">Aktif</span>
+                <span class="badge badge-success">Aktif</span>
             @else
-                <span class="badge bg-secondary">Tidak Aktif</span>
+                <span class="badge badge-secondary">Tidak Aktif</span>
             @endif
         </div>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -26,8 +26,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0">Detail Shift</h5></div>
+            <div class="card h-100">
+                <div class="card-header"><h5 class="mb-0">Detail Shift</h5></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-5 text-muted small">Nama Shift</dt>

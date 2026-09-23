@@ -79,7 +79,7 @@
                             </td>
                             <td>{{ $user->email }}</td>
                             <td>
-                                <span class="badge bg-{{ $user->isSuperAdmin() ? 'danger' : 'primary' }}">
+                                <span class="badge {{ $user->isSuperAdmin() ? 'badge badge-danger' : 'badge badge-primary' }}">
                                     {{ ucwords(str_replace('_', ' ', $user->role)) }}
                                 </span>
                             </td>

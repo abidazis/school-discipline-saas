@@ -15,13 +15,13 @@
             </h1>
             <div class="d-flex gap-2 flex-wrap">
                 @if($schoolClass->is_active)
-                    <span class="badge bg-success">Aktif</span>
+                    <span class="badge badge-success">Aktif</span>
                 @else
-                    <span class="badge bg-secondary">Tidak Aktif</span>
+                    <span class="badge badge-secondary">Tidak Aktif</span>
                 @endif
-                <span class="badge bg-light text-dark">{{ $schoolClass->grade_level }}</span>
+                <span class="badge badge-light">Tidak Ada</span>
                 @if($schoolClass->department)
-                    <span class="badge bg-info">{{ $schoolClass->department->code }}</span>
+                    <span class="badge badge-info">{{ $schoolClass->department->code }}</span>
                 @endif
             </div>
         </div>
@@ -55,8 +55,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Kelas</h5>
                 </div>
                 <div class="card-body">
@@ -101,8 +101,8 @@
         </div>
 
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Siswa ({{ $schoolClass->students->count() }})</h5>
                     <a href="{{ route('students.create', ['school_class_id' => $schoolClass->id, 'academic_year_id' => $schoolClass->academic_year_id]) }}"
                        class="btn btn-sm btn-primary">
@@ -130,7 +130,7 @@
                                     <td>{{ $student->full_name }}</td>
                                     <td>{{ $student->gender === 'male' ? 'L' : 'P' }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $student->status === 'active' ? 'success' : 'secondary' }}">
+                                        <span class="badge {{ $student->status === 'active' ? 'badge badge-success' : 'badge badge-secondary' }}">
                                             {{ ucfirst($student->status) }}
                                         </span>
                                     </td>

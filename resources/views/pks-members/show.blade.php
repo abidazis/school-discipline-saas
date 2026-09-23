@@ -14,13 +14,13 @@
             <div class="d-flex gap-2 flex-wrap align-items-center">
                 <span class="text-muted">NIS: {{ $pksMember->student->nis }}</span>
                 @if($pksMember->status === 'active')
-                    <span class="badge bg-success">Aktif</span>
+                    <span class="badge badge-success">Aktif</span>
                 @elseif($pksMember->status === 'inactive')
-                    <span class="badge bg-secondary">Tidak Aktif</span>
+                    <span class="badge badge-secondary">Tidak Aktif</span>
                 @elseif($pksMember->status === 'graduated')
-                    <span class="badge bg-primary">Lulus</span>
+                    <span class="badge badge-primary">Lulus</span>
                 @else
-                    <span class="badge bg-warning">Mengundurkan Diri</span>
+                    <span class="badge badge-warning">Mengundurkan Diri</span>
                 @endif
             </div>
         </div>
@@ -44,8 +44,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Data Siswa</h5>
                 </div>
                 <div class="card-body">
@@ -69,8 +69,8 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Data PKS</h5>
                 </div>
                 <div class="card-body">

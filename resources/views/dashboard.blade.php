@@ -166,3 +166,41 @@
         </div>
     </div>
 </x-app-layout>
+
+<style>
+    /* Mobile Responsive for Dashboard */
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .stat-card {
+            flex-direction: column !important;
+            text-align: center !important;
+        }
+
+        .stat-icon {
+            margin: 0 auto !important;
+        }
+
+        .welcome-banner {
+            flex-direction: column !important;
+            text-align: center !important;
+            padding: 20px !important;
+        }
+
+        .quick-actions {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+</style>

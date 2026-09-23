@@ -67,19 +67,19 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="text-nowrap">NIS</th>
-                        <th>Nama</th>
-                        <th>JK</th>
-                        <th>Kelas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th data-label="NIS">NIS</th>
+                        <th data-label="Nama">Nama</th>
+                        <th data-label="JK">JK</th>
+                        <th data-label="Kelas">Kelas</th>
+                        <th data-label="Status">Status</th>
+                        <th data-label="Aksi">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($students as $student)
                         <tr>
-                            <td class="text-nowrap">{{ $student->nis }}</td>
-                            <td>
+                            <td data-label="NIS" class="text-nowrap">{{ $student->nis }}</td>
+                            <td data-label="Nama">
                                 <a href="{{ route('students.show', $student) }}" class="text-decoration-none fw-medium">
                                     {{ $student->full_name }}
                                 </a>
@@ -87,21 +87,21 @@
                                     <br><small class="text-muted">NISN: {{ $student->nisn }}</small>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="JK">
                                 @if($student->gender === 'male')
                                     <span class="badge badge-info">L</span>
                                 @else
                                     <span class="badge badge-warning">P</span>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="Kelas">
                                 @if($student->schoolClass)
                                     {{ $student->schoolClass->full_name }}
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="Status">
                                 @if($student->status === 'active')
                                     <span class="badge badge-success">Aktif</span>
                                 @elseif($student->status === 'graduated')
@@ -112,7 +112,7 @@
                                     <span class="badge badge-secondary">Tidak Aktif</span>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="Aksi">
                                 <div class="table-actions">
                                     <a href="{{ route('students.show', $student) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
@@ -155,51 +155,3 @@
         @endif
     </div>
 </x-app-layout>
-
-<style>
-    /* Filter Form Styles */
-    .filter-form { width: 100%; }
-
-    .filter-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: flex-end;
-    }
-
-    .filter-group {
-        flex: 1;
-        min-width: 150px;
-    }
-
-    .filter-group-search {
-        flex: 2;
-        min-width: 250px;
-    }
-
-    .filter-group-actions {
-        flex: 0 0 auto;
-        display: flex;
-        gap: 8px;
-    }
-
-    @media (max-width: 768px) {
-        .filter-row {
-            flex-direction: column;
-        }
-
-        .filter-group,
-        .filter-group-search,
-        .filter-group-actions {
-            width: 100%;
-            min-width: 100%;
-        }
-    }
-
-    /* Pagination Wrapper */
-    .pagination-wrapper {
-        display: flex;
-        justify-content: center;
-        padding: 16px 0;
-    }
-</style>

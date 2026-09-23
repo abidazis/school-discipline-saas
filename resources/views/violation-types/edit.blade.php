@@ -11,8 +11,8 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Jenis Pelanggaran</h5></div>
+            <div class="card">
+                <div class="card-header"><h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Jenis Pelanggaran</h5></div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('violation-types.update', $violationType) }}">
                         @csrf @method('PATCH')

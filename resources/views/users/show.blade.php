@@ -13,7 +13,7 @@
             <h1 class="h4 mb-1">
                 <i class="bi bi-person me-2"></i>{{ $user->name }}
             </h1>
-            <span class="badge bg-{{ $user->isSuperAdmin() ? 'danger' : 'primary' }}">
+            <span class="badge {{ $user->isSuperAdmin() ? 'badge badge-danger' : 'badge badge-primary' }}">
                 {{ ucwords(str_replace('_', ' ', $user->role)) }}
             </span>
         </div>
@@ -45,8 +45,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">User Information</h5>
                 </div>
                 <div class="card-body">
@@ -56,7 +56,7 @@
 
                         <dt class="text-muted small">Role</dt>
                         <dd class="mb-3">
-                            <span class="badge bg-{{ $user->isSuperAdmin() ? 'danger' : 'primary' }}">
+                            <span class="badge {{ $user->isSuperAdmin() ? 'badge badge-danger' : 'badge badge-primary' }}">
                                 {{ ucwords(str_replace('_', ' ', $user->role)) }}
                             </span>
                         </dd>
@@ -86,8 +86,8 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Activity</h5>
                 </div>
                 <div class="card-body">

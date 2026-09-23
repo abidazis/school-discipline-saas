@@ -10,8 +10,8 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
+            <div class="card">
+                <div class="card-header">
                     <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Tambah Jenis Pelanggaran</h5>
                 </div>
                 <div class="card-body">

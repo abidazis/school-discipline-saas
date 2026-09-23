@@ -68,32 +68,30 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Tanggal</th>
-                        <th>Siswa</th>
-                        <th>Pelanggaran</th>
-                        <th>Point</th>
-                        <th>Petugas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th data-label="Tanggal">Tanggal</th>
+                        <th data-label="Siswa">Siswa</th>
+                        <th data-label="Pelanggaran">Pelanggaran</th>
+                        <th data-label="Point">Point</th>
+                        <th data-label="Status">Status</th>
+                        <th data-label="Aksi">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($violations as $v)
                         <tr>
-                            <td class="small text-nowrap">{{ $v->occurred_at->format('d/m/Y H:i') }}</td>
-                            <td>
+                            <td data-label="Tanggal" class="small text-nowrap">{{ $v->occurred_at->format('d/m/Y H:i') }}</td>
+                            <td data-label="Siswa">
                                 <a href="{{ route('students.show', $v->student) }}" class="text-decoration-none fw-medium">{{ $v->student->full_name }}</a>
                                 <br><small class="text-muted">{{ $v->student->nis }}</small>
                             </td>
-                            <td>
+                            <td data-label="Pelanggaran">
                                 <span class="badge badge-secondary">{{ $v->violationType->code }}</span> {{ $v->violationType->name }}
                                 @if($v->location)
                                     <br><small class="text-muted"><i class="bi bi-geo-alt me-1"></i>{{ $v->location }}</small>
                                 @endif
                             </td>
-                            <td><span class="badge badge-primary">{{ $v->points }} pt</span></td>
-                            <td class="small">{{ $v->officer->name }}</td>
-                            <td>
+                            <td data-label="Point"><span class="badge badge-primary">{{ $v->points }} pt</span></td>
+                            <td data-label="Status">
                                 @if($v->status === 'recorded')
                                     <span class="badge badge-warning">Tercatat</span>
                                 @elseif($v->status === 'verified')
@@ -102,7 +100,7 @@
                                     <span class="badge badge-secondary">Dibatalkan</span>
                                 @endif
                             </td>
-                            <td>
+                            <td data-label="Aksi">
                                 <div class="table-actions">
                                     <a href="{{ route('violations.show', $v) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
                                         <i class="bi bi-eye"></i>
@@ -112,7 +110,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="6">
                                 <div class="empty-state">
                                     <div class="empty-state-icon">
                                         <i class="bi bi-check-circle"></i>

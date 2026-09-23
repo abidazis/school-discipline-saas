@@ -14,9 +14,9 @@
                 <i class="bi bi-calendar3 me-2"></i>{{ $academicYear->name }}
             </h1>
             @if($academicYear->is_active)
-                <span class="badge bg-success">Aktif</span>
+                <span class="badge badge-success">Aktif</span>
             @else
-                <span class="badge bg-secondary">Tidak Aktif</span>
+                <span class="badge badge-secondary">Tidak Aktif</span>
             @endif
         </div>
         @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -49,8 +49,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Tahun Ajaran</h5>
                 </div>
                 <div class="card-body">
@@ -78,8 +78,8 @@
         </div>
 
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Kelas ({{ $academicYear->schoolClasses->count() }})</h5>
                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
                         <a href="{{ route('classes.create', ['academic_year_id' => $academicYear->id]) }}" class="btn btn-sm btn-primary">
@@ -107,7 +107,7 @@
                                     </td>
                                     <td>{{ $class->grade_level }}</td>
                                     <td>{{ $class->department?->code ?? '-' }}</td>
-                                    <td><span class="badge bg-secondary">{{ $class->students()->count() }}</span></td>
+                                    <td><span class="badge badge-secondary">{{ $class->students()->count() }}</span></td>
                                 </tr>
                             @empty
                                 <tr>

@@ -21,8 +21,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Penugasan</h5>
                 </div>
                 <div class="card-body">
@@ -31,21 +31,21 @@
                         <dd class="col-7">
                             {{ $pksDutyAssignment->schedule?->schedule_date?->format('d F Y') ?? '-' }}
                             <br>
-                            <span class="badge bg-secondary">{{ $pksDutyAssignment->schedule?->shift?->name ?? '-' }}</span>
+                            <span class="badge badge-secondary">{{ $pksDutyAssignment->schedule?->shift?->name ?? '-' }}</span>
                         </dd>
                         <dt class="col-5 text-muted small">Lokasi Piket</dt>
                         <dd class="col-7">
-                            <span class="badge bg-secondary me-1">{{ $pksDutyAssignment->location?->code ?? '-' }}</span>
+                            <span class="badge badge-secondary me-1">{{ $pksDutyAssignment->location?->code ?? '-' }}</span>
                             {{ $pksDutyAssignment->location?->name ?? '-' }}
                         </dd>
                         <dt class="col-5 text-muted small">Status</dt>
                         <dd class="col-7">
                             @if($pksDutyAssignment->status === 'assigned')
-                                <span class="badge bg-success">{{ $pksDutyAssignment->statusDisplay }}</span>
+                                <span class="badge badge-success">{{ $pksDutyAssignment->statusDisplay }}</span>
                             @elseif($pksDutyAssignment->status === 'replaced')
-                                <span class="badge bg-warning text-dark">{{ $pksDutyAssignment->statusDisplay }}</span>
+                                <span class="badge badge-warning text-dark">{{ $pksDutyAssignment->statusDisplay }}</span>
                             @else
-                                <span class="badge bg-secondary">{{ $pksDutyAssignment->statusDisplay }}</span>
+                                <span class="badge badge-secondary">{{ $pksDutyAssignment->statusDisplay }}</span>
                             @endif
                         </dd>
                         <dt class="col-5 text-muted small">Tanggal Penugasan</dt>
@@ -60,8 +60,8 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Data Anggota PKS</h5>
                 </div>
                 <div class="card-body">
@@ -77,9 +77,9 @@
                         <dt class="col-5 text-muted small">Status Anggota</dt>
                         <dd class="col-7">
                             @if($pksDutyAssignment->member?->isActive())
-                                <span class="badge bg-success">Aktif</span>
+                                <span class="badge badge-success">Aktif</span>
                             @else
-                                <span class="badge bg-secondary">{{ $pksDutyAssignment->member?->statusDisplay ?? '-' }}</span>
+                                <span class="badge badge-secondary">{{ $pksDutyAssignment->member?->statusDisplay ?? '-' }}</span>
                             @endif
                         </dd>
                     </dl>

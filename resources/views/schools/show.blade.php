@@ -14,9 +14,9 @@
                 <i class="bi bi-building me-2"></i>{{ $school->name }}
             </h1>
             @if($school->is_active)
-                <span class="badge bg-success">Active</span>
+                <span class="badge badge-success">Active</span>
             @else
-                <span class="badge bg-secondary">Inactive</span>
+                <span class="badge badge-secondary">Inactive</span>
             @endif
         </div>
         <div class="btn-group">
@@ -46,8 +46,8 @@
     <div class="row g-4">
         <!-- School Info -->
         <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">School Information</h5>
                 </div>
                 <div class="card-body">
@@ -70,8 +70,8 @@
 
         <!-- Users -->
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Users ({{ $school->users->count() }})</h5>
                     <a href="{{ route('users.create', ['school_id' => $school->id]) }}" class="btn btn-sm btn-primary">
                         <i class="bi bi-plus-lg me-1"></i>Add User
@@ -92,7 +92,7 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $user->isSuperAdmin() ? 'danger' : 'primary' }}">
+                                        <span class="badge {{ $user->isSuperAdmin() ? 'badge badge-danger' : 'badge badge-primary' }}">
                                             {{ ucwords(str_replace('_', ' ', $user->role)) }}
                                         </span>
                                     </td>

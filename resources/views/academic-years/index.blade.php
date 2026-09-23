@@ -46,25 +46,25 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Sekolah</th>
-                        <th>Tanggal Mulai</th>
-                        <th>Tanggal Selesai</th>
-                        <th>Status</th>
-                        <th>Kelas</th>
-                        <th>Aksi</th>
+                        <th data-label="Nama">Nama</th>
+                        <th data-label="Sekolah">Sekolah</th>
+                        <th data-label="Tanggal Mulai">Tanggal Mulai</th>
+                        <th data-label="Tanggal Selesai">Tanggal Selesai</th>
+                        <th data-label="Status">Status</th>
+                        <th data-label="Kelas">Kelas</th>
+                        <th data-label="Aksi">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($academicYears as $year)
                         <tr>
-                            <td><a href="{{ route('academic-years.show', $year) }}" class="text-decoration-none fw-medium">{{ $year->name }}</a></td>
-                            <td>@if($year->school)<span>{{ $year->school->name }}</span>@else<span class="text-muted">-</span>@endif</td>
-                            <td class="text-nowrap">{{ $year->start_date->format('d M Y') }}</td>
-                            <td class="text-nowrap">{{ $year->end_date->format('d M Y') }}</td>
-                            <td>@if($year->is_active)<span class="badge badge-success">Aktif</span>@else<span class="badge badge-secondary">Tidak Aktif</span>@endif</td>
-                            <td><span class="badge badge-secondary">{{ $year->schoolClasses()->count() }}</span></td>
-                            <td>
+                            <td data-label="Nama"><a href="{{ route('academic-years.show', $year) }}" class="text-decoration-none fw-medium">{{ $year->name }}</a></td>
+                            <td data-label="Sekolah">@if($year->school){{ $year->school->name }}@else<span class="text-muted">-</span>@endif</td>
+                            <td data-label="Tanggal Mulai" class="text-nowrap">{{ $year->start_date->format('d M Y') }}</td>
+                            <td data-label="Tanggal Selesai" class="text-nowrap">{{ $year->end_date->format('d M Y') }}</td>
+                            <td data-label="Status">@if($year->is_active)<span class="badge badge-success">Aktif</span>@else<span class="badge badge-secondary">Tidak Aktif</span>@endif</td>
+                            <td data-label="Kelas"><span class="badge badge-secondary">{{ $year->schoolClasses()->count() }}</span></td>
+                            <td data-label="Aksi">
                                 <div class="table-actions">
                                     <a href="{{ route('academic-years.show', $year) }}" class="btn btn-sm btn-outline-primary" title="Lihat"><i class="bi bi-eye"></i></a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())

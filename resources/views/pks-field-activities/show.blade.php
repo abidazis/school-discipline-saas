@@ -30,8 +30,8 @@
     <div class="row g-4">
         {{-- Assignment Information --}}
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Informasi Penugasan</h5>
                 </div>
                 <div class="card-body">
@@ -48,11 +48,11 @@
                         <dd class="col-7">
                             {{ $pksFieldActivity->assignment?->schedule?->schedule_date?->format('d F Y') ?? '-' }}
                             <br>
-                            <span class="badge bg-secondary">{{ $pksFieldActivity->assignment?->schedule?->shift?->name ?? '-' }}</span>
+                            <span class="badge badge-secondary">{{ $pksFieldActivity->assignment?->schedule?->shift?->name ?? '-' }}</span>
                         </dd>
                         <dt class="col-5 text-muted small">Lokasi Piket</dt>
                         <dd class="col-7">
-                            <span class="badge bg-secondary me-1">{{ $pksFieldActivity->assignment?->location?->code ?? '-' }}</span>
+                            <span class="badge badge-secondary me-1">{{ $pksFieldActivity->assignment?->location?->code ?? '-' }}</span>
                             {{ $pksFieldActivity->assignment?->location?->name ?? '-' }}
                         </dd>
                     </dl>
@@ -62,15 +62,15 @@
 
         {{-- Activity Information --}}
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom">
+            <div class="card h-100">
+                <div class="card-header">
                     <h5 class="mb-0">Detail Aktivitas</h5>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-5 text-muted small">Jenis Aktivitas</dt>
                         <dd class="col-7">
-                            <span class="badge bg-info">{{ $pksFieldActivity->activity_type_label }}</span>
+                            <span class="badge badge-info">{{ $pksFieldActivity->activity_type_label }}</span>
                         </dd>
                         <dt class="col-5 text-muted small">Tanggal</dt>
                         <dd class="col-7">{{ $pksFieldActivity->activity_date?->format('d F Y') ?? '-' }}</dd>
@@ -97,8 +97,8 @@
     {{-- Activity Content --}}
     <div class="row g-4 mt-0">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
+            <div class="card">
+                <div class="card-header">
                     <h5 class="mb-0">Catatan Lapangan</h5>
                 </div>
                 <div class="card-body">
@@ -142,8 +142,8 @@
     @if($pksFieldActivity->violation)
         <div class="row g-4 mt-0">
             <div class="col-12">
-                <div class="card border-0 shadow-sm border-danger">
-                    <div class="card-header bg-danger bg-opacity-10 border-bottom">
+                <div class="card border-danger">
+                    <div class="card-header">
                         <h5 class="mb-0 text-danger">
                             <i class="bi bi-exclamation-triangle me-2"></i>
                             Pelanggaran Terkait
@@ -165,7 +165,7 @@
                             <dd class="col-9">{{ $pksFieldActivity->violation->points ?? '-' }}</dd>
                             <dt class="col-3 text-muted small">Status</dt>
                             <dd class="col-9">
-                                <span class="badge bg-{{ $pksFieldActivity->violation->status === 'verified' ? 'success' : 'secondary' }}">
+                                <span class="badge {{ $pksFieldActivity->violation->status === 'verified' ? 'badge badge-success' : 'badge badge-secondary' }}">
                                     {{ $pksFieldActivity->violation->status_display }}
                                 </span>
                             </dd>

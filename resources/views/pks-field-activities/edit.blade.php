@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
+            <div class="card">
                 <div class="card-body p-4">
                     <form method="POST" action="{{ route('pks-field-activities.update', $pksFieldActivity) }}">
                         @csrf

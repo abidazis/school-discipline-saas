@@ -12,11 +12,11 @@
         <div>
             <h1 class="h4 mb-1">{{ $violationType->name }} <small class="text-muted">({{ $violationType->code }})</small></h1>
             <div class="d-flex gap-2 flex-wrap mt-2">
-                <span class="badge bg-{{ $violationType->is_active ? 'success' : 'secondary' }}">
+                <span class="badge {{ $violationType->is_active ? 'badge badge-success' : 'badge badge-secondary' }}">
                     {{ $violationType->is_active ? 'Aktif' : 'Tidak Aktif' }}
                 </span>
-                <span class="badge bg-secondary">{{ $violationType->category }}</span>
-                <span class="badge bg-{{ $violationType->severity === 'low' ? 'success' : ($violationType->severity === 'medium' ? 'warning' : 'danger') }}">
+                <span class="badge badge-secondary">{{ $violationType->category }}</span>
+                <span class="badge {{ $violationType->severity === 'low' ? 'badge badge-success' : ($violationType->severity === 'medium' ? 'badge badge-warning' : 'badge badge-danger') }}">
                     {{ ucfirst($violationType->severity) }}
                 </span>
             </div>
@@ -40,8 +40,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0">Detail</h5></div>
+            <div class="card h-100">
+                <div class="card-header"><h5 class="mb-0">Detail</h5></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-5 text-muted small">Kode</dt><dd class="col-7">{{ $violationType->code }}</dd>
@@ -57,14 +57,14 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0">Statistik</h5></div>
+            <div class="card h-100">
+                <div class="card-header"><h5 class="mb-0">Statistik</h5></div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-6 text-muted small">Total Pelanggaran</dt><dd class="col-6"><span class="badge bg-secondary">{{ $violationType->violations()->count() }}</span></dd>
-                        <dt class="col-6 text-muted small">Aktif</dt><dd class="col-6"><span class="badge bg-success">{{ $violationType->violations()->where('status', '!=', 'cancelled')->count() }}</span></dd>
-                        <dt class="col-6 text-muted small">Diverifikasi</dt><dd class="col-6"><span class="badge bg-primary">{{ $violationType->violations()->where('status', 'verified')->count() }}</span></dd>
-                        <dt class="col-6 text-muted small">Dibatalkan</dt><dd class="col-6"><span class="badge bg-secondary">{{ $violationType->violations()->where('status', 'cancelled')->count() }}</span></dd>
+                        <dt class="col-6 text-muted small">Total Pelanggaran</dt><dd class="col-6"><span class="badge badge-secondary">{{ $violationType->violations()->count() }}</span></dd>
+                        <dt class="col-6 text-muted small">Aktif</dt><dd class="col-6"><span class="badge badge-success">{{ $violationType->violations()->where('status', '!=', 'cancelled')->count() }}</span></dd>
+                        <dt class="col-6 text-muted small">Diverifikasi</dt><dd class="col-6"><span class="badge badge-primary">{{ $violationType->violations()->where('status', 'verified')->count() }}</span></dd>
+                        <dt class="col-6 text-muted small">Dibatalkan</dt><dd class="col-6"><span class="badge badge-secondary">{{ $violationType->violations()->where('status', 'cancelled')->count() }}</span></dd>
                     </dl>
                 </div>
             </div>

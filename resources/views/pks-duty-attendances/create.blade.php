@@ -16,7 +16,7 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8 col-xl-6">
-            <div class="card border-0 shadow-sm">
+            <div class="card">
                 <div class="card-body p-4">
                     @if($assignment)
                         <div class="alert alert-info mb-4">

@@ -61,25 +61,25 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Kelas</th>
-                        <th>Tahun Ajaran</th>
-                        <th>Tingkat</th>
-                        <th>Jurusan</th>
-                        <th>Sekolah</th>
-                        <th>Siswa</th>
-                        <th>Aksi</th>
+                        <th data-label="Kelas">Kelas</th>
+                        <th data-label="Tahun Ajaran">Tahun Ajaran</th>
+                        <th data-label="Tingkat">Tingkat</th>
+                        <th data-label="Jurusan">Jurusan</th>
+                        <th data-label="Sekolah">Sekolah</th>
+                        <th data-label="Siswa">Siswa</th>
+                        <th data-label="Aksi">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($schoolClasses as $class)
                         <tr>
-                            <td><a href="{{ route('classes.show', $class) }}" class="text-decoration-none fw-medium">{{ $class->full_name }}</a></td>
-                            <td>{{ $class->academicYear?->name ?? '-' }}</td>
-                            <td>{{ $class->grade_level }}</td>
-                            <td>{{ $class->department?->code ?? '-' }}</td>
-                            <td>@if($class->school){{ $class->school->name }}@else<span class="text-muted">-</span>@endif</td>
-                            <td><span class="badge badge-secondary">{{ $class->students()->count() }}</span></td>
-                            <td>
+                            <td data-label="Kelas"><a href="{{ route('classes.show', $class) }}" class="text-decoration-none fw-medium">{{ $class->full_name }}</a></td>
+                            <td data-label="Tahun Ajaran">{{ $class->academicYear?->name ?? '-' }}</td>
+                            <td data-label="Tingkat">{{ $class->grade_level }}</td>
+                            <td data-label="Jurusan">{{ $class->department?->code ?? '-' }}</td>
+                            <td data-label="Sekolah">@if($class->school){{ $class->school->name }}@else<span class="text-muted">-</span>@endif</td>
+                            <td data-label="Siswa"><span class="badge badge-secondary">{{ $class->students()->count() }}</span></td>
+                            <td data-label="Aksi">
                                 <div class="table-actions">
                                     <a href="{{ route('classes.show', $class) }}" class="btn btn-sm btn-outline-primary" title="Lihat"><i class="bi bi-eye"></i></a>
                                     @if(auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin())
@@ -114,3 +114,44 @@
         @endif
     </div>
 </x-app-layout>
+
+<style>
+    /* Mobile Table View */
+    @media (max-width: 768px) {
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .table tbody td {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 8px 0 !important;
+            border: none !important;
+        }
+
+        .table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: var(--gray-500);
+            font-size: 12px;
+            text-transform: uppercase;
+            min-width: 100px;
+        }
+
+        .table tbody td:last-child {
+            margin-top: 12px;
+            padding-top: 12px !important;
+            border-top: 1px solid var(--gray-100) !important;
+        }
+    }
+</style>

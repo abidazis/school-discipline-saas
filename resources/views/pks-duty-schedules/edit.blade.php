@@ -11,8 +11,8 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
+            <div class="card">
+                <div class="card-header">
                     <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Jadwal Piket</h5>
                 </div>
                 <div class="card-body">
@@ -64,7 +64,7 @@
                                                value="{{ $location->id }}"
                                                {{ in_array($location->id, old('location_ids', $pksDutySchedule->locations->pluck('id')->toArray()) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="location_{{ $location->id }}">
-                                            <span class="badge bg-secondary me-1">{{ $location->code }}</span>
+                                            <span class="badge badge-secondary me-1">{{ $location->code }}</span>
                                             {{ $location->name }}
                                         </label>
                                     </div>

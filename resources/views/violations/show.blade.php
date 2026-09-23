@@ -13,7 +13,7 @@
             <h1 class="h4 mb-1">{{ $violation->student->full_name }}</h1>
             <div class="d-flex gap-2 flex-wrap align-items-center">
                 <span class="text-muted">NIS: {{ $violation->student->nis }}</span>
-                <span class="badge bg-{{ $violation->status === 'recorded' ? 'warning' : ($violation->status === 'verified' ? 'success' : 'secondary') }}">
+                <span class="badge {{ $violation->status === 'recorded' ? 'badge badge-warning' : ($violation->status === 'verified' ? 'badge badge-success' : 'badge badge-secondary') }}">
                     {{ $violation->status === 'recorded' ? 'Tercatat' : ($violation->status === 'verified' ? 'Diverifikasi' : 'Dibatalkan') }}
                 </span>
             </div>
@@ -33,8 +33,8 @@
 
     <div class="row g-4">
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0">Detail Pelanggaran</h5></div>
+            <div class="card h-100">
+                <div class="card-header"><h5 class="mb-0">Detail Pelanggaran</h5></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-5 text-muted small">Jenis</dt><dd class="col-7">{{ $violation->violationType->code }} - {{ $violation->violationType->name }}</dd>
@@ -54,8 +54,8 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Siswa</h5>
                     <a href="{{ route('students.show', $violation->student) }}" class="btn btn-sm btn-outline-primary">Profil</a>
                 </div>
@@ -73,8 +73,8 @@
     </div>
 
     @if($violation->evidences->isNotEmpty())
-        <div class="card border-0 shadow-sm mt-4">
-            <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+        <div class="card mt-4">
+            <div class="card-header">
                 <h5 class="mb-0">Bukti Foto ({{ $violation->evidences->count() }})</h5>
             </div>
             <div class="card-body">

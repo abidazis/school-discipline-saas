@@ -234,7 +234,7 @@
                             <div class="header-user-info d-none d-md-block">
                                 <div class="header-user-name">{{ auth()->user()->name }}</div>
                                 <div class="header-user-role">
-                                    <span class="badge bg-{{ auth()->user()->isSuperAdmin() ? 'danger' : 'primary' }}">
+                                    <span class="badge {{ auth()->user()->isSuperAdmin() ? 'badge badge-danger' : 'badge badge-primary' }}">
                                         {{ ucwords(str_replace('_', ' ', auth()->user()->role)) }}
                                     </span>
                                 </div>
