@@ -1,3 +1,361 @@
+/* Bootstrap CSS */
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* ============================================
+   LAYOUT - Sidebar & Main Content
+   ============================================ */
+
+:root {
+    --sidebar-width: 260px;
+    --sidebar-bg: #1e293b;
+    --sidebar-color: #cbd5e1;
+    --sidebar-active-bg: #4f46e5;
+    --sidebar-active-color: #ffffff;
+    --sidebar-hover-bg: #334155;
+    --sidebar-section-color: #64748b;
+    --header-height: 64px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.app-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ============================================
+   SIDEBAR STYLES
+   ============================================ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+/* Sidebar Brand */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--sidebar-active-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar-brand span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.sidebar-section {
+    margin-bottom: 8px;
+}
+
+.sidebar-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sidebar-section-color);
+    padding: 12px 20px 6px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.sidebar-menu-item {
+    margin-bottom: 2px;
+}
+
+.sidebar-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--sidebar-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+}
+
+.sidebar-menu-link:hover {
+    background: var(--sidebar-hover-bg);
+    color: #ffffff;
+}
+
+.sidebar-menu-link.active {
+    background: var(--sidebar-active-bg);
+    color: var(--sidebar-active-color);
+}
+
+.sidebar-menu-icon {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Sidebar Footer (School Info) */
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-school-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-school-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.sidebar-school-email {
+    font-size: 11px;
+    color: var(--sidebar-section-color);
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+
+.app-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+/* Header */
+.app-header {
+    height: var(--header-height);
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-user-info {
+    text-align: right;
+}
+
+.header-user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.header-user-role {
+    margin-top: 2px;
+}
+
+.header-avatar {
+    width: 36px;
+    height: 36px;
+    background: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Main Content Area */
+.app-main {
+    flex: 1;
+    padding: 24px;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .app-content {
+        margin-left: 0;
+    }
+}
+
+/* Button Icon */
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-icon:hover {
+    background: #f1f5f9;
+}
+
+.btn-icon i {
+    font-size: 20px;
+    color: #475569;
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+@media (max-width: 640px) {
+    .app-header {
+        padding: 0 16px;
+    }
+
+    .app-main {
+        padding: 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        margin: 0 auto;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .welcome-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
 /* Additional page component styles */
 
 .page-header {
@@ -433,3 +791,71 @@
     .quick-actions { grid-template-columns: repeat(2, 1fr); }
     .welcome-banner { flex-direction: column; text-align: center; }
 }
+
+/* ============================================
+   DROPDOWN MENU OVERRIDES
+   ============================================ */
+
+.dropdown-menu {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    min-width: 180px;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #334155;
+    transition: all 0.15s;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.dropdown-item i {
+    color: #64748b;
+}
+
+.dropdown-divider {
+    margin: 8px 0;
+    border-color: #e2e8f0;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-md-block { display: block !important; }
+
+@media (min-width: 768px) {
+    .d-md-block { display: block !important; }
+}
+
+@media (max-width: 767px) {
+    .d-md-block { display: none !important; }
+}
+
+.gap-2 { gap: 8px !important; }
+.gap-3 { gap: 12px !important; }
+.gap-4 { gap: 16px !important; }
+.me-2 { margin-right: 8px !important; }
+.ms-2 { margin-left: 8px !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mb-2 { margin-bottom: 8px !important; }
+.mb-3 { margin-bottom: 12px !important; }
+.mb-4 { margin-bottom: 16px !important; }
+.mt-2 { margin-top: 8px !important; }
+.mt-4 { margin-top: 16px !important; }
+.p-0 { padding: 0 !important; }
+.p-2 { padding: 8px !important; }
+.p-3 { padding: 12px !important; }
+.p-4 { padding: 16px !important; }
+

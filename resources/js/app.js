@@ -1,3 +1,6 @@
+// Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // Bootstrap JS
 import 'bootstrap';
 
