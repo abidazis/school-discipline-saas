@@ -1,14 +1,15 @@
 <x-app-layout>
     <x-slot name="title">Edit Tahun Ajaran</x-slot>
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb-nav mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('academic-years.index') }}"><i class="bi bi-calendar-range"></i> Tahun Ajaran</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('academic-years.show', $academicYear) }}">{{ $academicYear->name }}</a></li>
-            <li class="breadcrumb-item active"><i class="bi bi-pencil"></i> Edit</li>
-        </ol>
-    </nav>
+    <div class="page-container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb-nav mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('academic-years.index') }}"><i class="bi bi-calendar-range"></i> Tahun Ajaran</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('academic-years.show', $academicYear) }}">{{ $academicYear->name }}</a></li>
+                <li class="breadcrumb-item active"><i class="bi bi-pencil"></i> Edit</li>
+            </ol>
+        </nav>
 
     <!-- Form Card -->
     <div class="form-card">
@@ -100,12 +101,23 @@
             </form>
         </div>
     </div>
+</div>
 </x-app-layout>
 
 <style>
+    /* Page Container - Prevent horizontal overflow */
+    .page-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
     /* Breadcrumb */
     .breadcrumb-nav {
         font-size: 14px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .breadcrumb {
@@ -166,7 +178,10 @@
         border: 1px solid var(--gray-200);
         border-radius: 16px;
         overflow: hidden;
+        width: 100%;
         max-width: 700px;
+        margin: 0 auto;
+        box-sizing: border-box;
     }
 
     .form-card-header {
@@ -415,14 +430,24 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+        .page-container {
+            padding: 0 12px;
+        }
+
+        .breadcrumb-nav {
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
         .form-card {
             border-radius: 12px;
+            margin: 0 4px;
         }
 
         .form-card-header {
             flex-direction: column;
             text-align: center;
-            padding: 20px;
+            padding: 20px 16px;
         }
 
         .form-card-icon {
@@ -432,7 +457,7 @@
         }
 
         .form-card-body {
-            padding: 20px;
+            padding: 20px 16px;
         }
 
         .form-row {
@@ -441,25 +466,48 @@
         }
 
         .form-actions {
-            flex-direction: column;
+            flex-direction: column-reverse;
+            gap: 10px;
         }
 
         .form-actions .btn {
             width: 100%;
         }
+
+        .toggle-label {
+            flex-wrap: wrap;
+        }
     }
 
     @media (max-width: 480px) {
+        .page-container {
+            padding: 0 8px;
+        }
+
         .breadcrumb {
+            font-size: 11px;
+            gap: 4px;
+        }
+
+        .breadcrumb-item {
+            gap: 4px;
+        }
+
+        .breadcrumb-item::before {
             font-size: 12px;
         }
 
+        .form-card {
+            border-radius: 10px;
+            margin: 0;
+        }
+
         .form-card-header {
-            padding: 16px;
+            padding: 16px 12px;
         }
 
         .form-card-body {
-            padding: 16px;
+            padding: 16px 12px;
         }
 
         .form-label {
@@ -467,12 +515,78 @@
         }
 
         .form-control {
-            padding: 10px 14px;
+            padding: 10px 12px;
             font-size: 14px;
         }
 
         .toggle-card {
             padding: 12px;
+        }
+
+        .toggle-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .toggle-title {
+            font-size: 13px;
+        }
+
+        .toggle-desc {
+            font-size: 11px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-actions {
+            margin-top: 24px;
+            padding-top: 18px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            font-size: 13px;
+        }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 360px) {
+        .form-card-header {
+            padding: 12px 10px;
+        }
+
+        .form-card-body {
+            padding: 14px 10px;
+        }
+
+        .form-card-icon {
+            width: 42px;
+            height: 42px;
+            font-size: 20px;
+        }
+
+        .form-card-title h5 {
+            font-size: 16px;
+        }
+
+        .toggle-card {
+            padding: 10px;
+        }
+
+        .toggle-switch {
+            width: 46px;
+            height: 24px;
+        }
+
+        .toggle-slider::before {
+            height: 18px;
+            width: 18px;
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(22px);
         }
     }
 </style>
