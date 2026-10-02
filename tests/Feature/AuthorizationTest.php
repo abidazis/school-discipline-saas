@@ -18,7 +18,7 @@ class AuthorizationTest extends TestCase
         $response = $this->actingAs($superAdmin)->get('/schools');
 
         $response->assertStatus(200);
-        $response->assertSee('Schools');
+        $response->assertSee('Sekolah');
     }
 
     public function test_super_admin_can_access_users_index(): void
@@ -28,7 +28,7 @@ class AuthorizationTest extends TestCase
         $response = $this->actingAs($superAdmin)->get('/users');
 
         $response->assertStatus(200);
-        $response->assertSee('Users');
+        $response->assertSee('Pengguna');
     }
 
     public function test_super_admin_can_create_school(): void
