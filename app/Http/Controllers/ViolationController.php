@@ -101,7 +101,13 @@ class ViolationController extends Controller
     {
         $violationTypes = ViolationType::active()->orderBy('category')->orderBy('name')->get();
 
-        return view('violations.create', compact('violationTypes'));
+        $students = Student::active()
+            ->when(auth()->user()->school_id, fn ($q) => $q->where('school_id', auth()->user()->school_id))
+            ->with('schoolClass.department')
+            ->orderBy('full_name')
+            ->get();
+
+        return view('violations.create', compact('violationTypes', 'students'));
     }
 
     /**

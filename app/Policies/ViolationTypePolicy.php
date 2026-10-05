@@ -66,11 +66,6 @@ class ViolationTypePolicy
             return false;
         }
 
-        // Cannot delete violation type that is already used
-        if ($violationType->isUsed()) {
-            return false;
-        }
-
         return $violationType->school_id === $user->school_id;
     }
 }

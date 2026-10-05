@@ -15,8 +15,8 @@ class StoreStudentRequest extends FormRequest
     {
         $user = $this->user();
 
-        // Super Admin, School Admin, and Operator can create students
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+        // Only Super Admin and School Admin can create students
+        return $user->isSuperAdmin() || $user->isSchoolAdmin();
     }
 
     /**

@@ -15,8 +15,8 @@ class UpdateStudentRequest extends FormRequest
     {
         $user = $this->user();
 
-        // Super Admin, School Admin, and Operator can update students
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+        // Only Super Admin and School Admin can update students
+        return $user->isSuperAdmin() || $user->isSchoolAdmin();
     }
 
     /**

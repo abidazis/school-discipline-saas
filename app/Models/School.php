@@ -113,20 +113,4 @@ class School extends Model
     {
         return $this->hasMany(PksDutySchedule::class);
     }
-
-    /**
-     * Check if user is super admin.
-     */
-    public function isSuperAdmin(): bool
-    {
-        return $this->role === 'super_admin';
-    }
-
-    /**
-     * Check if user is school admin.
-     */
-    public function isSchoolAdmin(): bool
-    {
-        return $this->role === 'school_admin';
-    }
 }

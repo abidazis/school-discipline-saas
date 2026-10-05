@@ -6,6 +6,7 @@ use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PksDutyLocation extends Model
@@ -50,9 +51,14 @@ class PksDutyLocation extends Model
     /**
      * Get the duty schedules through this location.
      */
-    public function dutySchedules(): HasMany
+    public function dutySchedules(): BelongsToMany
     {
-        return $this->hasMany(PksDutySchedule::class, 'pks_shift_id');
+        return $this->belongsToMany(
+            PksDutySchedule::class,
+            'pks_duty_schedule_locations',
+            'pks_duty_location_id',
+            'pks_duty_schedule_id'
+        )->withTimestamps();
     }
 
     /**

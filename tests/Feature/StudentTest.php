@@ -180,11 +180,11 @@ class StudentTest extends TestCase
         $createResponse->assertStatus(403);
     }
 
-    public function test_operator_can_create_and_edit_students(): void
+    public function test_operator_cannot_create_or_edit_students(): void
     {
         $operator = User::factory()->operator()->forSchool($this->school)->create();
 
-        // Can create
+        // Cannot create
         $response = $this->actingAs($operator)->post('/students', [
             'academic_year_id' => $this->academicYear->id,
             'school_class_id' => $this->schoolClass->id,
@@ -194,12 +194,12 @@ class StudentTest extends TestCase
             'status' => 'active',
         ]);
 
-        $response->assertRedirect('/students');
+        $response->assertStatus(403);
 
-        // Can edit
+        // Cannot edit
         $student = Student::factory()->for($this->school)->for($this->academicYear)->for($this->schoolClass)->create();
         $editResponse = $this->actingAs($operator)->get("/students/{$student->id}/edit");
-        $editResponse->assertStatus(200);
+        $editResponse->assertStatus(403);
     }
 
     public function test_tenant_isolation_for_students(): void
@@ -281,16 +281,16 @@ class StudentTest extends TestCase
         $response->assertSee($student->full_name);
     }
 
-    public function test_can_update_student(): void
+    public function test_school_admin_can_update_student(): void
     {
-        $operator = User::factory()->operator()->forSchool($this->school)->create();
+        $schoolAdmin = User::factory()->schoolAdmin()->forSchool($this->school)->create();
         $student = Student::factory()
             ->for($this->school)
             ->for($this->academicYear)
             ->for($this->schoolClass)
             ->create();
 
-        $response = $this->actingAs($operator)->patch("/students/{$student->id}", [
+        $response = $this->actingAs($schoolAdmin)->patch("/students/{$student->id}", [
             'academic_year_id' => $this->academicYear->id,
             'school_class_id' => $this->schoolClass->id,
             'nis' => $student->nis,

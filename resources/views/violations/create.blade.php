@@ -18,8 +18,16 @@
                         <div class="row">
                             <div class="col-12 col-md-6 mb-3">
                                 <label for="student_id" class="form-label">Siswa <span class="text-danger">*</span></label>
-                                <select class="form-select @error('student_id') is-invalid @enderror select2-student" id="student_id" name="student_id" required>
-                                    <option value="">Ketik NIS atau nama...</option>
+                                <select class="form-select @error('student_id') is-invalid @enderror" id="student_id" name="student_id" required>
+                                    <option value="">Pilih Siswa...</option>
+                                    @foreach($students as $student)
+                                        <option value="{{ $student->id }}"
+                                                {{ old('student_id') == $student->id ? 'selected' : '' }}
+                                                data-class="{{ $student->schoolClass?->full_name }}"
+                                                data-nis="{{ $student->nis }}">
+                                            {{ $student->full_name }} ({{ $student->nis }}) - {{ $student->schoolClass?->full_name ?? 'Tanpa Kelas' }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('student_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 <div id="studentInfo" class="small text-muted mt-1"></div>
@@ -88,5 +96,16 @@
             pointsInput.value = '';
         }
     }
+
+    // Show student class info when selected
+    document.getElementById('student_id').addEventListener('change', function() {
+        const option = this.options[this.selectedIndex];
+        const info = document.getElementById('studentInfo');
+        if (option.value && option.dataset.class) {
+            info.textContent = 'Kelas: ' + option.dataset.class;
+        } else {
+            info.textContent = '';
+        }
+    });
     </script>
 </x-app-layout>

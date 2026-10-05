@@ -71,6 +71,8 @@ class PksMemberController extends Controller
      */
     public function create(): View
     {
+        $this->authorize('create', PksMember::class);
+
         $positions = [
             PksMember::POSITION_MEMBER,
             PksMember::POSITION_KORLAP,
@@ -119,6 +121,8 @@ class PksMemberController extends Controller
      */
     public function edit(PksMember $pksMember): View
     {
+        $this->authorize('update', $pksMember);
+
         $positions = [
             PksMember::POSITION_MEMBER,
             PksMember::POSITION_KORLAP,

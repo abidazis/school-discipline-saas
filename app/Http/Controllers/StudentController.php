@@ -71,7 +71,7 @@ class StudentController extends Controller
     public function create(Request $request): View
     {
         abort_unless(
-            auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin() || auth()->user()->isOperator(),
+            auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin(),
             403
         );
 
@@ -118,6 +118,11 @@ class StudentController extends Controller
      */
     public function edit(Student $student): View
     {
+        abort_unless(
+            auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin(),
+            403
+        );
+
         $academicYears = AcademicYear::orderBy('name', 'desc')->get();
         $classes = SchoolClass::with('department')
             ->orderBy('grade_level')
@@ -143,6 +148,11 @@ class StudentController extends Controller
      */
     public function destroy(Student $student): RedirectResponse
     {
+        abort_unless(
+            auth()->user()->isSuperAdmin() || auth()->user()->isSchoolAdmin(),
+            403
+        );
+
         $student->delete();
 
         return redirect()->route('students.index')

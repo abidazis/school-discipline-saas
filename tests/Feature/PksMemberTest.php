@@ -152,6 +152,14 @@ class PksMemberTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_operator_cannot_access_create_and_edit_forms(): void
+    {
+        $member = PksMember::factory()->for($this->student)->for($this->school)->create();
+
+        $this->actingAs($this->operator)->get(route('pks-members.create'))->assertStatus(403);
+        $this->actingAs($this->operator)->get(route('pks-members.edit', $member))->assertStatus(403);
+    }
+
     public function test_operator_cannot_update_pks_member(): void
     {
         $member = PksMember::factory()->for($this->student)->for($this->school)->create();

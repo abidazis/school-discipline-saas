@@ -48,6 +48,8 @@ class ViolationTypeController extends Controller
      */
     public function create(): View
     {
+        $this->authorize('create', ViolationType::class);
+
         return view('violation-types.create');
     }
 
@@ -77,6 +79,8 @@ class ViolationTypeController extends Controller
      */
     public function edit(ViolationType $violationType): View
     {
+        $this->authorize('update', $violationType);
+
         return view('violation-types.edit', compact('violationType'));
     }
 
@@ -96,6 +100,8 @@ class ViolationTypeController extends Controller
      */
     public function destroy(ViolationType $violationType): RedirectResponse
     {
+        $this->authorize('delete', $violationType);
+
         if ($violationType->isUsed()) {
             return redirect()->route('violation-types.show', $violationType)
                 ->with('error', 'Jenis pelanggaran sudah digunakan dalam riwayat. Nonaktifkan saja.');

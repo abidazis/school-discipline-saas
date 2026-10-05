@@ -80,13 +80,13 @@
                                 </div>
                             </td>
                             <td data-label="Users">
-                                <span class="badge badge-secondary">{{ $school->users()->count() }}</span>
+                                <span class="badge badge-secondary"><i class="bi bi-people"></i>{{ $school->users()->count() }}</span>
                             </td>
                             <td data-label="Status">
                                 @if($school->is_active)
-                                    <span class="badge badge-success">Aktif</span>
+                                    <span class="badge badge-success badge-dot">Aktif</span>
                                 @else
-                                    <span class="badge badge-secondary">Tidak Aktif</span>
+                                    <span class="badge badge-secondary badge-dot">Tidak Aktif</span>
                                 @endif
                             </td>
                             <td data-label="Aksi">

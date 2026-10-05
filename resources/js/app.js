@@ -1,6 +1,4 @@
-// Bootstrap CSS
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+// Bootstrap CSS is imported via resources/css/app.css (avoid double-loading that overrides custom styles)
 // Bootstrap JS
 import 'bootstrap';
 

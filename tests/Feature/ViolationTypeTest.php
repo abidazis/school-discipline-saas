@@ -169,6 +169,21 @@ class ViolationTypeTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_operator_cannot_access_create_and_edit_forms(): void
+    {
+        $type = ViolationType::factory()->for($this->school)->create();
+
+        $this->actingAs($this->operator)->get(route('violation-types.create'))->assertStatus(403);
+        $this->actingAs($this->operator)->get(route('violation-types.edit', $type))->assertStatus(403);
+    }
+
+    public function test_operator_cannot_delete_violation_type(): void
+    {
+        $type = ViolationType::factory()->for($this->school)->create();
+
+        $this->actingAs($this->operator)->delete(route('violation-types.destroy', $type))->assertStatus(403);
+    }
+
     public function test_teacher_can_view_violation_types(): void
     {
         ViolationType::factory()->for($this->school)->create();
