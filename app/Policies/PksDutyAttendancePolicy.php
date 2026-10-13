@@ -24,7 +24,32 @@ class PksDutyAttendancePolicy
             return true;
         }
 
-        return $pksDutyAttendance->school_id === $user->school_id;
+        // Check school access
+        if ($pksDutyAttendance->school_id !== $user->school_id) {
+            return false;
+        }
+
+        // For PKS Team, allow viewing their own attendance only
+        if ($user->isPksTeam()) {
+            // Load the relationship if not already loaded
+            if (!$pksDutyAttendance->relationLoaded('assignment')) {
+                $pksDutyAttendance->load('assignment.member');
+            }
+
+            $assignmentMember = $pksDutyAttendance->assignment?->member;
+            if (!$assignmentMember) {
+                return false;
+            }
+
+            // Check if member is linked to user
+            if (!$assignmentMember->user_id) {
+                return false;
+            }
+
+            return $assignmentMember->user_id === $user->id;
+        }
+
+        return true;
     }
 
     /**
@@ -32,7 +57,7 @@ class PksDutyAttendancePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator() || $user->isPksTeam();
     }
 
     /**

@@ -18,8 +18,27 @@ class PksDutyAttendanceController extends Controller
      */
     public function index(Request $request): View
     {
+        $user = auth()->user();
+        $schoolId = $user->school_id;
+
         $query = PksDutyAttendance::query()
             ->with(['assignment.member.student', 'assignment.schedule.shift', 'assignment.location', 'recordedBy']);
+
+        // Apply tenant scope
+        $query->where('school_id', $schoolId);
+
+        // For PKS Team, only show their own attendances
+        if ($user->isPksTeam()) {
+            $pksMember = $user->pksMember;
+            if ($pksMember) {
+                $query->whereHas('assignment', function ($q) use ($pksMember) {
+                    $q->where('pks_member_id', $pksMember->id);
+                });
+            } else {
+                // PKS Team without member record - return empty
+                $query->whereRaw('1 = 0');
+            }
+        }
 
         // Apply filters
         if ($request->filled('search')) {
@@ -66,13 +85,19 @@ class PksDutyAttendanceController extends Controller
 
         $attendances = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
-        // Get filter options
-        $schoolId = auth()->user()->school_id;
+        // Get filter options - only schedules that have assignments for this member (for PKS Team)
+        $schedulesQuery = PksDutySchedule::query()->where('school_id', $schoolId);
 
-        $schedules = PksDutySchedule::query()
-            ->when($schoolId, fn ($q) => $q->where('school_id', $schoolId))
-            ->orderBy('schedule_date', 'desc')
-            ->get();
+        if ($user->isPksTeam()) {
+            $pksMember = $user->pksMember;
+            if ($pksMember) {
+                $schedulesQuery->whereHas('assignments', function ($q) use ($pksMember) {
+                    $q->where('pks_member_id', $pksMember->id);
+                });
+            }
+        }
+
+        $schedules = $schedulesQuery->orderBy('schedule_date', 'desc')->get();
 
         return view('pks-duty-attendances.index', compact('attendances', 'schedules'));
     }
@@ -84,17 +109,51 @@ class PksDutyAttendanceController extends Controller
     {
         $this->authorize('create', PksDutyAttendance::class);
 
-        $schoolId = auth()->user()->school_id;
+        $user = auth()->user();
+        $schoolId = $user->school_id;
 
         // Get assignment if provided in query string
         $assignment = null;
         if ($request->filled('assignment_id')) {
-            $assignment = PksDutyAssignment::with(['member.student', 'member.student.schoolClass', 'schedule.shift', 'location'])
-                ->when($schoolId, fn ($q) => $q->where('school_id', $schoolId))
-                ->find($request->assignment_id);
+            $assignmentQuery = PksDutyAssignment::with(['member.student', 'member.student.schoolClass', 'schedule.shift', 'location'])
+                ->where('school_id', $schoolId);
+
+            // For PKS Team, verify assignment belongs to them
+            if ($user->isPksTeam()) {
+                $pksMember = $user->pksMember;
+                if ($pksMember) {
+                    $assignmentQuery->where('pks_member_id', $pksMember->id);
+                }
+            }
+
+            $assignment = $assignmentQuery->find($request->assignment_id);
+
+            // Check if attendance already exists
+            if ($assignment && $assignment->attendance) {
+                return redirect()->route('pks-duty-attendances.show', $assignment->attendance)
+                    ->with('info', 'Kehadiran untuk penugasan ini sudah tercatat.');
+            }
         }
 
-        return view('pks-duty-attendances.create', compact('assignment'));
+        // Get eligible assignments for dropdown (for non-PKS or when no assignment selected)
+        $eligibleAssignments = null;
+        if (!$assignment && $user->isPksTeam()) {
+            $pksMember = $user->pksMember;
+            if ($pksMember) {
+                $eligibleAssignments = PksDutyAssignment::with(['member.student', 'schedule.shift', 'location', 'attendance'])
+                    ->where('school_id', $schoolId)
+                    ->where('pks_member_id', $pksMember->id)
+                    ->where('status', PksDutyAssignment::STATUS_ASSIGNED)
+                    ->whereDoesntHave('attendance')
+                    ->whereHas('schedule', function ($q) {
+                        $q->whereIn('status', [PksDutySchedule::STATUS_SCHEDULED, PksDutySchedule::STATUS_COMPLETED]);
+                    })
+                    ->orderBy('schedule.schedule_date', 'desc')
+                    ->get();
+            }
+        }
+
+        return view('pks-duty-attendances.create', compact('assignment', 'eligibleAssignments'));
     }
 
     /**
@@ -104,20 +163,62 @@ class PksDutyAttendanceController extends Controller
     {
         $this->authorize('create', PksDutyAttendance::class);
 
+        $user = auth()->user();
         $validated = $request->validated();
 
-        $attendance = PksDutyAttendance::create([
-            'school_id' => $this->getSchoolId(),
+        // Additional validation for PKS Team - verify assignment belongs to them
+        if ($user->isPksTeam()) {
+            $pksMember = $user->pksMember;
+            if (!$pksMember) {
+                return redirect()->back()->with('error', 'Profil PKS tidak ditemukan.');
+            }
+
+            $assignment = PksDutyAssignment::find($validated['pks_duty_assignment_id']);
+            if (!$assignment || $assignment->pks_member_id !== $pksMember->id) {
+                return redirect()->back()->with('error', 'Penugasan tidak valid.');
+            }
+
+            // Check if attendance already exists
+            if ($assignment->attendance) {
+                return redirect()->route('pks-duty-attendances.show', $assignment->attendance)
+                    ->with('info', 'Kehadiran untuk penugasan ini sudah tercatat.');
+            }
+        }
+
+        // Prepare attendance data
+        $attendanceData = [
+            'school_id' => $user->school_id,
             'pks_duty_assignment_id' => $validated['pks_duty_assignment_id'],
             'status' => $validated['status'],
             'check_in_at' => $validated['check_in_at'] ?? null,
             'check_out_at' => $validated['check_out_at'] ?? null,
             'notes' => $validated['notes'] ?? null,
             'recorded_by' => auth()->id(),
-        ]);
+        ];
+
+        // Handle photo upload for PKS Team
+        if ($user->isPksTeam() && $request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $hash = hash_file('sha256', $photo->getRealPath());
+
+            // Store photo
+            $path = $photo->store('attendances/' . $user->school_id, 'public');
+
+            $attendanceData['photo_path'] = $path;
+            $attendanceData['photo_hash'] = $hash;
+            $attendanceData['photo_captured_at'] = now();
+        }
+
+        $attendance = PksDutyAttendance::create($attendanceData);
 
         // Get the assignment to redirect back to schedule
         $assignment = PksDutyAssignment::find($validated['pks_duty_assignment_id']);
+
+        // For PKS Team, redirect to attendances list instead of schedule
+        if ($user->isPksTeam()) {
+            return redirect()->route('pks-duty-attendances.index')
+                ->with('success', 'Kehadiran berhasil disimpan.');
+        }
 
         return redirect()->route('pks-duty-schedules.show', $assignment->pks_duty_schedule_id)
             ->with('success', 'Kehadiran berhasil disimpan.');
@@ -128,6 +229,11 @@ class PksDutyAttendanceController extends Controller
      */
     public function show(PksDutyAttendance $pksDutyAttendance): View
     {
+        // Load relationships before authorization check (needed for PKS Team policy)
+        $pksDutyAttendance->load([
+            'assignment.member',
+        ]);
+
         $this->authorize('view', $pksDutyAttendance);
 
         $pksDutyAttendance->load([

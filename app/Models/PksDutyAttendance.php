@@ -30,6 +30,9 @@ class PksDutyAttendance extends Model
         'status',
         'check_in_at',
         'check_out_at',
+        'photo_path',
+        'photo_hash',
+        'photo_captured_at',
         'notes',
         'recorded_by',
     ];
@@ -126,5 +129,24 @@ class PksDutyAttendance extends Model
     public function isExcused(): bool
     {
         return $this->status === self::STATUS_EXCUSED;
+    }
+
+    /**
+     * Check if photo verification is required.
+     */
+    public function requiresPhoto(): bool
+    {
+        return in_array($this->status, [self::STATUS_PRESENT, self::STATUS_LATE]);
+    }
+
+    /**
+     * Get the photo URL.
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if (!$this->photo_path) {
+            return null;
+        }
+        return asset('storage/' . $this->photo_path);
     }
 }

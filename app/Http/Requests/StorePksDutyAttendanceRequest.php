@@ -17,7 +17,8 @@ class StorePksDutyAttendanceRequest extends FormRequest
     {
         return $this->user()->isSuperAdmin() ||
                $this->user()->isSchoolAdmin() ||
-               $this->user()->isOperator();
+               $this->user()->isOperator() ||
+               $this->user()->isPksTeam();
     }
 
     /**
@@ -28,8 +29,9 @@ class StorePksDutyAttendanceRequest extends FormRequest
     public function rules(): array
     {
         $schoolId = $this->getSchoolId();
+        $user = $this->user();
 
-        return [
+        $rules = [
             'pks_duty_assignment_id' => [
                 'required',
                 'integer',
@@ -50,6 +52,16 @@ class StorePksDutyAttendanceRequest extends FormRequest
             'check_out_at' => ['nullable', 'date', 'after_or_equal:check_in_at'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ];
+
+        // For PKS Team, require photo for present/late status
+        if ($user->isPksTeam()) {
+            $status = $this->input('status');
+            if (in_array($status, [PksDutyAttendance::STATUS_PRESENT, PksDutyAttendance::STATUS_LATE])) {
+                $rules['photo'] = ['required'];
+            }
+        }
+
+        return $rules;
     }
 
     /**
@@ -180,6 +192,7 @@ class StorePksDutyAttendanceRequest extends FormRequest
             'check_in_at.date' => 'Format jam masuk tidak valid.',
             'check_out_at.date' => 'Format jam pulang tidak valid.',
             'check_out_at.after_or_equal' => 'Jam pulang tidak boleh sebelum jam masuk.',
+            'photo.required' => 'Foto kehadiran harus diambil.',
         ];
     }
 
