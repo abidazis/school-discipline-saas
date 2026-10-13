@@ -427,7 +427,7 @@ class PksReportTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_teacher_can_view_daily_report(): void
+    public function test_teacher_cannot_view_daily_report(): void
     {
         $teacher = User::factory()->create([
             'school_id' => $this->schoolA->id,
@@ -437,7 +437,8 @@ class PksReportTest extends TestCase
 
         $response = $this->get(route('reports.daily'));
 
-        $response->assertStatus(200);
+        // Teacher should not have access to PKS operational reports
+        $response->assertStatus(403);
     }
 
     // ==========================================

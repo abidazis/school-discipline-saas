@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="title">Catatan Pelanggaran</x-slot>
+    <x-slot name="title">Riwayat Pelanggaran</x-slot>
 
     <!-- Page Header -->
     <div class="page-header">
@@ -7,129 +7,110 @@
             <div class="page-title-icon" style="background: #fef3c7; color: #d97706;">
                 <i class="bi bi-exclamation-triangle"></i>
             </div>
-            Pelanggaran Siswa
+            Riwayat Pelanggaran
         </h1>
-        <a href="{{ route('violations.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>Catat Pelanggaran
+        <a href="{{ route('violations.create') }}" class="btn btn-warning">
+            <i class="bi bi-plus-lg"></i>Catat Baru
         </a>
     </div>
 
-    <!-- Filters Card -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form method="GET" class="filter-form">
-                <div class="filter-row">
-                    <div class="filter-group filter-group-search">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" name="search" placeholder="Nama/NIS siswa..." value="{{ request('search') }}">
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select" name="academic_year_id">
-                            <option value="">Semua Tahun</option>
-                            @foreach($academicYears as $year)
-                                <option value="{{ $year->id }}" {{ request('academic_year_id') == $year->id ? 'selected' : '' }}>{{ $year->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select" name="violation_type_id">
-                            <option value="">Semua Jenis</option>
-                            @foreach($violationTypes as $type)
-                                <option value="{{ $type->id }}" {{ request('violation_type_id') == $type->id ? 'selected' : '' }}>{{ $type->code }} - {{ Str::limit($type->name, 20) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select" name="status">
-                            <option value="">Semua Status</option>
-                            <option value="recorded" {{ request('status') === 'recorded' ? 'selected' : '' }}>Tercatat</option>
-                            <option value="verified" {{ request('status') === 'verified' ? 'selected' : '' }}>Diverifikasi</option>
-                            <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
-                        </select>
-                    </div>
-                    <div class="filter-group filter-group-actions">
-                        <button type="submit" class="btn btn-outline-primary">
-                            <i class="bi bi-filter"></i>Filter
-                        </button>
-                        <a href="{{ route('violations.index') }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                        </a>
-                    </div>
+    <!-- Simple Search (Mobile Friendly) -->
+    <div class="card mb-3">
+        <div class="card-body py-2">
+            <form method="GET" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                    <input type="text"
+                           class="form-control"
+                           name="search"
+                           placeholder="Cari nama/NIS..."
+                           value="{{ request('search') }}">
                 </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+                @if(request('search'))
+                    <a href="{{ route('violations.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                @endif
             </form>
         </div>
     </div>
 
-    <!-- List Card -->
+    <!-- List Card - Mobile Friendly Card View -->
     <div class="card">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th data-label="Tanggal">Tanggal</th>
-                        <th data-label="Siswa">Siswa</th>
-                        <th data-label="Pelanggaran">Pelanggaran</th>
-                        <th data-label="Point">Point</th>
-                        <th data-label="Status">Status</th>
-                        <th data-label="Aksi">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($violations as $v)
-                        <tr>
-                            <td data-label="Tanggal" class="small text-nowrap">{{ $v->occurred_at->format('d/m/Y H:i') }}</td>
-                            <td data-label="Siswa">
-                                <a href="{{ route('students.show', $v->student) }}" class="text-decoration-none fw-medium">{{ $v->student->full_name }}</a>
-                                <br><small class="text-muted">{{ $v->student->nis }}</small>
-                            </td>
-                            <td data-label="Pelanggaran">
-                                <span class="badge badge-secondary">{{ $v->violationType->code }}</span> {{ $v->violationType->name }}
-                                @if($v->location)
-                                    <br><small class="text-muted"><i class="bi bi-geo-alt me-1"></i>{{ $v->location }}</small>
-                                @endif
-                            </td>
-                            <td data-label="Point"><span class="badge badge-primary">{{ $v->points }} pt</span></td>
-                            <td data-label="Status">
-                                @if($v->status === 'recorded')
-                                    <span class="badge badge-warning">Tercatat</span>
-                                @elseif($v->status === 'verified')
-                                    <span class="badge badge-success">Diverifikasi</span>
-                                @else
-                                    <span class="badge badge-secondary">Dibatalkan</span>
-                                @endif
-                            </td>
-                            <td data-label="Aksi">
-                                <div class="table-actions">
-                                    <a href="{{ route('violations.show', $v) }}" class="btn btn-sm btn-outline-primary" title="Lihat">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6">
-                                <div class="empty-state">
-                                    <div class="empty-state-icon">
-                                        <i class="bi bi-check-circle"></i>
-                                    </div>
-                                    <div class="empty-state-title">Belum ada pelanggaran</div>
-                                    <div class="empty-state-text">Tidak ada catatan pelanggaran untuk periode ini.</div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        @forelse($violations as $v)
+            <a href="{{ route('violations.show', $v) }}"
+               class="text-decoration-none text-dark border-bottom p-3 d-block">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <h6 class="mb-0">
+                            <i class="bi bi-person text-warning me-1"></i>{{ $v->student->full_name }}
+                        </h6>
+                        <small class="text-muted">NIS: {{ $v->student->nis }}</small>
+                    </div>
+                    <span class="badge {{ $v->status === 'recorded' ? 'bg-warning text-dark' : ($v->status === 'verified' ? 'bg-success' : 'bg-secondary') }}">
+                        @if($v->status === 'recorded')
+                            Tercatat
+                        @elseif($v->status === 'verified')
+                            Diverifikasi
+                        @else
+                            Dibatalkan
+                        @endif
+                    </span>
+                </div>
+                <div class="row g-2 small">
+                    <div class="col-7">
+                        <div class="text-truncate">
+                            <span class="badge bg-secondary mb-1">{{ $v->violationType->code }}</span>
+                            {{ $v->violationType->name }}
+                        </div>
+                        @if($v->location)
+                            <div class="text-muted">
+                                <i class="bi bi-geo-alt me-1"></i>{{ $v->location }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-5 text-end">
+                        <div class="text-danger fw-bold">{{ $v->points }} poin</div>
+                        <div class="text-muted">
+                            <i class="bi bi-clock me-1"></i>{{ $v->occurred_at->format('d/m H:i') }}
+                        </div>
+                    </div>
+                </div>
+                @if($v->evidences->isNotEmpty())
+                    <div class="mt-2">
+                        <span class="badge bg-info">
+                            <i class="bi bi-camera me-1"></i>{{ $v->evidences->count() }} foto
+                        </span>
+                    </div>
+                @endif
+            </a>
+        @empty
+            <div class="card-body text-center py-5">
+                <div class="text-muted mb-3">
+                    <i class="bi bi-check-circle" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="text-muted">Belum Ada Pelanggaran</h5>
+                <p class="text-muted small">Tidak ada catatan pelanggaran untuk pencarian ini.</p>
+                <a href="{{ route('violations.create') }}" class="btn btn-warning mt-2">
+                    <i class="bi bi-plus-lg me-2"></i>Catat Pelanggaran
+                </a>
+            </div>
+        @endforelse
+
         @if($violations->hasPages())
             <div class="card-footer">
-                <div class="pagination-wrapper">
-                    {{ $violations->links() }}
-                </div>
+                {{ $violations->withQueryString()->links() }}
             </div>
         @endif
     </div>
+
+    <style>
+        @media (min-width: 768px) {
+            .card a.border-bottom:hover {
+                background-color: #f8f9fa;
+            }
+        }
+    </style>
 </x-app-layout>

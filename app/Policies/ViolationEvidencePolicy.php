@@ -34,11 +34,12 @@ class ViolationEvidencePolicy
      */
     public function create(User $user): bool
     {
-        // Super admin, school admin, operator, and teacher can add evidence
+        // Super admin, school admin, operator, teacher, and PKS team can add evidence
         return $user->isSuperAdmin() ||
                $user->isSchoolAdmin() ||
                $user->isOperator() ||
-               $user->isTeacher();
+               $user->isTeacher() ||
+               $user->isPksTeam();
     }
 
     /**
@@ -50,6 +51,7 @@ class ViolationEvidencePolicy
             return true;
         }
 
+        // Only school admin and operator can delete evidence (NOT PKS team)
         if (!$user->isSchoolAdmin() && !$user->isOperator()) {
             return false;
         }

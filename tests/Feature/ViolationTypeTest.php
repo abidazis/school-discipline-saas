@@ -184,13 +184,14 @@ class ViolationTypeTest extends TestCase
         $this->actingAs($this->operator)->delete(route('violation-types.destroy', $type))->assertStatus(403);
     }
 
-    public function test_teacher_can_view_violation_types(): void
+    public function test_teacher_cannot_view_violation_types(): void
     {
         ViolationType::factory()->for($this->school)->create();
 
         $response = $this->actingAs($this->teacher)->get(route('violation-types.index'));
 
-        $response->assertStatus(200);
+        // Teacher should not have access to manage violation types
+        $response->assertStatus(403);
     }
 
     public function test_tenant_isolation_violation_types(): void

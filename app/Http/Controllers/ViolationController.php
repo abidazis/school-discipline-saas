@@ -27,7 +27,7 @@ class ViolationController extends Controller
     public function index(Request $request): View
     {
         $query = Violation::query()
-            ->with(['student', 'violationType', 'officer', 'academicYear', 'schoolClass.department']);
+            ->with(['student', 'violationType', 'officer', 'academicYear', 'schoolClass.department', 'evidences']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -82,9 +82,14 @@ class ViolationController extends Controller
 
         $academicYears = AcademicYear::orderBy('name', 'desc')->get();
         $violationTypes = ViolationType::active()->orderBy('name')->get();
-        $officers = User::whereIn('role', [User::ROLE_SCHOOL_ADMIN, User::ROLE_OPERATOR, User::ROLE_TEACHER])
-            ->when(auth()->user()->school_id, fn ($q) => $q->where('school_id', auth()->user()->school_id))
-            ->orderBy('name')->get();
+
+        // Only load officers for admin roles, not for PKS Team
+        $officers = null;
+        if (!auth()->user()->isPksTeam()) {
+            $officers = User::whereIn('role', [User::ROLE_SCHOOL_ADMIN, User::ROLE_OPERATOR, User::ROLE_TEACHER])
+                ->when(auth()->user()->school_id, fn ($q) => $q->where('school_id', auth()->user()->school_id))
+                ->orderBy('name')->get();
+        }
 
         return view('violations.index', compact(
             'violations',
@@ -115,10 +120,22 @@ class ViolationController extends Controller
      */
     public function store(StoreViolationRequest $request): RedirectResponse
     {
+        // Check policy authorization
+        if (auth()->user()->cannot('create', Violation::class)) {
+            abort(403);
+        }
+
         $validated = $request->validated();
 
         $student = Student::with('schoolClass')->findOrFail($validated['student_id']);
         $violationType = ViolationType::findOrFail($validated['violation_type_id']);
+
+        // Cross-tenant validation: ensure student belongs to user's school
+        if (auth()->user()->school_id && $student->school_id !== auth()->user()->school_id) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['student_id' => 'Siswa tidak ditemukan.']);
+        }
 
         // Use transaction for data integrity
         $violation = DB::transaction(function () use ($validated, $student, $violationType) {
@@ -163,6 +180,12 @@ class ViolationController extends Controller
      */
     public function edit(Violation $violation): View|RedirectResponse
     {
+        // Check policy authorization
+        if (auth()->user()->cannot('update', $violation)) {
+            return redirect()->route('violations.show', $violation)
+                ->with('error', 'Anda tidak memiliki akses untuk mengedit pelanggaran ini.');
+        }
+
         if (!$violation->canEdit()) {
             return redirect()->route('violations.show', $violation)
                 ->with('error', 'Pelanggaran yang sudah diverifikasi atau dibatalkan tidak dapat diedit.');
@@ -251,12 +274,12 @@ class ViolationController extends Controller
      */
     public function destroyEvidence(ViolationEvidence $evidence): RedirectResponse
     {
-        $violation = $evidence->violation;
-
-        // Check authorization
-        if ($evidence->violation->school_id !== auth()->user()->school_id && !auth()->user()->isSuperAdmin()) {
+        // Check authorization using policy
+        if (auth()->user()->cannot('delete', $evidence)) {
             abort(403);
         }
+
+        $violation = $evidence->violation;
 
         $evidence->delete();
 

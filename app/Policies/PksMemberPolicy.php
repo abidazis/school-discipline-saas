@@ -52,4 +52,20 @@ class PksMemberPolicy
 
         return $pksMember->school_id === $user->school_id;
     }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, PksMember $pksMember): bool
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        if (!$user->isSchoolAdmin()) {
+            return false;
+        }
+
+        return $pksMember->school_id === $user->school_id;
+    }
 }

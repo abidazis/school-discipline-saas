@@ -296,6 +296,9 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        // Seed PKS Team members with user accounts
+        $this->call(PksTeamSeeder::class);
+
         $this->command->info('Demo data seeded.');
     }
 }

@@ -58,5 +58,32 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewMonthlyPksReport', [PksReportPolicy::class, 'viewMonthly']);
         Gate::define('exportMonthlyExcel', [PksReportPolicy::class, 'exportMonthlyExcel']);
         Gate::define('accessSchoolForReport', [PksReportPolicy::class, 'accessSchool']);
+
+        // Gates for PKS Team access
+        Gate::define('pks-team-access', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam();
+        });
+
+        Gate::define('view-violations', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam() || $user->isOperator() || $user->isTeacher();
+        });
+
+        Gate::define('create-violations', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam() || $user->isOperator() || $user->isTeacher();
+        });
+
+        // PKS Operational - hanya Super Admin, School Admin, Operator
+        Gate::define('view-pks-operational', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+        });
+
+        // PKS Team can view schedules and assignments (read-only access)
+        Gate::define('pks-schedule-view', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator() || $user->isPksTeam();
+        });
+
+        Gate::define('manage-master-data', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin();
+        });
     }
 }

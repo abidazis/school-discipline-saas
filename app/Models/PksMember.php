@@ -36,6 +36,7 @@ class PksMember extends Model
      */
     protected $fillable = [
         'school_id',
+        'user_id',
         'student_id',
         'position',
         'status',
@@ -60,6 +61,14 @@ class PksMember extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    /**
+     * Get the user account associated with this PKS member.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**

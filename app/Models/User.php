@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -24,6 +25,7 @@ class User extends Authenticatable
     public const ROLE_SCHOOL_ADMIN = 'school_admin';
     public const ROLE_OPERATOR = 'operator';
     public const ROLE_TEACHER = 'teacher';
+    public const ROLE_PKS_TEAM = 'pks_team';
 
     /**
      * Get the attributes that should be cast.
@@ -79,6 +81,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is a PKS team member.
+     */
+    public function isPksTeam(): bool
+    {
+        return $this->role === self::ROLE_PKS_TEAM;
+    }
+
+    /**
      * Check if user has access to all schools (super admin).
      */
     public function hasAccessToAllSchools(): bool
@@ -96,5 +106,13 @@ class User extends Authenticatable
         }
 
         return $this->school_id === $schoolId;
+    }
+
+    /**
+     * Get the PKS member profile associated with this user.
+     */
+    public function pksMember(): HasOne
+    {
+        return $this->hasOne(PksMember::class);
     }
 }

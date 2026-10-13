@@ -7,8 +7,11 @@ use App\Http\Requests\UpdatePksMemberRequest;
 use App\Models\PksMember;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PksMemberController extends Controller
@@ -100,10 +103,46 @@ class PksMemberController extends Controller
                 ->with('error', 'Siswa ini sudah menjadi anggota PKS aktif.');
         }
 
-        PksMember::create($validated);
+        // Use transaction to create both PKS member and User account
+        $pksMember = DB::transaction(function () use ($validated, $student) {
+            // Generate email from NIS (or use unique email)
+            $email = strtolower($student->nis) . '@pks.local';
+
+            // Check if email already exists, append random string if needed
+            $counter = 1;
+            $originalEmail = $email;
+            while (User::where('email', $email)->exists()) {
+                $email = strtolower($student->nis) . $counter . '@pks.local';
+                $counter++;
+            }
+
+            // Generate default password (NIS as default password)
+            $defaultPassword = $student->nis;
+
+            // Create user account with pks_team role
+            $user = User::create([
+                'school_id' => $student->school_id,
+                'name' => $student->full_name,
+                'email' => $email,
+                'password' => bcrypt($defaultPassword),
+                'role' => User::ROLE_PKS_TEAM,
+            ]);
+
+            // Create PKS member with link to user
+            return PksMember::create([
+                'school_id' => $student->school_id,
+                'user_id' => $user->id,
+                'student_id' => $validated['student_id'],
+                'position' => $validated['position'],
+                'status' => $validated['status'] ?? PksMember::STATUS_ACTIVE,
+                'joined_at' => $validated['joined_at'],
+                'ended_at' => $validated['ended_at'] ?? null,
+                'notes' => $validated['notes'] ?? null,
+            ]);
+        });
 
         return redirect()->route('pks-members.index')
-            ->with('success', 'Anggota PKS berhasil ditambahkan.');
+            ->with('success', 'Anggota PKS berhasil ditambahkan. Akun login: email=' . $pksMember->user->email . ', password default: NIS siswa');
     }
 
     /**
@@ -161,5 +200,26 @@ class PksMemberController extends Controller
 
         return redirect()->route('pks-members.show', $pksMember)
             ->with('success', 'Data anggota PKS berhasil diperbarui.');
+    }
+
+    /**
+     * Remove the specified PKS member and associated user account.
+     */
+    public function destroy(PksMember $pksMember): RedirectResponse
+    {
+        $this->authorize('delete', $pksMember);
+
+        DB::transaction(function () use ($pksMember) {
+            // Delete associated user account if exists
+            if ($pksMember->user_id) {
+                $pksMember->user()->delete();
+            }
+
+            // Delete the PKS member
+            $pksMember->delete();
+        });
+
+        return redirect()->route('pks-members.index')
+            ->with('success', 'Anggota PKS dan akun login berhasil dihapus.');
     }
 }

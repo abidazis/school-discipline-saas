@@ -65,132 +65,174 @@
                         </div>
                     @endif
 
-                    <!-- Akademik Section -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">Akademik</div>
-                        <ul class="sidebar-menu">
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('academic-years.index') }}" class="sidebar-menu-link {{ request()->routeIs('academic-years.*') ? 'active' : '' }}">
-                                    <i class="bi bi-calendar-range sidebar-menu-icon"></i>
-                                    <span>Tahun Ajaran</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('departments.index') }}" class="sidebar-menu-link {{ request()->routeIs('departments.*') ? 'active' : '' }}">
-                                    <i class="bi bi-diagram-3 sidebar-menu-icon"></i>
-                                    <span>Program Keahlian</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('classes.index') }}" class="sidebar-menu-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">
-                                    <i class="bi bi-chalkboard sidebar-menu-icon"></i>
-                                    <span>Kelas</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- PKS Team Section - Limited Menu -->
+                    @if(auth()->user()->isPksTeam())
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Pelanggaran</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('violations.index') }}" class="sidebar-menu-link {{ request()->routeIs('violations.*') ? 'active' : '' }}">
+                                        <i class="bi bi-exclamation-triangle sidebar-menu-icon"></i>
+                                        <span>Pelanggaran Siswa</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <!-- Siswa Section -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">Siswa</div>
-                        <ul class="sidebar-menu">
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('students.index') }}" class="sidebar-menu-link {{ request()->routeIs('students.*') ? 'active' : '' }}">
-                                    <i class="bi bi-person-badge sidebar-menu-icon"></i>
-                                    <span>Daftar Siswa</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Piket PKS</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-schedules.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-week sidebar-menu-icon"></i>
+                                        <span>Jadwal Piket</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-attendances.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}">
+                                        <i class="bi bi-clipboard-check sidebar-menu-icon"></i>
+                                        <span>Absensi Piket</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <!-- Kedisiplinan Section -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">Kedisiplinan</div>
-                        <ul class="sidebar-menu">
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('violation-types.index') }}" class="sidebar-menu-link {{ request()->routeIs('violation-types.*') ? 'active' : '' }}">
-                                    <i class="bi bi-clipboard-check sidebar-menu-icon"></i>
-                                    <span>Jenis Pelanggaran</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('violations.index') }}" class="sidebar-menu-link {{ request()->routeIs('violations.*') ? 'active' : '' }}">
-                                    <i class="bi bi-exclamation-triangle sidebar-menu-icon"></i>
-                                    <span>Pelanggaran</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    @else
+                        <!-- Akademik Section (Non-PKS) -->
+                        @can('manage-master-data')
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Akademik</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('academic-years.index') }}" class="sidebar-menu-link {{ request()->routeIs('academic-years.*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-range sidebar-menu-icon"></i>
+                                        <span>Tahun Ajaran</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('departments.index') }}" class="sidebar-menu-link {{ request()->routeIs('departments.*') ? 'active' : '' }}">
+                                        <i class="bi bi-diagram-3 sidebar-menu-icon"></i>
+                                        <span>Program Keahlian</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('classes.index') }}" class="sidebar-menu-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chalkboard sidebar-menu-icon"></i>
+                                        <span>Kelas</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <!-- PKS Section -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">PKS</div>
-                        <ul class="sidebar-menu">
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-members.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-members.*') ? 'active' : '' }}">
-                                    <i class="bi bi-shield-check sidebar-menu-icon"></i>
-                                    <span>Anggota PKS</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-shifts.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-shifts.*') ? 'active' : '' }}">
-                                    <i class="bi bi-clock sidebar-menu-icon"></i>
-                                    <span>Shift Piket</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-duty-locations.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-locations.*') ? 'active' : '' }}">
-                                    <i class="bi bi-geo-alt sidebar-menu-icon"></i>
-                                    <span>Lokasi Piket</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-duty-schedules.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}">
-                                    <i class="bi bi-calendar-week sidebar-menu-icon"></i>
-                                    <span>Jadwal Piket</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-duty-assignments.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-assignments.*') ? 'active' : '' }}">
-                                    <i class="bi bi-calendar-check sidebar-menu-icon"></i>
-                                    <span>Penugasan</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-duty-attendances.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}">
-                                    <i class="bi bi-person-check sidebar-menu-icon"></i>
-                                    <span>Kehadiran</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('pks-field-activities.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-field-activities.*') ? 'active' : '' }}">
-                                    <i class="bi bi-map sidebar-menu-icon"></i>
-                                    <span>Aktivitas Lapangan</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <!-- Siswa Section -->
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Siswa</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('students.index') }}" class="sidebar-menu-link {{ request()->routeIs('students.*') ? 'active' : '' }}">
+                                        <i class="bi bi-person-badge sidebar-menu-icon"></i>
+                                        <span>Daftar Siswa</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <!-- Laporan Section -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">Laporan</div>
-                        <ul class="sidebar-menu">
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('reports.daily') }}" class="sidebar-menu-link {{ request()->routeIs('reports.daily*') ? 'active' : '' }}">
-                                    <i class="bi bi-calendar-day sidebar-menu-icon"></i>
-                                    <span>Laporan Harian</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="{{ route('reports.monthly') }}" class="sidebar-menu-link {{ request()->routeIs('reports.monthly*') ? 'active' : '' }}">
-                                    <i class="bi bi-calendar-event sidebar-menu-icon"></i>
-                                    <span>Laporan Bulanan</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <!-- Kedisiplinan Section -->
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Kedisiplinan</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('violation-types.index') }}" class="sidebar-menu-link {{ request()->routeIs('violation-types.*') ? 'active' : '' }}">
+                                        <i class="bi bi-clipboard-check sidebar-menu-icon"></i>
+                                        <span>Jenis Pelanggaran</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('violations.index') }}" class="sidebar-menu-link {{ request()->routeIs('violations.*') ? 'active' : '' }}">
+                                        <i class="bi bi-exclamation-triangle sidebar-menu-icon"></i>
+                                        <span>Pelanggaran</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @endcan
 
-                    <!-- Settings Section -->
+                        <!-- PKS Section (Non-PKS roles with permission) -->
+                        @can('manage-master-data')
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">PKS</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-members.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-members.*') ? 'active' : '' }}">
+                                        <i class="bi bi-shield-check sidebar-menu-icon"></i>
+                                        <span>Anggota PKS</span>
+                                    </a>
+                                </li>
+                                @can('view-pks-operational')
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-shifts.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-shifts.*') ? 'active' : '' }}">
+                                        <i class="bi bi-clock sidebar-menu-icon"></i>
+                                        <span>Shift Piket</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-locations.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-locations.*') ? 'active' : '' }}">
+                                        <i class="bi bi-geo-alt sidebar-menu-icon"></i>
+                                        <span>Lokasi Piket</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-schedules.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-schedules.*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-week sidebar-menu-icon"></i>
+                                        <span>Jadwal Piket</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-assignments.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-assignments.*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-check sidebar-menu-icon"></i>
+                                        <span>Penugasan</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-duty-attendances.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-duty-attendances.*') ? 'active' : '' }}">
+                                        <i class="bi bi-person-check sidebar-menu-icon"></i>
+                                        <span>Kehadiran</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('pks-field-activities.index') }}" class="sidebar-menu-link {{ request()->routeIs('pks-field-activities.*') ? 'active' : '' }}">
+                                        <i class="bi bi-map sidebar-menu-icon"></i>
+                                        <span>Aktivitas Lapangan</span>
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+                        </div>
+
+                        <!-- Laporan Section -->
+                        @can('view-pks-operational')
+                        <div class="sidebar-section">
+                            <div class="sidebar-section-title">Laporan</div>
+                            <ul class="sidebar-menu">
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('reports.daily') }}" class="sidebar-menu-link {{ request()->routeIs('reports.daily*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-day sidebar-menu-icon"></i>
+                                        <span>Laporan Harian</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item">
+                                    <a href="{{ route('reports.monthly') }}" class="sidebar-menu-link {{ request()->routeIs('reports.monthly*') ? 'active' : '' }}">
+                                        <i class="bi bi-calendar-event sidebar-menu-icon"></i>
+                                        <span>Laporan Bulanan</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @endcan
+                        @endcan
+                    @endif
+
+                    <!-- Settings Section - ALL authenticated users -->
                     <div class="sidebar-section">
                         <div class="sidebar-section-title">Pengaturan</div>
                         <ul class="sidebar-menu">

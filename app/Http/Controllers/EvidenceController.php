@@ -13,9 +13,20 @@ class EvidenceController extends Controller
      */
     public function show(ViolationEvidence $evidence)
     {
-        // Verify tenant isolation
-        $violation = $evidence->violation;
         $user = auth()->user();
+
+        // Super admin can access all evidence
+        if ($user->isSuperAdmin()) {
+            if (!Storage::disk('public')->exists($evidence->file_path)) {
+                abort(404);
+            }
+            return response()->file(
+                Storage::disk('public')->path($evidence->file_path)
+            );
+        }
+
+        // Load violation to check tenant
+        $violation = $evidence->violation;
 
         // Check if violation exists
         if (!$violation) {
@@ -23,7 +34,7 @@ class EvidenceController extends Controller
         }
 
         // Check if user has access to this school's data
-        if (!$user->isSuperAdmin() && $violation->school_id !== $user->school_id) {
+        if ($violation->school_id !== $user->school_id) {
             abort(403);
         }
 

@@ -105,8 +105,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-// Violation routes
-Route::middleware(['auth', 'verified'])->group(function () {
+// Violation types - only Super Admin and School Admin can manage
+Route::middleware(['auth', 'verified', 'can:manage-master-data'])->group(function () {
     Route::resource('violation-types', ViolationTypeController::class)->names([
         'index' => 'violation-types.index',
         'create' => 'violation-types.create',
@@ -116,7 +116,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'update' => 'violation-types.update',
         'destroy' => 'violation-types.destroy',
     ]);
+});
 
+// Violation routes - all authenticated users can view, create
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('violations', ViolationController::class)->names([
         'index' => 'violations.index',
         'create' => 'violations.create',
@@ -135,8 +138,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Secure evidence file access
     Route::get('evidences/{evidence}', [EvidenceController::class, 'show'])->name('evidences.show');
+});
 
-    // PKS Member routes
+// PKS Member routes - only Super Admin and School Admin can manage
+Route::middleware(['auth', 'verified', 'can:manage-master-data'])->group(function () {
     Route::resource('pks-members', PksMemberController::class)->names([
         'index' => 'pks-members.index',
         'create' => 'pks-members.create',
@@ -144,8 +149,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'show' => 'pks-members.show',
         'edit' => 'pks-members.edit',
         'update' => 'pks-members.update',
+        'destroy' => 'pks-members.destroy',
     ]);
+});
 
+// PKS Operational routes - Super Admin, School Admin, Operator
+Route::middleware(['auth', 'verified', 'can:view-pks-operational'])->group(function () {
     // PKS Shift routes
     Route::resource('pks-shifts', PksShiftController::class)->names([
         'index' => 'pks-shifts.index',
@@ -217,6 +226,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/monthly', [PksReportController::class, 'monthly'])->name('reports.monthly');
         Route::get('/monthly/excel', [PksReportController::class, 'monthlyExcel'])->name('reports.monthly.excel');
     });
+});
+
+// PKS Team can view schedules and attendances (read-only access)
+Route::middleware(['auth', 'verified', 'can:pks-schedule-view'])->group(function () {
+    // Only index and show for PKS Team
+    Route::get('pks-duty-schedules', [PksDutyScheduleController::class, 'index'])->name('pks-duty-schedules.index');
+    Route::get('pks-duty-schedules/{pksDutySchedule}', [PksDutyScheduleController::class, 'show'])->name('pks-duty-schedules.show');
+
+    // Only index and show for PKS Team
+    Route::get('pks-duty-attendances', [PksDutyAttendanceController::class, 'index'])->name('pks-duty-attendances.index');
+    Route::get('pks-duty-attendances/create', [PksDutyAttendanceController::class, 'create'])->name('pks-duty-attendances.create');
+    Route::post('pks-duty-attendances', [PksDutyAttendanceController::class, 'store'])->name('pks-duty-attendances.store');
+    Route::get('pks-duty-attendances/{pksDutyAttendance}', [PksDutyAttendanceController::class, 'show'])->name('pks-duty-attendances.show');
 });
 
 // Profile routes
