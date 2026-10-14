@@ -64,26 +64,33 @@ class AppServiceProvider extends ServiceProvider
             return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam();
         });
 
+        // View violations - all authenticated users except PKS team
         Gate::define('view-violations', function ($user) {
-            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam() || $user->isOperator() || $user->isTeacher();
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks() || $user->isTeacher();
         });
 
+        // Create violations - School Admin, Pembina PKS, Teacher
         Gate::define('create-violations', function ($user) {
-            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPksTeam() || $user->isOperator() || $user->isTeacher();
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks() || $user->isTeacher() || $user->isPksTeam();
         });
 
-        // PKS Operational - hanya Super Admin, School Admin, Operator
+        // PKS Operational - hanya Super Admin, School Admin, Pembina PKS
         Gate::define('view-pks-operational', function ($user) {
-            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks();
         });
 
-        // PKS Team can view schedules and assignments (read-only access)
+        // PKS Schedule view - Super Admin, School Admin, Pembina PKS, PKS Team
         Gate::define('pks-schedule-view', function ($user) {
-            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator() || $user->isPksTeam();
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks() || $user->isPksTeam();
         });
 
         Gate::define('manage-master-data', function ($user) {
             return $user->isSuperAdmin() || $user->isSchoolAdmin();
+        });
+
+        // New gate: Pembina PKS can manage PKS members, shifts, locations, schedules, assignments
+        Gate::define('manage-pks-team', function ($user) {
+            return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks();
         });
     }
 }

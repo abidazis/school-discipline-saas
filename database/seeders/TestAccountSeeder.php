@@ -24,7 +24,7 @@ class TestAccountSeeder extends Seeder
      * TEST ACCOUNTS:
      * - superadmin@test.local | Super Admin (global)
      * - schooladmin@test.local | Admin Sekolah (SMK Negeri 1 Jakarta)
-     * - operator@test.local | Operator (SMK Negeri 1 Jakarta)
+     * - pembinapks@test.local | Pembina PKS (SMK Negeri 1 Jakarta)
      * - teacher@test.local | Guru (SMK Negeri 1 Jakarta)
      * - 10001@pks.local | PKS Team - Ketua (SMK Negeri 1 Jakarta) [existing]
      */
@@ -71,19 +71,19 @@ class TestAccountSeeder extends Seeder
             $this->command->info('Created: schooladmin@test.local (password: password) - School: ' . $school->name);
 
             // ========================================
-            // OPERATOR
+            // PEMBINA PKS
             // ========================================
             User::updateOrCreate(
-                ['email' => 'operator@test.local'],
+                ['email' => 'pembinapks@test.local'],
                 [
-                    'name' => 'Test Operator',
+                    'name' => 'Test Pembina PKS',
                     'password' => Hash::make('password'),
-                    'role' => User::ROLE_OPERATOR,
+                    'role' => User::ROLE_PEMBINA_PKS,
                     'school_id' => $school->id,
                     'email_verified_at' => now(),
                 ]
             );
-            $this->command->info('Created: operator@test.local (password: password) - School: ' . $school->name);
+            $this->command->info('Created: pembinapks@test.local (password: password) - School: ' . $school->name);
 
             // ========================================
             // TEACHER
@@ -113,15 +113,15 @@ class TestAccountSeeder extends Seeder
 
         $this->command->info('');
         $this->command->info('=== TEST ACCOUNTS SUMMARY ===');
-        $this->command->info('All passwords: password (except PKS = NIS)');
+        $this->command->info('All passwords: password');
         $this->command->info('');
         $this->command->info('| Email                    | Role         | School                     |');
         $this->command->info('|--------------------------|--------------|----------------------------|');
         $this->command->info('| superadmin@test.local    | Super Admin  | (global)                   |');
         if ($school) {
             $this->command->info('| schooladmin@test.local  | School Admin | SMK Negeri 1 Jakarta        |');
-            $this->command->info('| operator@test.local     | Operator     | SMK Negeri 1 Jakarta        |');
-            $this->command->info('| teacher@test.local      | Teacher      | SMK Negeri 1 Jakarta        |');
+            $this->command->info('| pembinapks@test.local   | Pembina PKS | SMK Negeri 1 Jakarta        |');
+            $this->command->info('| teacher@test.local      | Teacher     | SMK Negeri 1 Jakarta        |');
         }
         $this->command->info('| 10001@pks.local         | PKS Team     | SMK Negeri 1 Jakarta (NIS) |');
     }

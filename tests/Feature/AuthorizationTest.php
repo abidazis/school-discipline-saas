@@ -25,7 +25,7 @@ class PksTeamAuthorizationTest extends TestCase
     protected School $school2;
     protected User $superAdmin;
     protected User $schoolAdmin;
-    protected User $operator;
+    protected User $pembinaPks;
     protected User $teacher;
     protected User $pksTeam;
     protected Student $student;
@@ -71,8 +71,8 @@ class PksTeamAuthorizationTest extends TestCase
             'school_id' => $this->school->id,
         ]);
 
-        $this->operator = User::factory()->create([
-            'role' => User::ROLE_OPERATOR,
+        $this->pembinaPks = User::factory()->create([
+            'role' => User::ROLE_PEMBINA_PKS,
             'school_id' => $this->school->id,
         ]);
 
@@ -471,9 +471,9 @@ class PksTeamAuthorizationTest extends TestCase
         $response->assertRedirect();
     }
 
-    public function test_operator_can_still_create_violation(): void
+    public function test_pembina_pks_can_create_violation(): void
     {
-        $response = $this->actingAs($this->operator)->post(route('violations.store'), [
+        $response = $this->actingAs($this->pembinaPks)->post(route('violations.store'), [
             'student_id' => $this->student->id,
             'violation_type_id' => $this->violationType->id,
             'occurred_at' => now()->format('Y-m-d\TH:i'),
@@ -482,9 +482,40 @@ class PksTeamAuthorizationTest extends TestCase
         $response->assertRedirect();
     }
 
-    public function test_operator_can_still_view_pks_operational(): void
+    public function test_pembina_pks_can_view_pks_operational(): void
     {
-        $response = $this->actingAs($this->operator)->get('/pks-shifts');
+        $response = $this->actingAs($this->pembinaPks)->get('/pks-shifts');
         $response->assertStatus(200);
+    }
+
+    public function test_pembina_pks_can_manage_pks_members(): void
+    {
+        $response = $this->actingAs($this->pembinaPks)->get('/pks-members');
+        $response->assertStatus(200);
+    }
+
+    public function test_pembina_pks_cannot_access_schools(): void
+    {
+        $response = $this->actingAs($this->pembinaPks)->get('/schools');
+        $response->assertStatus(403);
+    }
+
+    public function test_pembina_pks_cannot_verify_violation(): void
+    {
+        $violation = Violation::create([
+            'school_id' => $this->school->id,
+            'student_id' => $this->student->id,
+            'violation_type_id' => $this->violationType->id,
+            'academic_year_id' => $this->academicYear->id,
+            'school_class_id' => $this->class->id,
+            'officer_id' => $this->pembinaPks->id,
+            'occurred_at' => now(),
+            'points' => $this->violationType->points,
+            'status' => Violation::STATUS_RECORDED,
+        ]);
+
+        $response = $this->actingAs($this->pembinaPks)->post(route('violations.verify', $violation));
+
+        $response->assertStatus(403);
     }
 }

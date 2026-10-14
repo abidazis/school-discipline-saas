@@ -46,7 +46,7 @@
                             </x-dropdown>
                         </div>
                     @else
-                        {{-- OTHER ROLES: Full menu --}}
+                        {{-- OTHER ROLES: Full menu (Admin Sekolah, Pembina PKS, Guru) --}}
                         @can('manage-master-data')
                             <x-nav-link :href="route('schools.index')" :active="request()->routeIs('schools.*')">
                                 {{ __('Schools') }}
@@ -69,6 +69,9 @@
                             <x-nav-link :href="route('violation-types.index')" :active="request()->routeIs('violation-types.*')">
                                 {{ __('Jenis Pelanggaran') }}
                             </x-nav-link>
+                        @endcan
+
+                        @can('manage-pks-team')
                             <x-nav-link :href="route('pks-members.index')" :active="request()->routeIs('pks-members.*')">
                                 {{ __('Anggota PKS') }}
                             </x-nav-link>
@@ -134,8 +137,8 @@
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
                             <span class="ms-2 text-xs px-2 py-0.5 rounded-full
-                                {{ Auth::user()->isPksTeam() ? 'bg-warning text-dark' : (Auth::user()->isSuperAdmin() ? 'bg-danger text-white' : (Auth::user()->isSchoolAdmin() ? 'bg-primary text-white' : 'bg-secondary text-white')) }}">
-                                {{ Auth::user()->role === 'super_admin' ? 'Super Admin' : (Auth::user()->role === 'school_admin' ? 'Admin Sekolah' : (Auth::user()->role === 'pks_team' ? 'Tim PKS' : (Auth::user()->role === 'operator' ? 'Operator' : 'Guru'))) }}
+                                {{ Auth::user()->isPksTeam() ? 'bg-warning text-dark' : (Auth::user()->isSuperAdmin() ? 'bg-danger text-white' : (Auth::user()->isSchoolAdmin() ? 'bg-primary text-white' : (Auth::user()->isPembinaPks() ? 'bg-success text-white' : 'bg-secondary text-white'))) }}">
+                                {{ Auth::user()->role === 'super_admin' ? 'Super Admin' : (Auth::user()->role === 'school_admin' ? 'Admin Sekolah' : (Auth::user()->role === 'pembina_pks' ? 'Pembina PKS' : (Auth::user()->role === 'pks_team' ? 'Tim PKS' : 'Guru'))) }}
                             </span>
 
                             <div class="ms-1">
@@ -269,8 +272,8 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 <span class="mt-1 inline-block text-xs px-2 py-0.5 rounded-full
-                    {{ Auth::user()->isPksTeam() ? 'bg-warning text-dark' : (Auth::user()->isSuperAdmin() ? 'bg-danger text-white' : (Auth::user()->isSchoolAdmin() ? 'bg-primary text-white' : 'bg-secondary text-white')) }}">
-                    {{ Auth::user()->role === 'super_admin' ? 'Super Admin' : (Auth::user()->role === 'school_admin' ? 'Admin Sekolah' : (Auth::user()->role === 'pks_team' ? 'Tim PKS' : (Auth::user()->role === 'operator' ? 'Operator' : 'Guru'))) }}
+                    {{ Auth::user()->isPksTeam() ? 'bg-warning text-dark' : (Auth::user()->isSuperAdmin() ? 'bg-danger text-white' : (Auth::user()->isSchoolAdmin() ? 'bg-primary text-white' : (Auth::user()->isPembinaPks() ? 'bg-success text-white' : 'bg-secondary text-white'))) }}">
+                    {{ Auth::user()->role === 'super_admin' ? 'Super Admin' : (Auth::user()->role === 'school_admin' ? 'Admin Sekolah' : (Auth::user()->role === 'pembina_pks' ? 'Pembina PKS' : (Auth::user()->role === 'pks_team' ? 'Tim PKS' : 'Guru'))) }}
                 </span>
             </div>
 

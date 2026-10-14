@@ -15,7 +15,7 @@ class UpdatePksDutyAttendanceRequest extends FormRequest
     {
         return $this->user()->isSuperAdmin() ||
                $this->user()->isSchoolAdmin() ||
-               $this->user()->isOperator();
+               $this->user()->isPembinaPks();
     }
 
     /**

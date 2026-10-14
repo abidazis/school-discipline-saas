@@ -23,7 +23,7 @@ class User extends Authenticatable
      */
     public const ROLE_SUPER_ADMIN = 'super_admin';
     public const ROLE_SCHOOL_ADMIN = 'school_admin';
-    public const ROLE_OPERATOR = 'operator';
+    public const ROLE_PEMBINA_PKS = 'pembina_pks';
     public const ROLE_TEACHER = 'teacher';
     public const ROLE_PKS_TEAM = 'pks_team';
 
@@ -65,11 +65,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is a school operator.
+     * Check if user is a PKS pembina ( PKS manager/supervisor).
      */
-    public function isOperator(): bool
+    public function isPembinaPks(): bool
     {
-        return $this->role === self::ROLE_OPERATOR;
+        return $this->role === self::ROLE_PEMBINA_PKS;
     }
 
     /**
@@ -86,6 +86,14 @@ class User extends Authenticatable
     public function isPksTeam(): bool
     {
         return $this->role === self::ROLE_PKS_TEAM;
+    }
+
+    /**
+     * Check if user is a PKS pembina or school admin (for operational access).
+     */
+    public function isPksManager(): bool
+    {
+        return $this->isSchoolAdmin() || $this->isPembinaPks();
     }
 
     /**

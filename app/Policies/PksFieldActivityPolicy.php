@@ -32,7 +32,7 @@ class PksFieldActivityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator();
+        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks();
     }
 
     /**
@@ -44,7 +44,7 @@ class PksFieldActivityPolicy
             return true;
         }
 
-        if (!$user->isSchoolAdmin() && !$user->isOperator()) {
+        if (!$user->isSchoolAdmin() && !$user->isPembinaPks()) {
             return false;
         }
 
@@ -60,7 +60,7 @@ class PksFieldActivityPolicy
             return true;
         }
 
-        if (!$user->isSchoolAdmin() && !$user->isOperator()) {
+        if (!$user->isSchoolAdmin() && !$user->isPembinaPks()) {
             return false;
         }
 

@@ -279,10 +279,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Operator SMK 1 Jakarta',
-            'email' => 'operator@smk1jkt.sch.id',
+            'name' => 'Pembina PKS SMK 1 Jakarta',
+            'email' => 'pembina.pks@smk1jkt.sch.id',
             'password' => Hash::make('password'),
-            'role' => User::ROLE_OPERATOR,
+            'role' => User::ROLE_PEMBINA_PKS,
             'school_id' => $school1->id,
             'email_verified_at' => now(),
         ]);

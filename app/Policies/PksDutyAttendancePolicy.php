@@ -57,7 +57,7 @@ class PksDutyAttendancePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator() || $user->isPksTeam();
+        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks() || $user->isPksTeam();
     }
 
     /**
@@ -69,7 +69,7 @@ class PksDutyAttendancePolicy
             return true;
         }
 
-        if (!$user->isSchoolAdmin() && !$user->isOperator()) {
+        if (!$user->isSchoolAdmin() && !$user->isPembinaPks()) {
             return false;
         }
 

@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' => User::ROLE_OPERATOR,
+            'role' => User::ROLE_TEACHER, // Default to teacher as operator is now pembina_pks
             'remember_token' => Str::random(10),
         ];
     }
@@ -68,12 +68,12 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user is a school operator.
+     * Indicate that the user is a PKS pembina.
      */
-    public function operator(): static
+    public function pembinaPks(): static
     {
         return $this->state(fn (array $attributes) => [
-            'role' => User::ROLE_OPERATOR,
+            'role' => User::ROLE_PEMBINA_PKS,
         ]);
     }
 

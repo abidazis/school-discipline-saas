@@ -32,7 +32,7 @@ class PksDutyAssignmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin() || $user->isSchoolAdmin();
+        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks();
     }
 
     /**
@@ -44,7 +44,7 @@ class PksDutyAssignmentPolicy
             return true;
         }
 
-        if (!$user->isSchoolAdmin()) {
+        if (!$user->isSchoolAdmin() && !$user->isPembinaPks()) {
             return false;
         }
 

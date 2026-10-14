@@ -34,10 +34,10 @@ class ViolationPolicy
      */
     public function create(User $user): bool
     {
-        // Super admin, school admin, operator, teacher, and PKS team can create violations
+        // Super admin, school admin, pembina PKS, teacher, and PKS team can create violations
         return $user->isSuperAdmin() ||
                $user->isSchoolAdmin() ||
-               $user->isOperator() ||
+               $user->isPembinaPks() ||
                $user->isTeacher() ||
                $user->isPksTeam();
     }

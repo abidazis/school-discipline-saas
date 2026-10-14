@@ -86,7 +86,7 @@ class ViolationController extends Controller
         // Only load officers for admin roles, not for PKS Team
         $officers = null;
         if (!auth()->user()->isPksTeam()) {
-            $officers = User::whereIn('role', [User::ROLE_SCHOOL_ADMIN, User::ROLE_OPERATOR, User::ROLE_TEACHER])
+            $officers = User::whereIn('role', [User::ROLE_SCHOOL_ADMIN, User::ROLE_PEMBINA_PKS, User::ROLE_TEACHER])
                 ->when(auth()->user()->school_id, fn ($q) => $q->where('school_id', auth()->user()->school_id))
                 ->orderBy('name')->get();
         }

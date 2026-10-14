@@ -15,8 +15,8 @@ class StoreViolationRequest extends FormRequest
     {
         $user = $this->user();
 
-        // Super Admin, School Admin, Operator, Teacher, and PKS Team can create violations
-        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isOperator() || $user->isTeacher() || $user->isPksTeam();
+        // Super Admin, School Admin, Pembina PKS, Teacher, and PKS Team can create violations
+        return $user->isSuperAdmin() || $user->isSchoolAdmin() || $user->isPembinaPks() || $user->isTeacher() || $user->isPksTeam();
     }
 
     /**
